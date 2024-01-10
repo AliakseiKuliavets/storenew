@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="AliakseiKuliavets" id="drop user table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="user"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="drop product table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="product"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="product"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="drop order_number table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="order_number"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="order_number"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="drop payment table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="payment"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="payment"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="drop delivery table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="delivery"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="delivery"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="drop reviewed table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="reviewed"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="reviewed"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="drop image table">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="image"/>
+        </preConditions>
+        <rollback>
+            <dropTable tableName="image"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

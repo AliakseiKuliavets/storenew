@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into member_card table">
+        <insert tableName="member_card">
+            <column name="member_card_id" value="770d42f7-4765-4fab-88aa-86dad34995eb"/>
+            <column name="client_db_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into member_card_2 table">
+        <insert tableName="member_card">
+            <column name="member_card_id" value="c740ed50-b68b-4f7b-91a0-ac81fc34f457"/>
+            <column name="client_db_id" value="2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

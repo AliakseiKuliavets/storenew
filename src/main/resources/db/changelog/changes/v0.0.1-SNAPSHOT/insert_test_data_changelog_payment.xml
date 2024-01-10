@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into client_db_1 table">
+        <insert tableName="client_db">
+            <column name="client_db_id" value="1"/>
+            <column name="client_first_name" value="John"/>
+            <column name="client_last_name" value="Doe"/>
+            <column name="client_phone_number" value="+487803251728"/>
+            <column name="member_card_id" value="770d42f7-4765-4fab-88aa-86dad34995eb"/>
+            <column name="client_product_discount" value="10"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into client_db_2 table">
+        <insert tableName="client_db">
+            <column name="client_db_id" value="2"/>
+            <column name="client_first_name" value="Mike"/>
+            <column name="client_last_name" value="Johnson"/>
+            <column name="client_phone_number" value="+7911276382017"/>
+            <column name="member_card_id" value="c740ed50-b68b-4f7b-91a0-ac81fc34f457"/>
+            <column name="client_product_discount" value="10"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

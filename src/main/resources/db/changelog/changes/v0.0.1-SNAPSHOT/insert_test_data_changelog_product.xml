@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into product_1 table">
+        <insert tableName="product">
+            <column name="product_id" value="1fac8484-5093-4532-b6d8-d632257c84cc"/>
+            <column name="product_name" value="Peach"/>
+            <column name="product_weight" value="50.00"/>
+            <column name="product_cost" value="10.99"/>
+            <column name="product_discount" value="0"/>
+            <column name="product_expiry_date" value="2024-03-10"/>
+            <column name="product_delivery_number" value="100001"/>
+            <column name="supplier_id" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
+            <column name="warehouse_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into product_2 table">
+        <insert tableName="product">
+            <column name="product_id" value="35026fc0-dbfc-4d52-9c1c-a203929ea63d"/>
+            <column name="product_name" value="Orange"/>
+            <column name="product_weight" value="50.00"/>
+            <column name="product_cost" value="8.99"/>
+            <column name="product_discount" value="0"/>
+            <column name="product_expiry_date" value="2024-03-20"/>
+            <column name="product_delivery_number" value="100001"/>
+            <column name="supplier_id" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
+            <column name="warehouse_id" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into product_3 table">
+        <insert tableName="product">
+            <column name="product_id" value="39fbe282-b978-4ba0-bdfc-f52b29ea0036"/>
+            <column name="product_name" value="Strawberry"/>
+            <column name="product_weight" value="50.00"/>
+            <column name="product_cost" value="11.99"/>
+            <column name="product_discount" value="0"/>
+            <column name="product_expiry_date" value="2024-03-12"/>
+            <column name="product_delivery_number" value="100003"/>
+            <column name="supplier_id" value="3b64c7e1-dbf4-4611-a679-e29852659de0"/>
+            <column name="warehouse_id" value="1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="AliakseiKuliavets" id="create user table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table user already exists">
+            <not>
+                <tableExists tableName="user"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user">
+            <column name="user_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_first_name" type="varchar(45)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_last_name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_email" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_phone_number" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_verified_account" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="create product table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table product already exists">
+            <not>
+                <tableExists tableName="product"/>
+            </not>
+        </preConditions>
+        <createTable tableName="product">
+            <column name="product_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_name" type="varchar(45)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="product_description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_category" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_brand" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="placed_by_user" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="purchased_by_user" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="create order_number table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table order_number already exists">
+            <not>
+                <tableExists tableName="order_number"/>
+            </not>
+        </preConditions>
+        <createTable tableName="order_number">
+            <column name="order_number_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_number_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_status" type="varchar(45)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="payment_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recipient_user_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_user_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="create payment table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table payment already exists">
+            <not>
+                <tableExists tableName="payment"/>
+            </not>
+        </preConditions>
+        <createTable tableName="payment">
+            <column name="payment_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="payment_options" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_status_tracking" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="create delivery table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table delivery already exists">
+            <not>
+                <tableExists tableName="delivery"/>
+            </not>
+        </preConditions>
+        <createTable tableName="delivery">
+            <column name="delivery_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="delivery_address" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_method" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="delivery_status_tracking" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="create reviewed table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table reviewed already exists">
+            <not>
+                <tableExists tableName="reviewed"/>
+            </not>
+        </preConditions>
+        <createTable tableName="reviewed">
+            <column name="reviewed_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_reviewed" type="uuid">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="user_received_review" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="review_rating" type="decimal(2,1)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="create image table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table images already exists">
+            <not>
+                <tableExists tableName="image"/>
+            </not>
+        </preConditions>
+        <createTable tableName="image">
+            <column name="image_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image_name" type="varchar(45)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="image_original_file_name" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_size" type="long">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_content_type" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_is_preview_image" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
