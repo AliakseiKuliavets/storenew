@@ -32,6 +32,9 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
 
+    @Column(name = "product_price")
+    private String productPrice;
+
     @Column(name = "product_description")
     private String productDescription;
 

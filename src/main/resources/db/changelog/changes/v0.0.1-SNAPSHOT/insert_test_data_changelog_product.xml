@@ -12,6 +12,7 @@
         <insert tableName="product">
             <column name="product_id" value="35026fc0-dbfc-4d52-9c1c-a203929ea63d"/>
             <column name="product_name" value="Iphone 8"/>
+            <column name="product_price" value="1800.00"/>
             <column name="product_description" value="Simple description"/>
             <column name="product_category" value="ELECTRONICS"/>
             <column name="product_brand" value="APPLE"/>

@@ -49,6 +49,9 @@
             <column name="product_name" type="varchar(45)">
                 <constraints nullable="true"/>
             </column>
+            <column name="product_price" type="decimal(8,2)">
+                <constraints nullable="true"/>
+            </column>
             <column name="product_description" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
