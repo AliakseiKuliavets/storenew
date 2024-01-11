@@ -172,22 +172,22 @@
         </preConditions>
         <createTable tableName="image">
             <column name="image_id" type="uuid">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="true"/>
             </column>
             <column name="image_name" type="varchar(45)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="true" />
             </column>
             <column name="image_original_file_name" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_size" type="long">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_content_type" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_is_preview_image" type="boolean">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
