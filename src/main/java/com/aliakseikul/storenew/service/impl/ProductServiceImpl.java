@@ -6,6 +6,7 @@ import com.aliakseikul.storenew.service.interf.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,5 +18,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(String id) {
         return productRepository.findById(UUID.fromString(id)).orElse(null);
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.getAllProducts();
     }
 }

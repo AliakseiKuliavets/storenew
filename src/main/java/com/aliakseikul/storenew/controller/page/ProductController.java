@@ -5,6 +5,8 @@ import com.aliakseikul.storenew.service.interf.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
@@ -15,5 +17,10 @@ public class ProductController {
     @GetMapping("/")
     public Product getProductById(@RequestParam String id) {
         return productService.findById(id);
+    }
+
+    @GetMapping("/all")
+    public List<Product> getAllProducts(){
+        return productService.getAllProducts();
     }
 }
