@@ -1,6 +1,7 @@
 package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.entity.Product;
+import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
@@ -29,5 +30,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProductsByCategory(String category) {
         return productRepository.getAllProductsByCategory(ProductCategory.valueOf(category));
+    }
+
+    @Override
+    public List<Product> getAllProductsByBrand(String brand) {
+        return productRepository.getAllProductsByBrand(ProductBrand.valueOf(brand));
+    }
+
+    @Override
+    public List<Product> searchProductsByPriceRange(String minPrice, String maxPrice) {
+        return productRepository.findByPriceBetween(Double.parseDouble(minPrice), Double.parseDouble(maxPrice));
     }
 }
