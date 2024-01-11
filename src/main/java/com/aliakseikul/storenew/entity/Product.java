@@ -11,8 +11,6 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,7 +31,7 @@ public class Product {
     private String productName;
 
     @Column(name = "product_price")
-    private String productPrice;
+    private double productPrice;
 
     @Column(name = "product_description")
     private String productDescription;
