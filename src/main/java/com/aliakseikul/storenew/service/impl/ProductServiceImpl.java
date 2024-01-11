@@ -1,6 +1,7 @@
 package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.entity.Product;
+import com.aliakseikul.storenew.entity.enums.ProductCategory;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import lombok.AllArgsConstructor;
@@ -23,5 +24,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         return productRepository.getAllProducts();
+    }
+
+    @Override
+    public List<Product> getAllProductsByCategory(String category) {
+        return productRepository.getAllProductsByCategory(ProductCategory.valueOf(category));
     }
 }

@@ -9,4 +9,6 @@ public interface ProductService {
     Product findById(String id);
 
     List<Product> getAllProducts();
+
+    List<Product> getAllProductsByCategory(String category);
 }

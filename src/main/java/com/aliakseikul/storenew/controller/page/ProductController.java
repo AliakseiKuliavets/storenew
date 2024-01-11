@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/products")
+@RequestMapping("/api/product")
 public class ProductController {
 
     private final ProductService productService;
@@ -20,7 +20,12 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() {
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/allByCategory/")
+    public List<Product> getAllProductsByCategory(@RequestParam String category) {
+        return productService.getAllProductsByCategory(category);
     }
 }
