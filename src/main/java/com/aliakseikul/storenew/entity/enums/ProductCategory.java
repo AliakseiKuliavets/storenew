@@ -1,7 +1,14 @@
 package com.aliakseikul.storenew.entity.enums;
 
 public enum ProductCategory {
-    SPARE_PARTS,
-    COSMETICS,
-    SPORTING_GOODS
+    ELECTRONICS,
+    CLOTHING,
+    HOME_AND_GARDEN,
+    BOOKS,
+    BEAUTY,
+    SPORTS,
+    TOYS,
+    AUTOMOTIVE,
+    HEALTH,
+    OTHER
 }
