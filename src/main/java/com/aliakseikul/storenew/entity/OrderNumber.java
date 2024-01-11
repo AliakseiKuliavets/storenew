@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -47,4 +48,31 @@ public class OrderNumber {
     @ManyToOne
     @JoinColumn(name = "sender_user_id", referencedColumnName = "user_id")
     private User senderUserId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderNumber that = (OrderNumber) o;
+        return Objects.equals(orderNumberId, that.orderNumberId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderNumberId);
+    }
+
+    @Override
+    public String toString() {
+        return "OrderNumber{" +
+                "orderNumberId=" + orderNumberId +
+                ", orderNumberDate=" + orderNumberDate +
+                ", productId=" + productId +
+                ", deliveryId=" + deliveryId +
+                ", orderStatus=" + orderStatus +
+                ", paymentId=" + paymentId +
+                ", recipientUserId=" + recipientUserId +
+                ", senderUserId=" + senderUserId +
+                '}';
+    }
 }

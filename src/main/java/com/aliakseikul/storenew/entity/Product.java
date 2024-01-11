@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -48,4 +49,32 @@ public class Product {
     mappedBy = "product")
     private List<Image> images = new ArrayList<>();
     private Long previewImageId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(productId, product.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", productCategory=" + productCategory +
+                ", productBrand=" + productBrand +
+                ", placedByUser=" + placedByUser +
+                ", purchasedByUser=" + purchasedByUser +
+                ", images=" + images +
+                ", previewImageId=" + previewImageId +
+                '}';
+    }
 }

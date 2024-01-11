@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -30,4 +31,27 @@ public class Review {
 
     @Column(name = "review_rating")
     private Double reviewRating;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(reviewedId, review.reviewedId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reviewedId);
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "reviewedId=" + reviewedId +
+                ", userReviewed=" + userReviewed +
+                ", userReceivedReview=" + userReceivedReview +
+                ", reviewRating=" + reviewRating +
+                '}';
+    }
 }

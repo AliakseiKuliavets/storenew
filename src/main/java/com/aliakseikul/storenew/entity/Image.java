@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -40,4 +42,31 @@ public class Image {
 
     @ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
     private Product product;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return Objects.equals(imageId, image.imageId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(imageId);
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "imageId=" + imageId +
+                ", imageName='" + imageName + '\'' +
+                ", imageOriginalFileName='" + imageOriginalFileName + '\'' +
+                ", imageSize=" + imageSize +
+                ", imageContentType='" + imageContentType + '\'' +
+                ", imageIsPreviewImage=" + imageIsPreviewImage +
+                ", bytes=" + Arrays.toString(bytes) +
+                ", product=" + product +
+                '}';
+    }
 }

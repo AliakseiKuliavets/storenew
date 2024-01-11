@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -44,4 +45,32 @@ public class User {
 
     @OneToMany
     private List<Review> reviews;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userFirstName='" + userFirstName + '\'' +
+                ", userLastName='" + userLastName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userPhoneNumber='" + userPhoneNumber + '\'' +
+                ", userVerifiedAccount=" + userVerifiedAccount +
+                ", products=" + products +
+                ", orderNumbers=" + orderNumbers +
+                ", reviews=" + reviews +
+                '}';
+    }
 }

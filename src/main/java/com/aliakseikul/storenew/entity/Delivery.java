@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -30,4 +31,27 @@ public class Delivery {
 
     @Column(name = "delivery_status_tracking")
     private StatusTracking deliveryStatusTracking;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Delivery delivery = (Delivery) o;
+        return Objects.equals(deliveryId, delivery.deliveryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deliveryId);
+    }
+
+    @Override
+    public String toString() {
+        return "Delivery{" +
+                "deliveryId=" + deliveryId +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", paymentMethod=" + paymentMethod +
+                ", deliveryStatusTracking=" + deliveryStatusTracking +
+                '}';
+    }
 }
