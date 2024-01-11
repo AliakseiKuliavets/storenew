@@ -1,17 +1,13 @@
 package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.StatusTracking;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -26,6 +22,7 @@ import java.util.UUID;
 public class OrderNumber {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "order_number_id")
     private UUID orderNumberId;
 
@@ -41,6 +38,7 @@ public class OrderNumber {
     private Delivery deliveryId;
 
     @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
     private StatusTracking orderStatus;
 
     @OneToOne

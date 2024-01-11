@@ -2,14 +2,13 @@ package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.StatusTracking;
 import com.aliakseikul.storenew.entity.enums.PaymentMethod;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -23,6 +22,7 @@ import java.util.UUID;
 public class Delivery {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "delivery_id")
     private UUID deliveryId;
 
@@ -30,9 +30,11 @@ public class Delivery {
     private String deliveryAddress;
 
     @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     @Column(name = "delivery_status_tracking")
+    @Enumerated(EnumType.STRING)
     private StatusTracking deliveryStatusTracking;
 
     @Override

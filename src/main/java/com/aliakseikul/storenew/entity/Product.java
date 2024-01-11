@@ -2,19 +2,14 @@ package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.FetchType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +25,7 @@ import java.util.UUID;
 public class Product {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "product_id")
     private UUID productId;
 
@@ -40,23 +36,27 @@ public class Product {
     private String productDescription;
 
     @Column(name = "product_category")
+    @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
     @Column(name = "product_brand")
+    @Enumerated(EnumType.STRING)
     private ProductBrand productBrand;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "placed_by_user", referencedColumnName = "user_id")
     private User placedByUser;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "purchased_by_user", referencedColumnName = "user_id")
     private User purchasedByUser;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    mappedBy = "product")
-    private List<Image> images = new ArrayList<>();
-    private Long previewImageId;
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+//    mappedBy = "product")
+//    private List<Image> images = new ArrayList<>();
+//    private Long previewImageId;
 
     @Override
     public boolean equals(Object o) {
@@ -81,8 +81,8 @@ public class Product {
                 ", productBrand=" + productBrand +
                 ", placedByUser=" + placedByUser +
                 ", purchasedByUser=" + purchasedByUser +
-                ", images=" + images +
-                ", previewImageId=" + previewImageId +
+//                ", images=" + images +
+//                ", previewImageId=" + previewImageId +
                 '}';
     }
 }

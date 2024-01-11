@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +26,7 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "user_id")
     private UUID userId;
 
@@ -42,12 +46,15 @@ public class User {
     private boolean userVerifiedAccount;
 
     @OneToMany
+    @JsonIgnore
     private List<Product> products;
 
     @OneToMany
+    @JsonIgnore
     private List<OrderNumber> orderNumbers;
 
     @OneToMany
+    @JsonIgnore
     private List<Review> reviews;
 
     @Override

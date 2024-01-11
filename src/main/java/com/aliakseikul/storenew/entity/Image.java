@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -26,6 +28,7 @@ import java.util.UUID;
 public class Image {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "image_id")
     private UUID imageId;
 

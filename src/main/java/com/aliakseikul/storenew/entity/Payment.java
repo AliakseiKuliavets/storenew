@@ -2,14 +2,13 @@ package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.PaymentMethod;
 import com.aliakseikul.storenew.entity.enums.PaymentStatusTracking;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -23,13 +22,16 @@ import java.util.UUID;
 public class Payment {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "payment_id")
     private UUID paymentId;
 
     @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     @Column(name = "payment_status_tracking")
+    @Enumerated(EnumType.STRING)
     private PaymentStatusTracking paymentStatusTracking;
 
     @Override
