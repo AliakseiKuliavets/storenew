@@ -8,18 +8,15 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet author="AliakseiKuliavets" id="insert test data into member_card table">
-        <insert tableName="member_card">
-            <column name="member_card_id" value="770d42f7-4765-4fab-88aa-86dad34995eb"/>
-            <column name="client_db_id" value="1"/>
+    <changeSet author="AliakseiKuliavets" id="insert test data into reviewed table">
+        <insert tableName="reviewed">
+            <column name="reviewed_id" value="c740ed50-b68b-4f7b-91a0-ac81fc34f457"/>
+            <column name="user_reviewed" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
+            <column name="user_received_review" value="a197d1bb-8990-4b08-ad8a-9ec55718fcb8"/>
+            <column name="review_rating" value="8.0"/>
         </insert>
     </changeSet>
 
-    <changeSet author="AliakseiKuliavets" id="insert test data into member_card_2 table">
-        <insert tableName="member_card">
-            <column name="member_card_id" value="c740ed50-b68b-4f7b-91a0-ac81fc34f457"/>
-            <column name="client_db_id" value="2"/>
-        </insert>
-    </changeSet>
+
 
 </databaseChangeLog>

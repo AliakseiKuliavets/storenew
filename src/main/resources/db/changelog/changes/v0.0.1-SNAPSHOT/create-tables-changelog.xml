@@ -111,7 +111,7 @@
             <column name="payment_id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="payment_options" type="varchar(45)">
+            <column name="payment_method" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
             <column name="payment_status_tracking" type="varchar(45)">

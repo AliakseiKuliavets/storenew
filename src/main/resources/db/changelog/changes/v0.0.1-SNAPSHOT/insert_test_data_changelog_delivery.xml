@@ -8,12 +8,12 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet author="AliakseiKuliavets" id="insert test data into hall table">
-        <insert tableName="hall">
-            <column name="hall_id" value="1"/>
-            <column name="hall_name" value="Product"/>
-            <column name="warehouse_id" value="1"/>
-            <column name="cash_desk_id" value="1"/>
+    <changeSet author="AliakseiKuliavets" id="insert test data into delivery table">
+        <insert tableName="delivery">
+            <column name="delivery_id" value="1fac8484-5093-4532-b6d8-d632257c84cc"/>
+            <column name="delivery_address" value="Berlin, ul 17 Juli, 23"/>
+            <column name="payment_method" value="CASH"/>
+            <column name="delivery_status_tracking" value="NEW"/>
         </insert>
     </changeSet>
 
