@@ -15,6 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("select p from Product p")
     List<Product> getAllProducts();
 
+    @Query("select p from Product p where p.productName = :name")
+    Product findByName(String name);
+
     @Query("select p from Product p where p.productCategory = :productCategory")
     List<Product> getAllProductsByCategory(ProductCategory productCategory);
 
@@ -23,4 +26,5 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     @Query("select p from Product p where p.productPrice >= :minPrice and p.productPrice < :maxPrice")
     List<Product> findByPriceBetween(double minPrice, double maxPrice);
+
 }
