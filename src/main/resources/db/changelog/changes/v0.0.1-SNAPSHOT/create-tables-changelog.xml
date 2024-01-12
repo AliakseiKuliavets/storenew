@@ -49,6 +49,9 @@
             <column name="product_name" type="varchar(45)">
                 <constraints nullable="true"/>
             </column>
+            <column name="product_price" type="decimal(8,2)">
+                <constraints nullable="true"/>
+            </column>
             <column name="product_description" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -111,7 +114,7 @@
             <column name="payment_id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="payment_options" type="varchar(45)">
+            <column name="payment_method" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
             <column name="payment_status_tracking" type="varchar(45)">
@@ -172,22 +175,22 @@
         </preConditions>
         <createTable tableName="image">
             <column name="image_id" type="uuid">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="true"/>
             </column>
             <column name="image_name" type="varchar(45)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="true" />
             </column>
             <column name="image_original_file_name" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_size" type="long">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_content_type" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_is_preview_image" type="boolean">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>

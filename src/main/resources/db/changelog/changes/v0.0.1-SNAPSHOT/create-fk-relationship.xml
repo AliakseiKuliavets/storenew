@@ -49,19 +49,6 @@
                                  referencedColumnNames="user_id"/>
     </changeSet>
 
-    <changeSet author="AliakseiKuliavets" id="add fk image to product">
-        <addColumn tableName="image">
-            <column name="product_id" type="uuid">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-        <addForeignKeyConstraint baseTableName="image"
-                                 baseColumnNames="product_id"
-                                 constraintName="fk_image_product"
-                                 referencedTableName="product"
-                                 referencedColumnNames="product_id"/>
-    </changeSet>
-
     <changeSet author="AliakseiKuliavets" id="add fk reviewed to user">
         <addForeignKeyConstraint baseTableName="reviewed"
                                  baseColumnNames="user_reviewed"

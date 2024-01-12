@@ -6,8 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class OrderNumber {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "order_number_id")
     private UUID orderNumberId;
 
@@ -34,6 +38,7 @@ public class OrderNumber {
     private Delivery deliveryId;
 
     @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
     private StatusTracking orderStatus;
 
     @OneToOne
@@ -47,4 +52,31 @@ public class OrderNumber {
     @ManyToOne
     @JoinColumn(name = "sender_user_id", referencedColumnName = "user_id")
     private User senderUserId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderNumber that = (OrderNumber) o;
+        return Objects.equals(orderNumberId, that.orderNumberId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderNumberId);
+    }
+
+    @Override
+    public String toString() {
+        return "OrderNumber{" +
+                "orderNumberId=" + orderNumberId +
+                ", orderNumberDate=" + orderNumberDate +
+                ", productId=" + productId +
+                ", deliveryId=" + deliveryId +
+                ", orderStatus=" + orderStatus +
+                ", paymentId=" + paymentId +
+                ", recipientUserId=" + recipientUserId +
+                ", senderUserId=" + senderUserId +
+                '}';
+    }
 }

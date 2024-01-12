@@ -1,11 +1,22 @@
 package com.aliakseikul.storenew.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +28,7 @@ import java.util.UUID;
 public class Image {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "image_id")
     private UUID imageId;
 
@@ -40,4 +52,31 @@ public class Image {
 
     @ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
     private Product product;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return Objects.equals(imageId, image.imageId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(imageId);
+    }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "imageId=" + imageId +
+                ", imageName='" + imageName + '\'' +
+                ", imageOriginalFileName='" + imageOriginalFileName + '\'' +
+                ", imageSize=" + imageSize +
+                ", imageContentType='" + imageContentType + '\'' +
+                ", imageIsPreviewImage=" + imageIsPreviewImage +
+                ", bytes=" + Arrays.toString(bytes) +
+                ", product=" + product +
+                '}';
+    }
 }

@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class Delivery {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "delivery_id")
     private UUID deliveryId;
 
@@ -26,8 +30,33 @@ public class Delivery {
     private String deliveryAddress;
 
     @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     @Column(name = "delivery_status_tracking")
+    @Enumerated(EnumType.STRING)
     private StatusTracking deliveryStatusTracking;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Delivery delivery = (Delivery) o;
+        return Objects.equals(deliveryId, delivery.deliveryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deliveryId);
+    }
+
+    @Override
+    public String toString() {
+        return "Delivery{" +
+                "deliveryId=" + deliveryId +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", paymentMethod=" + paymentMethod +
+                ", deliveryStatusTracking=" + deliveryStatusTracking +
+                '}';
+    }
 }

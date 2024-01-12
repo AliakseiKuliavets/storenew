@@ -8,12 +8,16 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet author="AliakseiKuliavets" id="insert test data into client table">
-        <insert tableName="client">
-            <column name="client_id" value="1"/>
-            <column name="member_card_id" value="770d42f7-4765-4fab-88aa-86dad34995eb"/>
-            <column name="is_club_member" value="1"/>
-            <column name="card_id" value="1"/>
+    <changeSet author="AliakseiKuliavets" id="insert test data into order_number table">
+        <insert tableName="order_number">
+            <column name="order_number_id" value="770d42f7-4765-4fab-88aa-86dad34995eb"/>
+            <column name="order_number_date" value="2024-01-11"/>
+            <column name="product_id" value="35026fc0-dbfc-4d52-9c1c-a203929ea63d"/>
+            <column name="delivery_id" value="1fac8484-5093-4532-b6d8-d632257c84cc"/>
+            <column name="order_status" value="NEW"/>
+            <column name="payment_id" value="3b64c7e1-dbf4-4611-a679-e29852659de0"/>
+            <column name="recipient_user_id" value="a197d1bb-8990-4b08-ad8a-9ec55718fcb8"/>
+            <column name="sender_user_id" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
         </insert>
     </changeSet>
 

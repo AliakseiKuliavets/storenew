@@ -1,12 +1,20 @@
 package com.aliakseikul.storenew.entity;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +26,7 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "user_id")
     private UUID userId;
 
@@ -37,11 +46,42 @@ public class User {
     private boolean userVerifiedAccount;
 
     @OneToMany
+    @JsonIgnore
     private List<Product> products;
 
     @OneToMany
+    @JsonIgnore
     private List<OrderNumber> orderNumbers;
 
     @OneToMany
+    @JsonIgnore
     private List<Review> reviews;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userFirstName='" + userFirstName + '\'' +
+                ", userLastName='" + userLastName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userPhoneNumber='" + userPhoneNumber + '\'' +
+                ", userVerifiedAccount=" + userVerifiedAccount +
+                ", products=" + products +
+                ", orderNumbers=" + orderNumbers +
+                ", reviews=" + reviews +
+                '}';
+    }
 }

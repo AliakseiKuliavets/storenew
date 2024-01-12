@@ -8,12 +8,25 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet author="AliakseiKuliavets" id="insert test data into cash_desk table">
-        <insert tableName="cash_desk">
-            <column name="cash_desk_id" value="1"/>
-            <column name="product_id" value="1fac8484-5093-4532-b6d8-d632257c84cc"/>
-            <column name="client_id" value="1"/>
-            <column name="hall_id" value="1"/>
+    <changeSet author="AliakseiKuliavets" id="insert test data into user table">
+        <insert tableName="user">
+            <column name="user_id" value="a197d1bb-8990-4b08-ad8a-9ec55718fcb8"/>
+            <column name="user_first_name" value="Aliaksei"/>
+            <column name="user_last_name" value="Kuliavets"/>
+            <column name="user_email" value="abc@gmail.com"/>
+            <column name="user_phone_number" value="+487576152478"/>
+            <column name="user_verified_account" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="AliakseiKuliavets" id="insert test data into user2 table">
+        <insert tableName="user">
+            <column name="user_id" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
+            <column name="user_first_name" value="Bogdan"/>
+            <column name="user_last_name" value="Podalevic"/>
+            <column name="user_email" value="bogomdan@gmail.com"/>
+            <column name="user_phone_number" value="+37176152478"/>
+            <column name="user_verified_account" value="1"/>
         </insert>
     </changeSet>
 
