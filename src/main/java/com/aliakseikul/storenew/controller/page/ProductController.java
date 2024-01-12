@@ -49,4 +49,12 @@ public class ProductController {
             @RequestParam String maxPrice) {
         return productService.searchProductsByPriceRange(minPrice,maxPrice);
     }
+
+    //http://localhost:8080/api/product/allByCategoryBrand/search?category=ELECTRONICS&brand=APPLE
+    @GetMapping("/allByCategoryBrand/search")
+    public List<Product> searchProductsByCategoryBrand(
+            @RequestParam String category,
+            @RequestParam String brand) {
+        return productService.searchProductsByCategoryBrand(category,brand);
+    }
 }

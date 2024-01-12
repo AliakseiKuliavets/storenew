@@ -46,4 +46,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> searchProductsByPriceRange(String minPrice, String maxPrice) {
         return productRepository.findByPriceBetween(Double.parseDouble(minPrice), Double.parseDouble(maxPrice));
     }
+
+    @Override
+    public List<Product> searchProductsByCategoryBrand(String category, String brand) {
+        return productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand));
+    }
 }

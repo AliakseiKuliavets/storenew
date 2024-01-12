@@ -17,4 +17,6 @@ public interface ProductService {
     List<Product> getAllProductsByBrand(String brand);
 
     List<Product> searchProductsByPriceRange(String minPrice, String maxPrice);
+
+    List<Product> searchProductsByCategoryBrand(String category, String brand);
 }
