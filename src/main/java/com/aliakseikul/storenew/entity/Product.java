@@ -2,7 +2,6 @@ package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,12 +44,10 @@ public class Product {
     private ProductBrand productBrand;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "placed_by_user", referencedColumnName = "user_id")
     private User placedByUser;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "purchased_by_user", referencedColumnName = "user_id")
     private User purchasedByUser;
 
