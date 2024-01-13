@@ -5,14 +5,14 @@ import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
