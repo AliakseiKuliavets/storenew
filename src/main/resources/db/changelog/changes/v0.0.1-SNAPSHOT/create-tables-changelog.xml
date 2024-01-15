@@ -65,7 +65,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="purchased_by_user" type="uuid">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>

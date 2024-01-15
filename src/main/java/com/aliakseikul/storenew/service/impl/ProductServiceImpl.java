@@ -51,4 +51,14 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> searchProductsByCategoryBrand(String category, String brand) {
         return productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand));
     }
+
+    @Override
+    public Product create(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public void deleteById(String productId) {
+        productRepository.deleteById(UUID.fromString(productId));
+    }
 }

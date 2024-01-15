@@ -19,4 +19,8 @@ public interface ProductService {
     List<Product> searchProductsByPriceRange(String minPrice, String maxPrice);
 
     List<Product> searchProductsByCategoryBrand(String category, String brand);
+
+    Product create(Product product);
+
+    void deleteById(String productId);
 }

@@ -12,7 +12,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("/") //http://localhost:8080/api/user/?id=0480101b-0fa4-4b13-939e-062a7a8c49e6
     public User getUserById(@RequestParam String id) {
         return userService.findById(id);
     }
