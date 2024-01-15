@@ -65,6 +65,7 @@ public class ProductController {
     public Product createProduct(@RequestBody Product product) {
         return productService.create(product);
     }
+
     /*
     {
      "productId": "48f84933-0baf-435b-9411-6913fc1c3952",
@@ -99,5 +100,21 @@ public class ProductController {
         Product createdProduct = productService.create(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
+    /*
+      {
+    "productName": "Iphone 10",
+    "productPrice": 2500.0,
+    "productDescription": "Simple description",
+    "productCategory": "ELECTRONICS",
+    "productBrand": "APPLE",
+    "placedByUser": "a197d1bb-8990-4b08-ad8a-9ec55718fcb8"
+  }
+     */
 
+    @DeleteMapping("/remove/{productId}")
+    public ResponseEntity<String> deleteById(@PathVariable("productId") String productId) {
+        productService.deleteById(productId);
+        return ResponseEntity.ok("Product with ID " + productId + " has been deleted");
+    }
+    //http://localhost:8080/api/product/remove/9fb64df0-f80c-4d31-8016-acf901ce2944
 }

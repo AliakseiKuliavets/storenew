@@ -21,4 +21,6 @@ public interface ProductService {
     List<Product> searchProductsByCategoryBrand(String category, String brand);
 
     Product create(Product product);
+
+    void deleteById(String productId);
 }

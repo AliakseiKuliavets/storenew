@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/storeTest2
     username: root
-    password:
+    password: Ale_Mle2001
 
   jpa:
     show-sql: true
