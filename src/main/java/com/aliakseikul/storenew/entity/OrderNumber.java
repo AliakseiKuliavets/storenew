@@ -1,6 +1,7 @@
 package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.StatusTracking;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,12 +47,14 @@ public class OrderNumber {
     private Payment paymentId;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "recipient_user_id", referencedColumnName = "user_id")
-    private User recipientUserId;
+    private User recipientUser;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "sender_user_id", referencedColumnName = "user_id")
-    private User senderUserId;
+    private User senderUser;
 
     @Override
     public boolean equals(Object o) {
@@ -75,8 +78,8 @@ public class OrderNumber {
                 ", deliveryId=" + deliveryId +
                 ", orderStatus=" + orderStatus +
                 ", paymentId=" + paymentId +
-                ", recipientUserId=" + recipientUserId +
-                ", senderUserId=" + senderUserId +
+                ", recipientUserId=" + recipientUser +
+                ", senderUserId=" + senderUser +
                 '}';
     }
 }

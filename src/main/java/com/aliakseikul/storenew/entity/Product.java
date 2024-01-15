@@ -2,12 +2,14 @@ package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class Product {
 
     @Id
+    @UuidGenerator
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "product_id")
     private UUID productId;
@@ -44,10 +47,12 @@ public class Product {
     private ProductBrand productBrand;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "placed_by_user", referencedColumnName = "user_id")
     private User placedByUser;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "purchased_by_user", referencedColumnName = "user_id")
     private User purchasedByUser;
 
