@@ -58,7 +58,7 @@ public class ProductController {
 
     @PostMapping("/create") //http://localhost:8080/api/product/create
     public Product createProduct(@RequestBody Product product) {
-        return productService.create(product);
+        return productService.createProduct(product);
     }
 
     /*
@@ -82,7 +82,6 @@ public class ProductController {
         return ResponseEntity.ok("Product with ID " + id + " has been update name " + name);
     }
     //http://localhost:8080/api/product/update/?id=35026fc0-dbfc-4d52-9c1c-a203929ea63d&name=Some
-
 
     @DeleteMapping("/remove/{productId}")
     public ResponseEntity<String> deleteById(@PathVariable("productId") String productId) {

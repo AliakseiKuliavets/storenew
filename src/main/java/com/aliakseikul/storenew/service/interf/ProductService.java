@@ -20,7 +20,7 @@ public interface ProductService {
 
     List<Product> searchProductsByCategoryBrand(String category, String brand);
 
-    Product create(Product product);
+    Product createProduct(Product product);
 
     void updateProductName(String id, String name);
 

@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product create(Product product) {
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
