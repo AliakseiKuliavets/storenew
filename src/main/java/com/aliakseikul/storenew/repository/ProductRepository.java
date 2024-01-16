@@ -4,6 +4,7 @@ import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     @Query("select p from Product p where p.productCategory = :category and p.productBrand = :brand")
     List<Product> findByCategoryBrand(ProductCategory category, ProductBrand brand);
+
+    @Modifying
+    @Query("update Product p set p.productName = :name where p.productId = :uuid")
+    void updateProductName(UUID uuid, String name);
 }

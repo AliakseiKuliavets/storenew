@@ -22,5 +22,8 @@ public interface ProductService {
 
     Product create(Product product);
 
+    void updateProductName(String id, String name);
+
     void deleteById(String productId);
+
 }
