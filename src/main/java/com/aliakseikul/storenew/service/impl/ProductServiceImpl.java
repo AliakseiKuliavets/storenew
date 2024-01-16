@@ -60,6 +60,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
+    public void updateProductName(String id, String name) {
+        productRepository.updateProductName(UUID.fromString(id),name);
+    }
+
+    @Override
     public void deleteById(String productId) {
         productRepository.deleteById(UUID.fromString(productId));
     }
