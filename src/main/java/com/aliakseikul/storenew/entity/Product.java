@@ -47,12 +47,12 @@ public class Product {
     private ProductBrand productBrand;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("placedUserReference")
     @JoinColumn(name = "placed_by_user", referencedColumnName = "user_id")
     private User placedByUser;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("purchasedUserReference")
     @JoinColumn(name = "purchased_by_user", referencedColumnName = "user_id")
     private User purchasedByUser;
 

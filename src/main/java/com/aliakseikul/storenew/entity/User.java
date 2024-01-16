@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -47,21 +48,27 @@ public class User {
     private boolean userVerifiedAccount;
 
     @OneToMany(mappedBy = "placedByUser")
+    @JsonManagedReference("placedUserReference")
     private List<Product> productsPlaced;
 
     @OneToMany(mappedBy = "purchasedByUser")
+    @JsonManagedReference("purchasedUserReference")
     private List<Product> productsPurchased;
 
     @OneToMany(mappedBy = "recipientUser")
+    @JsonManagedReference("recipientOrderNumbersReference")
     private List<OrderNumber> recipientOrderNumbers;
 
     @OneToMany(mappedBy = "senderUser")
+    @JsonManagedReference("senderOrderNumbersReference")
     private List<OrderNumber> senderOrderNumber;
 
     @OneToMany(mappedBy = "userReviewed")
+    @JsonManagedReference("userReviewReference")
     private List<Review> userReviewed;
 
     @OneToMany(mappedBy = "userReceivedReview")
+    @JsonManagedReference("userReceivedReviewReference")
     private List<Review> userReceivedReview;
 
     @Override

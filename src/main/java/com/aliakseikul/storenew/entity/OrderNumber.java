@@ -47,12 +47,12 @@ public class OrderNumber {
     private Payment paymentId;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("recipientOrderNumbersReference")
     @JoinColumn(name = "recipient_user_id", referencedColumnName = "user_id")
     private User recipientUser;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("senderOrderNumbersReference")
     @JoinColumn(name = "sender_user_id", referencedColumnName = "user_id")
     private User senderUser;
 
