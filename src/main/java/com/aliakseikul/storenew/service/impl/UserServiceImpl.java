@@ -18,4 +18,14 @@ public class UserServiceImpl implements UserService {
     public User findById(String id) {
         return userRepository.findById(UUID.fromString(id)).orElse(null);
     }
+
+    @Override
+    public User addUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUserById(String userId) {
+        userRepository.deleteById(UUID.fromString(userId));
+    }
 }
