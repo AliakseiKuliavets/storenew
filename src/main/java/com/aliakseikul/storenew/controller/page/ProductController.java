@@ -79,5 +79,5 @@ public class ProductController {
         productService.deleteById(productId);
         return ResponseEntity.ok("Product with ID " + productId + " has been deleted");
     }
-    //http://localhost:8080/api/product/remove/9fb64df0-f80c-4d31-8016-acf901ce2944
+    //http://localhost:8080/api/product/remove/35026fc0-dbfc-4d52-9c1c-a203929ea63d
 }
