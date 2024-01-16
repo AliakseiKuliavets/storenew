@@ -7,6 +7,7 @@ import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -53,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product create(Product product) {
         return productRepository.save(product);
     }
