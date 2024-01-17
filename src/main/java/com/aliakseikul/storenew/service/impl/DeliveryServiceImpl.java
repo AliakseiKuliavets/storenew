@@ -5,6 +5,7 @@ import com.aliakseikul.storenew.repository.DeliveryRepository;
 import com.aliakseikul.storenew.service.interf.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -17,5 +18,21 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public Delivery findById(String id) {
         return deliveryRepository.findById(UUID.fromString(id)).orElse(null);
+    }
+
+    @Override
+    public Delivery addDelivery(Delivery delivery) {
+        return deliveryRepository.save(delivery);
+    }
+
+    @Override
+    @Transactional
+    public void changeAddressById(String deliveryId, String deliveryAddress) {
+         deliveryRepository.changeAddressById(UUID.fromString(deliveryId), deliveryAddress);
+    }
+
+    @Override
+    public void deleteDeliveryById(String deliveryId) {
+        deliveryRepository.deleteById(UUID.fromString(deliveryId));
     }
 }
