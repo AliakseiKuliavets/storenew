@@ -23,14 +23,13 @@ public class UserController {
         return userService.addUser(user);
     }
 
-    @PutMapping("/change")
+    @PutMapping("/change/")
     public ResponseEntity<String> changeUserPropertyById(
             @RequestParam String userId,
             @RequestParam String property,
             @RequestParam String value
     ) {
         String responseMessage;
-
         switch (property.toLowerCase()) {
             case "name":
                 userService.changeUserNameById(userId, value);
@@ -51,7 +50,6 @@ public class UserController {
             default:
                 return ResponseEntity.badRequest().body("Invalid property: " + property);
         }
-
         return ResponseEntity.ok("User with ID " + userId + " " + responseMessage);
     }
 
