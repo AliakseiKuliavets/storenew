@@ -22,15 +22,38 @@ public class UserController {
     public User addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
-    /*
-    {
-     "userFirstName": "Alexander",
-    "userLastName": "Karadiaur",
-    "userEmail": "butylka@gmail.com",
-    "userPhoneNumber": "+497576152478",
-    "userVerifiedAccount": true
+
+    @PutMapping("/change")
+    public ResponseEntity<String> changeUserPropertyById(
+            @RequestParam String userId,
+            @RequestParam String property,
+            @RequestParam String value
+    ) {
+        String responseMessage;
+
+        switch (property.toLowerCase()) {
+            case "name":
+                userService.changeUserNameById(userId, value);
+                responseMessage = "set new name " + value;
+                break;
+            case "lastname":
+                userService.changeLastNameUserById(userId, value);
+                responseMessage = "set new lastname " + value;
+                break;
+            case "email":
+                userService.changeEmailUserById(userId, value);
+                responseMessage = "set new email " + value;
+                break;
+            case "phonenumber":
+                userService.changePhoneNumberUserById(userId, value);
+                responseMessage = "set new phone number " + value;
+                break;
+            default:
+                return ResponseEntity.badRequest().body("Invalid property: " + property);
+        }
+
+        return ResponseEntity.ok("User with ID " + userId + " " + responseMessage);
     }
-     */
 
     //http://localhost:8080/api/user/remove/0480101b-0fa4-4b13-939e-062a7a8c49e6
     @DeleteMapping("/remove/{userId}")

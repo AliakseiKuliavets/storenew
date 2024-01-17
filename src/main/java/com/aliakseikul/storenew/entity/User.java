@@ -1,16 +1,13 @@
 package com.aliakseikul.storenew.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.util.List;
@@ -26,6 +23,7 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @UuidGenerator
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "user_id")
     private UUID userId;
@@ -45,17 +43,29 @@ public class User {
     @Column(name = "user_verified_account")
     private boolean userVerifiedAccount;
 
-    @OneToMany
-    @JsonIgnore
-    private List<Product> products;
+    @OneToMany(mappedBy = "placedByUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("placedUserReference")
+    private List<Product> productsPlaced;
 
-    @OneToMany
-    @JsonIgnore
-    private List<OrderNumber> orderNumbers;
+    @OneToMany(mappedBy = "purchasedByUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("purchasedUserReference")
+    private List<Product> productsPurchased;
 
-    @OneToMany
-    @JsonIgnore
-    private List<Review> reviews;
+    @OneToMany(mappedBy = "recipientUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("recipientOrderNumbersReference")
+    private List<OrderNumber> recipientOrderNumbers;
+
+    @OneToMany(mappedBy = "senderUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("senderOrderNumbersReference")
+    private List<OrderNumber> senderOrderNumber;
+
+    @OneToMany(mappedBy = "userReviewed", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("userReviewReference")
+    private List<Review> userReviewed;
+
+    @OneToMany(mappedBy = "userReceivedReview", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("userReceivedReviewReference")
+    private List<Review> userReceivedReview;
 
     @Override
     public boolean equals(Object o) {
@@ -79,9 +89,12 @@ public class User {
                 ", userEmail='" + userEmail + '\'' +
                 ", userPhoneNumber='" + userPhoneNumber + '\'' +
                 ", userVerifiedAccount=" + userVerifiedAccount +
-                ", products=" + products +
-                ", orderNumbers=" + orderNumbers +
-                ", reviews=" + reviews +
+                ", productsPlaced=" + productsPlaced +
+                ", productsPurchased=" + productsPurchased +
+                ", recipientOrderNumbers=" + recipientOrderNumbers +
+                ", senderOrderNumber=" + senderOrderNumber +
+                ", userReviewed=" + userReviewed +
+                ", userReceivedReview=" + userReceivedReview +
                 '}';
     }
 }
