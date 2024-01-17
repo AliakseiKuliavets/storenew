@@ -24,6 +24,13 @@ public interface ProductService {
 
     void updateProductName(String id, String name);
 
-    void deleteById(String productId);
+    void updateProductPrice(String productId, String value);
 
+    void updateProductDescriptions(String productId, String value);
+
+    void updateProductCategory(String productId, String value);
+
+    void updateProductBrand(String productId, String value);
+
+    void deleteById(String productId);
 }

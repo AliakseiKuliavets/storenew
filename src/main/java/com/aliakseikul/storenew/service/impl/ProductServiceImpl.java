@@ -61,8 +61,32 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void updateProductName(String id, String name) {
-        productRepository.updateProductName(UUID.fromString(id),name);
+    public void updateProductName(String productId, String name) {
+        productRepository.updateProductName(UUID.fromString(productId),name);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductPrice(String productId, String price) {
+        productRepository.updateProductPrice(UUID.fromString(productId),price);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductDescriptions(String productId, String descriptions) {
+        productRepository.updateProductDescriptions(UUID.fromString(productId),descriptions);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductCategory(String productId, String category) {
+        productRepository.updateProductCategory(UUID.fromString(productId),ProductCategory.valueOf(category));
+    }
+
+    @Override
+    @Transactional
+    public void updateProductBrand(String productId, String brand) {
+        productRepository.updateProductBrand(UUID.fromString(productId),ProductBrand.valueOf(brand));
     }
 
     @Override

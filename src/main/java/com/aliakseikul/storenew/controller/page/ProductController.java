@@ -61,27 +61,39 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    /*
-     {
-    "productName": "Iphone 10",
-    "productPrice": 2500.0,
-    "productDescription": "Simple description",
-    "productCategory": "ELECTRONICS",
-    "productBrand": "APPLE",
-    "placedByUser": {
-        "userId": "a197d1bb-8990-4b08-ad8a-9ec55718fcb8"
-        }
-    }
-     */
-
     @PutMapping("/update/")
-    public ResponseEntity<String> updateProductName(
-            @RequestParam String id,
-            @RequestParam String name) {
-        productService.updateProductName(id, name);
-        return ResponseEntity.ok("Product with ID " + id + " has been update name " + name);
+    public ResponseEntity<String> updateProductPropertyId(
+            @RequestParam String productId,
+            @RequestParam String property,
+            @RequestParam String value
+    ) {
+        String responseMessage;
+        switch (property.toLowerCase()) {
+            case "name":
+                productService.updateProductName(productId, value);
+                responseMessage = "set new name " + value;
+                break;
+            case "price":
+                productService.updateProductPrice(productId, value);
+                responseMessage = "set new price " + value;
+                break;
+            case "descriptions":
+                productService.updateProductDescriptions(productId, value);
+                responseMessage = "set new descriptions " + value;
+                break;
+            case "category":
+                productService.updateProductCategory(productId, value);
+                responseMessage = "set new category " + value;
+                break;
+            case "brand":
+                productService.updateProductBrand(productId, value);
+                responseMessage = "set new phone brand " + value;
+                break;
+            default:
+                return ResponseEntity.badRequest().body("Invalid property: " + property);
+        }
+        return ResponseEntity.ok("Product with ID " + productId + " " + responseMessage);
     }
-    //http://localhost:8080/api/product/update/?id=35026fc0-dbfc-4d52-9c1c-a203929ea63d&name=Some
 
     @DeleteMapping("/remove/{productId}")
     public ResponseEntity<String> deleteById(@PathVariable("productId") String productId) {
