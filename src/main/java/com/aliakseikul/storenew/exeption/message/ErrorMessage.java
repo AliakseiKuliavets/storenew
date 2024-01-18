@@ -2,6 +2,7 @@ package com.aliakseikul.storenew.exeption.message;
 
 public class ErrorMessage {
 
+    public static final String WRONG_ID_LENGTH = "ID length is wrong";
     public static final String WRONG_ID = "ID is wrong";
     public static final String PRODUCT_NOT_FOUND = "Product not found";
     public static final String PRODUCT_NOT_FOUND_BY_ID = "Product not found, ID is wrong";

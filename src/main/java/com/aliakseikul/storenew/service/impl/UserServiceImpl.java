@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(ErrorMessage.WRONG_ID);
         }
         if (userId.length() != 36) {
-            throw new UserNotFoundException(ErrorMessage.WRONG_ID);
+            throw new UserNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
     }
 }

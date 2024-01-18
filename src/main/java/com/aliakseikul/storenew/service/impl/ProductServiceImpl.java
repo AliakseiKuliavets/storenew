@@ -114,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductNotFoundException(ErrorMessage.WRONG_ID);
         }
         if (productId.length() != 36) {
-            throw new ProductNotFoundException(ErrorMessage.WRONG_ID);
+            throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
     }
 }
