@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -30,10 +31,12 @@ public class Review {
     private UUID reviewedId;
 
     @ManyToOne
+    @JsonBackReference("userReviewReference")
     @JoinColumn(name = "user_reviewed", referencedColumnName = "user_id")
     private User userReviewed;
 
     @ManyToOne
+    @JsonBackReference("userReceivedReviewReference")
     @JoinColumn(name = "user_received_review", referencedColumnName = "user_id")
     private User userReceivedReview;
 

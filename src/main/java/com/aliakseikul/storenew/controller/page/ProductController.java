@@ -64,35 +64,12 @@ public class ProductController {
     @PutMapping("/update/")
     public ResponseEntity<String> updateProductPropertyId(
             @RequestParam String productId,
-            @RequestParam String property,
+            @RequestParam String tableName,
             @RequestParam String value
     ) {
-        String responseMessage;
-        switch (property.toLowerCase()) {
-            case "name":
-                productService.updateProductName(productId, value);
-                responseMessage = "set new name " + value;
-                break;
-            case "price":
-                productService.updateProductPrice(productId, value);
-                responseMessage = "set new price " + value;
-                break;
-            case "descriptions":
-                productService.updateProductDescriptions(productId, value);
-                responseMessage = "set new descriptions " + value;
-                break;
-            case "category":
-                productService.updateProductCategory(productId, value);
-                responseMessage = "set new category " + value;
-                break;
-            case "brand":
-                productService.updateProductBrand(productId, value);
-                responseMessage = "set new phone brand " + value;
-                break;
-            default:
-                return ResponseEntity.badRequest().body("Invalid property: " + property);
-        }
-        return ResponseEntity.ok("Product with ID " + productId + " " + responseMessage);
+        System.out.println(productId);
+        System.out.println("-----------------------------");
+       return productService.updateProductParamById(productId, tableName, value);
     }
 
     @DeleteMapping("/remove/{productId}")

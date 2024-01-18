@@ -1,6 +1,7 @@
 package com.aliakseikul.storenew.service.interf;
 
 import com.aliakseikul.storenew.entity.Product;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -22,15 +23,8 @@ public interface ProductService {
 
     Product createProduct(Product product);
 
-    void updateProductName(String id, String name);
-
-    void updateProductPrice(String productId, String value);
-
-    void updateProductDescriptions(String productId, String value);
-
-    void updateProductCategory(String productId, String value);
-
-    void updateProductBrand(String productId, String value);
+    ResponseEntity<String> updateProductParamById(String productId, String tableName, String value);
 
     void deleteById(String productId);
+
 }

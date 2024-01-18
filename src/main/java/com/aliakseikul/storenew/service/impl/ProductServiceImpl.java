@@ -3,9 +3,12 @@ package com.aliakseikul.storenew.service.impl;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
+import com.aliakseikul.storenew.exeption.exeptions.ProductNotFoundException;
+import com.aliakseikul.storenew.exeption.message.ErrorMessage;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(String id) {
+        checkIdLength(id);
         return productRepository.findById(UUID.fromString(id)).orElse(null);
     }
 
@@ -61,36 +65,56 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void updateProductName(String productId, String name) {
-        productRepository.updateProductName(UUID.fromString(productId),name);
+    public ResponseEntity<String> updateProductParamById(String productId, String tableName, String value) {
+        checkId(productId);
+        UUID productUuid = UUID.fromString(productId);
+
+        String responseMessage;
+        switch (tableName.toLowerCase()) {
+            case "name":
+                productRepository.updateProductName(productUuid, value);
+                responseMessage = "set new name " + value;
+                break;
+            case "price":
+                productRepository.updateProductPrice(productUuid, value);
+                responseMessage = "set new price " + value;
+                break;
+            case "descriptions":
+                productRepository.updateProductDescriptions(productUuid, value);
+                responseMessage = "set new descriptions " + value;
+                break;
+            case "category":
+                productRepository.updateProductCategory(productUuid, ProductCategory.valueOf(value));
+                responseMessage = "set new category " + value;
+                break;
+            case "brand":
+                productRepository.updateProductBrand(productUuid, ProductBrand.valueOf(value));
+                responseMessage = "set new phone brand " + value;
+                break;
+            default:
+                return ResponseEntity.badRequest().body("Invalid property: " + tableName);
+        }
+        return ResponseEntity.ok("Product with ID " + productId + " " + responseMessage);
     }
 
-    @Override
-    @Transactional
-    public void updateProductPrice(String productId, String price) {
-        productRepository.updateProductPrice(UUID.fromString(productId),price);
+    private void checkId(String productId) {
+        if (findById(productId) == null) {
+            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND_BY_ID);
+        }
     }
 
-    @Override
-    @Transactional
-    public void updateProductDescriptions(String productId, String descriptions) {
-        productRepository.updateProductDescriptions(UUID.fromString(productId),descriptions);
-    }
-
-    @Override
-    @Transactional
-    public void updateProductCategory(String productId, String category) {
-        productRepository.updateProductCategory(UUID.fromString(productId),ProductCategory.valueOf(category));
-    }
-
-    @Override
-    @Transactional
-    public void updateProductBrand(String productId, String brand) {
-        productRepository.updateProductBrand(UUID.fromString(productId),ProductBrand.valueOf(brand));
+    private void checkIdLength(String productId) {
+        if (productId.isEmpty()){
+            throw new ProductNotFoundException(ErrorMessage.WRONG_ID);
+        }
+        if (productId.length() != 36) {
+            throw new ProductNotFoundException(ErrorMessage.WRONG_ID);
+        }
     }
 
     @Override
     public void deleteById(String productId) {
+        checkId(productId);
         productRepository.deleteById(UUID.fromString(productId));
     }
 }
