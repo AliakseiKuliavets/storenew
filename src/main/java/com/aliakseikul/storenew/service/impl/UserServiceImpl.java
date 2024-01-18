@@ -1,7 +1,6 @@
 package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.entity.User;
-import com.aliakseikul.storenew.exeption.exeptions.ProductNotFoundException;
 import com.aliakseikul.storenew.exeption.exeptions.UserNotFoundException;
 import com.aliakseikul.storenew.exeption.message.ErrorMessage;
 import com.aliakseikul.storenew.repository.UserRepository;
@@ -9,7 +8,6 @@ import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
