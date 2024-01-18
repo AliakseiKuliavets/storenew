@@ -67,8 +67,6 @@ public class ProductController {
             @RequestParam String tableName,
             @RequestParam String value
     ) {
-        System.out.println(productId);
-        System.out.println("-----------------------------");
        return productService.updateProductParamById(productId, tableName, value);
     }
 
