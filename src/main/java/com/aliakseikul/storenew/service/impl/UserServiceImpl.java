@@ -1,9 +1,13 @@
 package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.entity.User;
+import com.aliakseikul.storenew.exeption.exeptions.ProductNotFoundException;
+import com.aliakseikul.storenew.exeption.exeptions.UserNotFoundException;
+import com.aliakseikul.storenew.exeption.message.ErrorMessage;
 import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(String id) {
+        checkIdLength(id);
         return userRepository.findById(UUID.fromString(id)).orElse(null);
     }
 
@@ -26,31 +31,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void changeUserNameById(String userId, String userName) {
-        userRepository.changeUserNameById(UUID.fromString(userId),userName);
+    public ResponseEntity<String> updateProductParamById(String userId, String property, String value) {
+        checkId(userId);
+        UUID userUuid = UUID.fromString(userId);
+        String responseMessage;
+        switch (property.toLowerCase()) {
+            case "name":
+                userRepository.changeUserNameById(userUuid, value);
+                responseMessage = "set new name " + value;
+                break;
+            case "lastname":
+                userRepository.changeLastNameUserById(userUuid, value);
+                responseMessage = "set new lastname " + value;
+                break;
+            case "email":
+                userRepository.changeEmailUserById(userUuid, value);
+                responseMessage = "set new email " + value;
+                break;
+            case "phonenumber":
+                userRepository.changePhoneNumberUserById(userUuid, value);
+                responseMessage = "set new phone number " + value;
+                break;
+            default:
+                return ResponseEntity.badRequest().body("Invalid property: " + property);
+        }
+        return ResponseEntity.ok("User with ID " + userId + " " + responseMessage);
     }
 
-    @Override
-    @Transactional
-    public void changeLastNameUserById(String userId, String userLastName) {
-        userRepository.changeLastNameUserById(UUID.fromString(userId),userLastName);
+    private void checkId(String userId) {
+        if (findById(userId) == null) {
+            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
+        }
     }
 
-    @Override
-    @Transactional
-    public void changeEmailUserById(String userId, String email) {
-        userRepository.changeEmailUserById(UUID.fromString(userId),email);
-    }
-
-    @Override
-    @Transactional
-    public void changePhoneNumberUserById(String userId, String phoneNumber) {
-        userRepository.changePhoneNumberUserById(UUID.fromString(userId),phoneNumber);
+    private void checkIdLength(String userId) {
+        if (userId.isEmpty()){
+            throw new UserNotFoundException(ErrorMessage.WRONG_ID);
+        }
+        if (userId.length() != 36) {
+            throw new UserNotFoundException(ErrorMessage.WRONG_ID);
+        }
     }
 
     @Override
     public void deleteUserById(String userId) {
+        checkId(userId);
         userRepository.deleteById(UUID.fromString(userId));
     }
 

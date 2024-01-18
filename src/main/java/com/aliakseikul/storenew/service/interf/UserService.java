@@ -1,6 +1,7 @@
 package com.aliakseikul.storenew.service.interf;
 
 import com.aliakseikul.storenew.entity.User;
+import org.springframework.http.ResponseEntity;
 
 public interface UserService {
 
@@ -8,13 +9,7 @@ public interface UserService {
 
     User addUser(User user);
 
-    void changeUserNameById(String userId, String userName);
-
-    void changeLastNameUserById(String userId, String userLastName);
-
-    void changeEmailUserById(String userId, String email);
-
-    void changePhoneNumberUserById(String userId, String phoneNumber);
+    ResponseEntity<String> updateProductParamById(String userId, String property, String value);
 
     void deleteUserById(String userId);
 
