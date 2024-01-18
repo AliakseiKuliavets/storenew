@@ -56,6 +56,12 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok("User with ID " + userId + " " + responseMessage);
     }
 
+    @Override
+    public void deleteUserById(String userId) {
+        checkId(userId);
+        userRepository.deleteById(UUID.fromString(userId));
+    }
+
     private void checkId(String userId) {
         if (findById(userId) == null) {
             throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
@@ -63,18 +69,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkIdLength(String userId) {
-        if (userId.isEmpty()){
+        if (userId.isEmpty()) {
             throw new UserNotFoundException(ErrorMessage.WRONG_ID);
         }
         if (userId.length() != 36) {
             throw new UserNotFoundException(ErrorMessage.WRONG_ID);
         }
     }
-
-    @Override
-    public void deleteUserById(String userId) {
-        checkId(userId);
-        userRepository.deleteById(UUID.fromString(userId));
-    }
-
 }

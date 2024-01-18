@@ -97,6 +97,12 @@ public class ProductServiceImpl implements ProductService {
         return ResponseEntity.ok("Product with ID " + productId + " " + responseMessage);
     }
 
+    @Override
+    public void deleteById(String productId) {
+        checkId(productId);
+        productRepository.deleteById(UUID.fromString(productId));
+    }
+
     private void checkId(String productId) {
         if (findById(productId) == null) {
             throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND_BY_ID);
@@ -104,17 +110,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void checkIdLength(String productId) {
-        if (productId.isEmpty()){
+        if (productId.isEmpty()) {
             throw new ProductNotFoundException(ErrorMessage.WRONG_ID);
         }
         if (productId.length() != 36) {
             throw new ProductNotFoundException(ErrorMessage.WRONG_ID);
         }
-    }
-
-    @Override
-    public void deleteById(String productId) {
-        checkId(productId);
-        productRepository.deleteById(UUID.fromString(productId));
     }
 }
