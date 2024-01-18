@@ -1,6 +1,8 @@
 package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.entity.Delivery;
+import com.aliakseikul.storenew.exeption.exeptions.DeliveryNotFoundException;
+import com.aliakseikul.storenew.exeption.message.ErrorMessage;
 import com.aliakseikul.storenew.repository.DeliveryRepository;
 import com.aliakseikul.storenew.service.interf.DeliveryService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public Delivery findById(String id) {
+        checkIdLength(id);
         return deliveryRepository.findById(UUID.fromString(id)).orElse(null);
     }
 
@@ -28,11 +31,27 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     @Transactional
     public void changeAddressById(String deliveryId, String deliveryAddress) {
-         deliveryRepository.changeAddressById(UUID.fromString(deliveryId), deliveryAddress);
+        checkId(deliveryId);
+        deliveryRepository.changeAddressById(UUID.fromString(deliveryId), deliveryAddress);
     }
 
     @Override
     public void deleteDeliveryById(String deliveryId) {
         deliveryRepository.deleteById(UUID.fromString(deliveryId));
+    }
+
+    private void checkId(String deliveryId) {
+        if (findById(deliveryId) == null) {
+            throw new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
+        }
+    }
+
+    private void checkIdLength(String deliveryId) {
+        if (deliveryId.isEmpty()) {
+            throw new DeliveryNotFoundException(ErrorMessage.WRONG_ID);
+        }
+        if (deliveryId.length() != 36) {
+            throw new DeliveryNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
+        }
     }
 }
