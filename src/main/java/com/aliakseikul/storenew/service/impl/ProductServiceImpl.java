@@ -105,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 
     private void checkId(String productId) {
         if (findById(productId) == null) {
-            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND_BY_ID);
+            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
         }
     }
 
