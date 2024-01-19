@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping("/name") //http://localhost:8080/api/product/name?name=Iphone%208
-    public Product getProductByName(@RequestParam String name) {
+    public List<Product> getProductByName(@RequestParam String name) {
         return productService.findByName(name);
     }
 
@@ -52,7 +52,8 @@ public class ProductController {
     @GetMapping("/allByCategoryBrand/search")
     public List<Product> searchProductsByCategoryBrand(
             @RequestParam String category,
-            @RequestParam String brand) {
+            @RequestParam String brand
+    ) {
         return productService.searchProductsByCategoryBrand(category, brand);
     }
 
@@ -67,7 +68,7 @@ public class ProductController {
             @RequestParam String tableName,
             @RequestParam String value
     ) {
-       return productService.updateProductParamById(productId, tableName, value);
+        return productService.updateProductParamById(productId, tableName, value);
     }
 
     @DeleteMapping("/remove/{productId}")

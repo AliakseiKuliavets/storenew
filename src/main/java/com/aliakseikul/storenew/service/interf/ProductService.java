@@ -9,7 +9,7 @@ public interface ProductService {
 
     Product findById(String id);
 
-    Product findByName(String name);
+    List<Product> findByName(String name);
 
     List<Product> getAllProducts();
 

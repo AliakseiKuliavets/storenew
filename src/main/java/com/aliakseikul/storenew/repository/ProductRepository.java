@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> getAllProducts();
 
     @Query("select p from Product p where p.productName = :name")
-    Product findByName(String name);
+    List<Product> findByName(String name);
 
     @Query("select p from Product p where p.productCategory = :productCategory")
     List<Product> getAllProductsByCategory(ProductCategory productCategory);
