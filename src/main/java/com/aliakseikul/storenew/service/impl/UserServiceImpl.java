@@ -1,7 +1,9 @@
 package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.entity.User;
-import com.aliakseikul.storenew.exeption.exeptions.UserNotFoundException;
+import com.aliakseikul.storenew.entity.enums.ProductBrand;
+import com.aliakseikul.storenew.entity.enums.ProductCategory;
+import com.aliakseikul.storenew.exeption.exeptions.*;
 import com.aliakseikul.storenew.exeption.message.ErrorMessage;
 import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.UserService;
@@ -9,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -62,18 +66,22 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(UUID.fromString(userId));
     }
 
-    private void checkId(String userId) {
-        if (findById(userId) == null) {
-            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
+    private boolean valueNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
+    }
+
+    private void checkIdLength(String productId) {
+        if (valueNullOrEmpty(productId)) {
+            throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
+        }
+        if (productId.length() != 36) {
+            throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
     }
 
-    private void checkIdLength(String userId) {
-        if (userId.isEmpty()) {
-            throw new UserNotFoundException(ErrorMessage.WRONG_ID);
-        }
-        if (userId.length() != 36) {
-            throw new UserNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
+    private void checkId(String productId) {
+        if (findById(productId) == null) {
+            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
         }
     }
 }

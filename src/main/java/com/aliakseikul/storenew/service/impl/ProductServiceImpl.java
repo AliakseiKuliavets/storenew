@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static com.aliakseikul.storenew.exeption.checkMethods.Check.*;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -24,7 +26,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(String id) {
-        checkIdLength(id);
+        if (checkIdLength(id)) {
+            if (valueNullOrEmpty(id)) {
+                throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
+            }
+            throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
+        }
         return productRepository.findById(UUID.fromString(id)).
                 orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND));
     }
@@ -44,57 +51,84 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProductsByCategory(String category) {
-        checkCategory(category);
+        if (checkCategory(category)) {
+            if (valueNullOrEmpty(category)) {
+                throw new CategoryNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
+            }
+            throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
+        }
         return productRepository.getAllProductsByCategory(ProductCategory.valueOf(category));
     }
 
     @Override
     public List<Product> getAllProductsByBrand(String brand) {
-        checkBrand(brand);
+        if (checkBrand(brand)) {
+            if (valueNullOrEmpty(brand)) {
+                throw new BrandNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
+            }
+            throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
+        }
         return productRepository.getAllProductsByBrand(ProductBrand.valueOf(brand));
     }
 
     @Override
     public List<Product> searchProductsByPriceRange(String minPrice, String maxPrice) {
-        checkNumber(minPrice);
-        checkNumber(maxPrice);
+        if (valueNullOrEmpty(minPrice) || valueNullOrEmpty(maxPrice)) {
+            throw new NumberExceptions(ErrorMessage.NULL_OR_EMPTY);
+        }
+        if (checkNumber(minPrice) || checkNumber(maxPrice)) {
+            throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
+        }
         return productRepository.findByPriceBetween(Double.parseDouble(minPrice), Double.parseDouble(maxPrice));
     }
 
-
     @Override
     public List<Product> searchProductsByCategoryBrand(String category, String brand) {
-        checkCategory(category);
-        checkBrand(brand);
+        if (checkCategory(category)) {
+            if (valueNullOrEmpty(category)) {
+                throw new CategoryNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
+            }
+            throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
+        }
+        if (checkBrand(brand)) {
+            if (valueNullOrEmpty(brand)) {
+                throw new BrandNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
+            }
+            throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
+        }
         return productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand));
     }
 
     @Override
     @Transactional
     public Product createProduct(Product product) {
+        if (product == null) {
+            throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
+        }
         return productRepository.save(product);
     }
 
     @Override
     @Transactional
     public ResponseEntity<String> updateProductParamById(String productId, String tableName, String value) {
-        if (valueNullOrEmpty(tableName)) {
-            throw new TablesNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
+        if (checkId(productId)) {
+            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
         }
-        checkId(productId);
+        if (valueNullOrEmpty(tableName) || valueNullOrEmpty(value)) {
+            throw new StringIsNullExceptions(ErrorMessage.NULL_OR_EMPTY);
+        }
         UUID productUuid = UUID.fromString(productId);
 
         String responseMessage;
         switch (tableName.toLowerCase()) {
             case "name":
-                if (valueNullOrEmpty(value)) {
-                    throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
-                }
                 productRepository.updateProductName(productUuid, value);
                 responseMessage = "set new name " + value;
                 break;
             case "price":
-                checkNumber(value);
+                if (checkNumber(value)) {
+                    throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
+                }
                 productRepository.updateProductPrice(productUuid, value);
                 responseMessage = "set new price " + value;
                 break;
@@ -103,15 +137,21 @@ public class ProductServiceImpl implements ProductService {
                 responseMessage = "set new descriptions " + value;
                 break;
             case "category":
-                checkCategory(value);
-                productRepository.updateProductCategory(productUuid, ProductCategory.valueOf(value));
-                responseMessage = "set new category " + value;
-                break;
+                if (checkCategory(value)) {
+                    throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
+                } else {
+                    productRepository.updateProductCategory(productUuid, ProductCategory.valueOf(value));
+                    responseMessage = "set new category " + value;
+                    break;
+                }
             case "brand":
-                checkBrand(value);
-                productRepository.updateProductBrand(productUuid, ProductBrand.valueOf(value));
-                responseMessage = "set new phone brand " + value;
-                break;
+                if (checkBrand(value)) {
+                    throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
+                } else {
+                    productRepository.updateProductBrand(productUuid, ProductBrand.valueOf(value));
+                    responseMessage = "set new phone brand " + value;
+                    break;
+                }
             default:
                 return ResponseEntity.badRequest().body("Invalid property: " + tableName);
         }
@@ -124,43 +164,20 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(UUID.fromString(productId));
     }
 
-    private boolean valueNullOrEmpty(String value) {
-        return value == null || value.isEmpty();
+    private boolean checkId(String productId) {
+        return findById(productId) == null;
     }
 
-    private void checkIdLength(String productId) {
-        if (valueNullOrEmpty(productId)) {
-            throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
-        }
-        if (productId.length() != 36) {
-            throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
-        }
-    }
-
-    private void checkId(String productId) {
-        if (findById(productId) == null) {
-            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
-        }
-    }
-
-    private void checkCategory(String category) {
-        if (valueNullOrEmpty(category)) {
-            throw new CategoryNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
+    private boolean checkCategory(String category) {
         List<String> productCategoryList = Arrays.asList(
                 String.valueOf(ProductCategory.ELECTRONICS),
                 String.valueOf(ProductCategory.SPORTS),
                 String.valueOf(ProductCategory.OTHER)
         );
-        if (!(productCategoryList.contains(category))) {
-            throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
-        }
+        return !(productCategoryList.contains(category));
     }
 
-    private void checkBrand(String brand) {
-        if (valueNullOrEmpty(brand)) {
-            throw new BrandNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
+    private boolean checkBrand(String brand) {
         List<String> productBrandList = Arrays.asList(
                 String.valueOf(ProductBrand.DELL),
                 String.valueOf(ProductBrand.LG),
@@ -173,20 +190,6 @@ public class ProductServiceImpl implements ProductService {
                 String.valueOf(ProductBrand.PHILIPS),
                 String.valueOf(ProductBrand.SAMSUNG)
         );
-        if (!(productBrandList.contains(brand))) {
-            throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
-        }
-    }
-
-    private void checkNumber(String number) {
-        if (valueNullOrEmpty(number)) {
-            throw new NumberExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
-        char[] chars = number.toCharArray();
-        for (char c : chars) {
-            if (!Character.isDigit(c)) {
-                throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
-            }
-        }
+        return !(productBrandList.contains(brand));
     }
 }
