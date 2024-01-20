@@ -3,7 +3,10 @@ package com.aliakseikul.storenew.service.impl;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
+import com.aliakseikul.storenew.exeption.exeptions.BrandNotFoundExceptions;
+import com.aliakseikul.storenew.exeption.exeptions.CategoryNotFoundExceptions;
 import com.aliakseikul.storenew.exeption.exeptions.ProductNotFoundException;
+import com.aliakseikul.storenew.exeption.exeptions.StringIsNullExceptions;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.entit.TestListProduct;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,43 +44,78 @@ class ProductServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        id = "bebf2593-ee7f-4ad3-924c-bfab0e0c0e5e";
+        id = "c2bfcb8e-af96-43c8-88e2-56f3a78e2436";
         uuid = UUID.fromString(id);
         productList = TestListProduct.PRODUCTS;
         product = productList.get(0);
     }
 
-    @Test
-    void findByIdValidIdTest() {
+
+    // ----------Test methods findById() -------------------------------------
+
+    /**
+     * Parameterized method test that checks data validity, converts String id to UUID,
+     * after successful conversion, look for this product in List<Product>
+     *
+     * @param id    - unique identifier
+     * @param index - index under which index our product is located in List<Product>
+     */
+    @ParameterizedTest
+    @CsvSource(value = {
+            "c2bfcb8e-af96-43c8-88e2-56f3a78e2436,0",
+            "097da9b6-aaf2-4b0e-98df-422f74d71446,6",
+            "6752876b-9ef1-4213-bf99-85a810a3d2de,37",
+    })
+    void findByIdValidIdTest(String id, int index) {
+        product = productList.get(index);
+        uuid = UUID.fromString(id);
+
         when(productRepository.findById(uuid)).thenReturn(Optional.of(product));
-
         assertEquals(product, productService.findById(id));
-
         verify(productRepository).findById(uuid);
     }
 
+    /**
+     * Checking the method to ensure that it does not return Null if all the data is correct, and it is guaranteed
+     * to return Product
+     */
     @Test
     void findByIdValidIdReturnNotNullTest() {
         when(productRepository.findById(uuid)).thenReturn(Optional.of(product));
-
         assertNotNull(productService.findById(id));
-
         verify(productRepository).findById(uuid);
     }
 
-
+    /**
+     * Parameterized test that accepts invalid data, or empty data that throws errors
+     *
+     * @param id        - damaged (length does not match), empty, or does not exist in the id database
+     * @param exception - wait for this error
+     */
     @ParameterizedTest
     @CsvSource(value = {
             "35026fc0-dbfc-4d52-9c1c-a203929ea63d1231231231231231231,ProductNotFoundException",
             "35026fc0,ProductNotFoundException",
             "35026fc0-dbf-4d5-9c1-a203929ea63d,ProductNotFoundException",
             "351c-a203929ea63d,ProductNotFoundException",
+            ",ProductNotFoundException",
+            "6752876b-9ef1-4213-bf99-85a810a3d2d2,ProductNotFoundException"
     })
     void findByIdNotValidIdTest(String id, ProductNotFoundException exception) {
         assertThrows(exception.getClass(), () ->
                 productService.findById(id));
     }
 
+
+    // ----------Test methods findByName() -------------------------------------
+
+    /**
+     * Parameterized method which, if the given "name" is valid, returns List<Products> and is checked
+     * by the size of this List
+     *
+     * @param expected - the length of the array is expected
+     * @param name     - passed valid name
+     */
     @ParameterizedTest
     @CsvSource(value = {
             "1,iPhone",
@@ -92,13 +130,15 @@ class ProductServiceImplTest {
                         .filter(el -> el.getProductName().equals(name))
                         .toList()
         );
+
         when(productRepository.findByName(name)).thenReturn(products);
-
-        assertEquals(expected, productRepository.findByName(name).size());
-
+        assertEquals(expected, productService.findByName(name).size());
         verify(productRepository).findByName(name);
     }
 
+    /**
+     * A test that checks whether this method returns non-null
+     */
     @Test
     void findByNameReturnNotNullTest() {
         String name = product.getProductName();
@@ -107,45 +147,62 @@ class ProductServiceImplTest {
                         .filter(el -> el.getProductName().equals(name))
                         .toList()
         );
+
         when(productRepository.findByName(name)).thenReturn(products);
-
-        assertNotNull(productRepository.findByName(name));
-
+        assertNotNull(productService.findByName(name));
         verify(productRepository).findByName(name);
     }
 
+    /**
+     * The test checks whether an error is caught if the name "" was passed
+     */
+    @Test
+    void findByNameReturnExceptionNameIsEmptyTest() {
+        assertThrows(StringIsNullExceptions.class,
+                () -> productService.findByName(""));
+    }
+
+    /**
+     * The test checks whether an error is caught if the name was passed null
+     */
+    @Test
+    void findByNameReturnExceptionNameIsNullTest() {
+        assertThrows(StringIsNullExceptions.class,
+                () -> productService.findByName(null));
+    }
+
+    // ----------Test methods getAllProducts() -------------------------------------
+
+    /**
+     * Method test checks whether the exact quantity of product is returned from the database using List<Product> as an example
+     */
     @Test
     void getAllProductsLengthTest() {
-        when(productRepository.getAllProducts()).thenReturn(productList);
+        when(productRepository.findAll()).thenReturn(productList);
 
-        assertEquals(38, productRepository.getAllProducts().size());
-        verify(productRepository).getAllProducts();
+        assertEquals(38, productService.getAllProducts().size());
+        verify(productRepository).findAll();
     }
 
+    /**
+     * Test a method that checks if all the data for output is present, so that this method does not return null
+     */
     @Test
     void getAllProductsNotNullTest() {
-        when(productRepository.getAllProducts()).thenReturn(productList);
+        when(productRepository.findAll()).thenReturn(productList);
 
-        assertNotNull(productRepository.getAllProducts());
-        verify(productRepository).getAllProducts();
+        assertNotNull(productService.getAllProducts());
+        verify(productRepository).findAll();
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {
-            "2,2",
-            "3,3",
-            "10,10",
-            "15,15",
-            "37,37"
-    })
-    void getAllProductsValidityCheckTest(int indexFromList, int index) {
-        product = productList.get(indexFromList);
-        when(productRepository.getAllProducts()).thenReturn(productList);
+    // ----------Test methods getAllProductsByCategories() -------------------------------------
 
-        assertEquals(product, productRepository.getAllProducts().get(index));
-        verify(productRepository).getAllProducts();
-    }
-
+    /**
+     * Parameterized test of a method that, given the correct data, should display the correct amount of Product
+     *
+     * @param expected - number of products in List<Products>
+     * @param category - valid product category
+     */
     @ParameterizedTest
     @CsvSource(value = {
             "16,ELECTRONICS",
@@ -161,14 +218,17 @@ class ProductServiceImplTest {
         );
 
         when(productRepository.getAllProductsByCategory(productCategory)).thenReturn(products);
-
-        assertEquals(expected, productRepository.getAllProductsByCategory(productCategory).size());
+        assertEquals(expected, productService.getAllProductsByCategory(category).size());
         verify(productRepository).getAllProductsByCategory(productCategory);
     }
 
+    /**
+     * Test of a method that, if the data is valid, should return non-null
+     */
     @Test
     void getAllProductsByCategoryReturnNotNullTest() {
-        ProductCategory category = ProductCategory.ELECTRONICS;
+        String categoryTest = "ELECTRONICS";
+        ProductCategory category = ProductCategory.valueOf(categoryTest);
         List<Product> products = new ArrayList<>(
                 productList.stream()
                         .filter(el -> el.getProductCategory().equals(category))
@@ -176,11 +236,46 @@ class ProductServiceImplTest {
         );
 
         when(productRepository.getAllProductsByCategory(category)).thenReturn(products);
-
-        assertNotNull(productRepository.getAllProductsByCategory(category));
+        assertNotNull(productService.getAllProductsByCategory(categoryTest));
         verify(productRepository).getAllProductsByCategory(category);
     }
 
+    /**
+     * Parameterized test that checks to catch errors if the data that was entered was not valid
+     *
+     * @param category   - incorrectly written data or its absence in the database
+     * @param exceptions - expected error
+     */
+    @ParameterizedTest
+    @CsvSource(value = {
+            "SOME CATEGORY,CategoryNotFoundExceptions",
+            "sports,CategoryNotFoundExceptions",
+            "Sports,CategoryNotFoundExceptions",
+            ",CategoryNotFoundExceptions"
+    })
+    void getAllProductsByCategoryExceptionTest(String category, CategoryNotFoundExceptions exceptions) {
+        assertThrows(exceptions.getClass(),
+                () -> productService.getAllProductsByCategory(category));
+    }
+
+    /**
+     * A test that monitors whether an error is thrown if the category was written null
+     */
+    @Test
+    void getAllProductsByCategoryNullExceptionTest() {
+        assertThrows(CategoryNotFoundExceptions.class,
+                () -> productService.getAllProductsByCategory(null));
+    }
+
+    // ----------Test methods getAllProductsByBrand() -------------------------------------
+
+    /**
+     * Parameterized test that checks the method if the input data was valid and checks by the quantity of Product
+     * at the exit
+     *
+     * @param expected - number of products
+     * @param brand    - the brand by which the product will be searched
+     */
     @ParameterizedTest
     @CsvSource(value = {
             "2,APPLE",
@@ -203,23 +298,52 @@ class ProductServiceImplTest {
         );
 
         when(productRepository.getAllProductsByBrand(productBrand)).thenReturn(products);
-
-        assertEquals(expected, productRepository.getAllProductsByBrand(productBrand).size());
+        assertEquals(expected, productService.getAllProductsByBrand(brand).size());
         verify(productRepository).getAllProductsByBrand(productBrand);
     }
 
+    /**
+     * Test of a method that checks if the data is valid and the data in the database is not null
+     */
     @Test
     void getAllProductsByBrandNotNullTest() {
-        ProductCategory category = ProductCategory.ELECTRONICS;
+        String brandTest = "SAMSUNG";
+        ProductBrand productBrand = ProductBrand.valueOf(brandTest);
         List<Product> products = new ArrayList<>(
                 productList.stream()
-                        .filter(el -> el.getProductCategory().equals(category))
+                        .filter(el -> el.getProductBrand().equals(productBrand))
                         .toList()
         );
 
-        when(productRepository.getAllProductsByCategory(category)).thenReturn(products);
+        when(productRepository.getAllProductsByBrand(productBrand)).thenReturn(products);
+        assertNotNull(productService.getAllProductsByBrand(brandTest));
+        verify(productRepository).getAllProductsByBrand(productBrand);
+    }
 
-        assertNotNull(productRepository.getAllProductsByCategory(category));
-        verify(productRepository).getAllProductsByCategory(category);
+    /**
+     * Parameterized test that checks invalid data and expects to receive an error
+     *
+     * @param brand      - data that is incorrect, or there is no such brand, or an empty parameter
+     * @param exceptions - expected error
+     */
+    @ParameterizedTest
+    @CsvSource(value = {
+            "SOME BRAND,BrandNotFoundExceptions",
+            "SAMSUN,BrandNotFoundExceptions",
+            "Samsung,BrandNotFoundExceptions",
+            ",BrandNotFoundExceptions"
+    })
+    void getAllProductsByBrandExceptionTest(String brand, BrandNotFoundExceptions exceptions) {
+        assertThrows(exceptions.getClass(),
+                () -> productService.getAllProductsByBrand(brand));
+    }
+
+    /**
+     * A test that monitors whether an error is thrown if the brand was written null
+     */
+    @Test
+    void getAllProductsByBrandNullExceptionTest() {
+        assertThrows(BrandNotFoundExceptions.class,
+                () -> productService.getAllProductsByBrand(null));
     }
 }
