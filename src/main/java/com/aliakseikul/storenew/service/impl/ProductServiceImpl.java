@@ -27,9 +27,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(String id) {
         if (checkIdLength(id)) {
-            if (valueNullOrEmpty(id)) {
-                throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
-            }
             throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
         return productRepository.findById(UUID.fromString(id)).
@@ -39,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findByName(String name) {
         if (valueNullOrEmpty(name)) {
-            throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
+            throw new StringIsNullExceptions(ErrorMessage.NULL_OR_EMPTY);
         }
         return productRepository.findByName(name);
     }
@@ -52,9 +49,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProductsByCategory(String category) {
         if (checkCategory(category)) {
-            if (valueNullOrEmpty(category)) {
-                throw new CategoryNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-            }
             throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
         }
         return productRepository.getAllProductsByCategory(ProductCategory.valueOf(category));
@@ -63,9 +57,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProductsByBrand(String brand) {
         if (checkBrand(brand)) {
-            if (valueNullOrEmpty(brand)) {
-                throw new BrandNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-            }
             throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
         }
         return productRepository.getAllProductsByBrand(ProductBrand.valueOf(brand));
@@ -85,15 +76,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> searchProductsByCategoryBrand(String category, String brand) {
         if (checkCategory(category)) {
-            if (valueNullOrEmpty(category)) {
-                throw new CategoryNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-            }
             throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
         }
         if (checkBrand(brand)) {
-            if (valueNullOrEmpty(brand)) {
-                throw new BrandNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-            }
             throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
         }
         return productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand));
@@ -160,15 +145,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteById(String productId) {
-        checkId(productId);
+        if (checkId(productId)) {
+            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
+        }
         productRepository.deleteById(UUID.fromString(productId));
     }
 
     private boolean checkId(String productId) {
+        if (valueNullOrEmpty(productId)) {
+            throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
+        }
         return findById(productId) == null;
     }
 
     private boolean checkCategory(String category) {
+        if (valueNullOrEmpty(category)) {
+            throw new CategoryNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
+        }
         List<String> productCategoryList = Arrays.asList(
                 String.valueOf(ProductCategory.ELECTRONICS),
                 String.valueOf(ProductCategory.SPORTS),
@@ -178,6 +171,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private boolean checkBrand(String brand) {
+        if (valueNullOrEmpty(brand)) {
+            throw new BrandNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
+        }
         List<String> productBrandList = Arrays.asList(
                 String.valueOf(ProductBrand.DELL),
                 String.valueOf(ProductBrand.LG),
