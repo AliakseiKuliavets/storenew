@@ -64,17 +64,19 @@ public class UserServiceImpl implements UserService {
             case "email":
                 if (checkEmail(value)) {
                     throw new NumberExceptions(ErrorMessage.WRONG_EMAIL);
+                } else {
+                    userRepository.changeEmailUserById(userUuid, value);
+                    responseMessage = "set new email " + value;
+                    break;
                 }
-                userRepository.changeEmailUserById(userUuid, value);
-                responseMessage = "set new email " + value;
-                break;
             case "phonenumber":
                 if (checkNumber(value)) {
                     throw new EmailExceptions(ErrorMessage.NUMBER_ERROR);
+                } else {
+                    userRepository.changePhoneNumberUserById(userUuid, value);
+                    responseMessage = "set new phone number " + value;
+                    break;
                 }
-                userRepository.changePhoneNumberUserById(userUuid, value);
-                responseMessage = "set new phone number " + value;
-                break;
             default:
                 return ResponseEntity.badRequest().body("Invalid property: " + property);
         }
