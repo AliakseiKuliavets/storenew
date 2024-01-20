@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) {
         if (user == null) {
-            throw new IllegalArgumentException(ErrorMessage.NULL_OR_EMPTY);
+            throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
         }
         return userRepository.save(user);
     }

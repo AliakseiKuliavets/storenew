@@ -29,8 +29,8 @@ public class ProductServiceImpl implements ProductService {
         if (checkIdLength(id)) {
             throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
-        return productRepository.findById(UUID.fromString(id)).
-                orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND));
+        return productRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND));
     }
 
     @Override

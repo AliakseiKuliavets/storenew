@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static com.aliakseikul.storenew.exeption.checkMethods.Check.checkIdLength;
+import static com.aliakseikul.storenew.exeption.checkMethods.Check.valueNullOrEmpty;
+
 @Service
 @RequiredArgsConstructor
 public class DeliveryServiceImpl implements DeliveryService {
@@ -19,39 +22,45 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public Delivery findById(String id) {
-        checkIdLength(id);
-        return deliveryRepository.findById(UUID.fromString(id)).orElse(null);
+        if (checkIdLength(id)) {
+            throw new DeliveryNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
+        }
+        return deliveryRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND));
     }
 
     @Override
     public Delivery addDelivery(Delivery delivery) {
+        if (delivery == null) {
+            throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
+        }
         return deliveryRepository.save(delivery);
     }
 
     @Override
     @Transactional
     public void changeAddressById(String deliveryId, String deliveryAddress) {
-        checkId(deliveryId);
+        if (checkId(deliveryId)) {
+            throw new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
+        }
+        if (valueNullOrEmpty(deliveryAddress)) {
+            throw new DeliveryNotFoundException(ErrorMessage.NULL_OR_EMPTY);
+        }
         deliveryRepository.changeAddressById(UUID.fromString(deliveryId), deliveryAddress);
     }
 
     @Override
     public void deleteDeliveryById(String deliveryId) {
+        if (checkId(deliveryId)) {
+            throw new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
+        }
         deliveryRepository.deleteById(UUID.fromString(deliveryId));
     }
 
-    private void checkId(String deliveryId) {
-        if (findById(deliveryId) == null) {
-            throw new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
+    private boolean checkId(String deliveryId) {
+        if (valueNullOrEmpty(deliveryId)) {
+            throw new DeliveryNotFoundException(ErrorMessage.NULL_OR_EMPTY);
         }
-    }
-
-    private void checkIdLength(String deliveryId) {
-        if (deliveryId.isEmpty()) {
-            throw new DeliveryNotFoundException(ErrorMessage.WRONG_ID);
-        }
-        if (deliveryId.length() != 36) {
-            throw new DeliveryNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
-        }
+        return findById(deliveryId) == null;
     }
 }
