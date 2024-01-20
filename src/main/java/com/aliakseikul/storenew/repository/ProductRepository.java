@@ -13,8 +13,6 @@ import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
-    @Query("select p from Product p")
-    List<Product> getAllProducts();
 
     @Query("select p from Product p where p.productName = :name")
     List<Product> findByName(String name);
