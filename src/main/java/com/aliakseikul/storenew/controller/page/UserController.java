@@ -22,15 +22,15 @@ public class UserController {
     public User addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
-    /*
-    {
-     "userFirstName": "Alexander",
-    "userLastName": "Karadiaur",
-    "userEmail": "butylka@gmail.com",
-    "userPhoneNumber": "+497576152478",
-    "userVerifiedAccount": true
+
+    @PutMapping("/change/")
+    public ResponseEntity<String> changeUserPropertyById(
+            @RequestParam String userId,
+            @RequestParam String property,
+            @RequestParam String value
+    ) {
+       return userService.updateProductParamById(userId,property,value);
     }
-     */
 
     //http://localhost:8080/api/user/remove/0480101b-0fa4-4b13-939e-062a7a8c49e6
     @DeleteMapping("/remove/{userId}")

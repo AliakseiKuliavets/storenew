@@ -1,11 +1,8 @@
+
 package com.aliakseikul.storenew.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,27 +44,27 @@ public class User {
     @Column(name = "user_verified_account")
     private boolean userVerifiedAccount;
 
-    @OneToMany(mappedBy = "placedByUser")
+    @OneToMany(mappedBy = "placedByUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("placedUserReference")
     private List<Product> productsPlaced;
 
-    @OneToMany(mappedBy = "purchasedByUser")
+    @OneToMany(mappedBy = "purchasedByUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("purchasedUserReference")
     private List<Product> productsPurchased;
 
-    @OneToMany(mappedBy = "recipientUser")
+    @OneToMany(mappedBy = "recipientUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("recipientOrderNumbersReference")
     private List<OrderNumber> recipientOrderNumbers;
 
-    @OneToMany(mappedBy = "senderUser")
+    @OneToMany(mappedBy = "senderUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("senderOrderNumbersReference")
     private List<OrderNumber> senderOrderNumber;
 
-    @OneToMany(mappedBy = "userReviewed")
+    @OneToMany(mappedBy = "userReviewed", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("userReviewReference")
     private List<Review> userReviewed;
 
-    @OneToMany(mappedBy = "userReceivedReview")
+    @OneToMany(mappedBy = "userReceivedReview", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("userReceivedReviewReference")
     private List<Review> userReceivedReview;
 

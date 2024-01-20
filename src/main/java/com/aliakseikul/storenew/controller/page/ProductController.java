@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping("/name") //http://localhost:8080/api/product/name?name=Iphone%208
-    public Product getProductByName(@RequestParam String name) {
+    public List<Product> getProductByName(@RequestParam String name) {
         return productService.findByName(name);
     }
 
@@ -52,7 +52,8 @@ public class ProductController {
     @GetMapping("/allByCategoryBrand/search")
     public List<Product> searchProductsByCategoryBrand(
             @RequestParam String category,
-            @RequestParam String brand) {
+            @RequestParam String brand
+    ) {
         return productService.searchProductsByCategoryBrand(category, brand);
     }
 
@@ -61,27 +62,14 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    /*
-     {
-    "productName": "Iphone 10",
-    "productPrice": 2500.0,
-    "productDescription": "Simple description",
-    "productCategory": "ELECTRONICS",
-    "productBrand": "APPLE",
-    "placedByUser": {
-        "userId": "a197d1bb-8990-4b08-ad8a-9ec55718fcb8"
-        }
-    }
-     */
-
     @PutMapping("/update/")
-    public ResponseEntity<String> updateProductName(
-            @RequestParam String id,
-            @RequestParam String name) {
-        productService.updateProductName(id, name);
-        return ResponseEntity.ok("Product with ID " + id + " has been update name " + name);
+    public ResponseEntity<String> updateProductPropertyId(
+            @RequestParam String productId,
+            @RequestParam String tableName,
+            @RequestParam String value
+    ) {
+        return productService.updateProductParamById(productId, tableName, value);
     }
-    //http://localhost:8080/api/product/update/?id=35026fc0-dbfc-4d52-9c1c-a203929ea63d&name=Some
 
     @DeleteMapping("/remove/{productId}")
     public ResponseEntity<String> deleteById(@PathVariable("productId") String productId) {

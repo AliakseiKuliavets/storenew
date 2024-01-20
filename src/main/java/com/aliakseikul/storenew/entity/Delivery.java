@@ -1,3 +1,4 @@
+
 package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.StatusTracking;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class Delivery {
 
     @Id
+    @UuidGenerator
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "delivery_id")
     private UUID deliveryId;
