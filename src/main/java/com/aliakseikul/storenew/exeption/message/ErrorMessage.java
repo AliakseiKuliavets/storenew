@@ -13,5 +13,5 @@ public class ErrorMessage {
     public static final String BRAND_NOT_FOUND = "Brand not found or poorly written";
     public static final String NUMBER_ERROR = "Number is wrong, contains not digits";
     public static final String NULL_OR_EMPTY = "String null or empty";
-
+    public static final String WRONG_EMAIL = "Email is wrong";
 }
