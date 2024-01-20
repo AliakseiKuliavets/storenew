@@ -3,10 +3,7 @@ package com.aliakseikul.storenew.service.impl;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
-import com.aliakseikul.storenew.exeption.exeptions.BrandNotFoundExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.CategoryNotFoundExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.ProductNotFoundException;
-import com.aliakseikul.storenew.exeption.exeptions.StringIsNullExceptions;
+import com.aliakseikul.storenew.exeption.exeptions.*;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.entit.TestListProduct;
 import org.junit.jupiter.api.BeforeEach;
@@ -345,5 +342,112 @@ class ProductServiceImplTest {
     void getAllProductsByBrandNullExceptionTest() {
         assertThrows(BrandNotFoundExceptions.class,
                 () -> productService.getAllProductsByBrand(null));
+    }
+
+    // ----------Test methods searchProductsByPriceRange() -------------------------------------
+
+    /**
+     * Parameterized test that checks if the data is valid and returns as many products as there are in
+     * database
+     *
+     * @param priceMin - minimum price
+     * @param priceMax - maximum price
+     * @param expected - quantity that is in the database
+     */
+    @ParameterizedTest
+    @CsvSource(value = {
+            "20,50,15",
+            "50,100,10",
+            "100,200,7",
+            "200,1000,3"
+    })
+    void searchProductsByPriceRangeTest(String priceMin, String priceMax, int expected) {
+        double priceMinTest = Double.parseDouble(priceMin);
+        double priceMaxTest = Double.parseDouble(priceMax);
+        List<Product> products = new ArrayList<>(
+                productList.stream()
+                        .filter(el -> priceMinTest <= el.getProductPrice())
+                        .filter(el -> priceMaxTest >= el.getProductPrice())
+                        .toList()
+        );
+
+        when(productRepository.findByPriceBetween(priceMinTest, priceMaxTest)).thenReturn(products);
+        assertEquals(expected, productService.searchProductsByPriceRange(priceMin, priceMax).size());
+        verify(productRepository).findByPriceBetween(priceMinTest, priceMaxTest);
+    }
+
+    /**
+     * Test of a method that checks if the data is valid and the data in the database is not null
+     */
+    @Test
+    void searchProductsByPriceRangeNotNullTest() {
+        String priceMin = "20";
+        String priceMax = "100";
+        double priceMinTest = Double.parseDouble(priceMin);
+        double priceMaxTest = Double.parseDouble(priceMax);
+        List<Product> products = new ArrayList<>(
+                productList.stream()
+                        .filter(el -> priceMinTest <= el.getProductPrice())
+                        .filter(el -> priceMaxTest >= el.getProductPrice())
+                        .toList()
+        );
+
+        when(productRepository.findByPriceBetween(priceMinTest, priceMaxTest)).thenReturn(products);
+        assertNotNull(productService.searchProductsByPriceRange(priceMin, priceMax));
+        verify(productRepository).findByPriceBetween(priceMinTest, priceMaxTest);
+    }
+
+    /**
+     * Parameterized test that checks for data invalidity if the data cannot be in the sample
+     *
+     * @param priceMin   - minimum price
+     * @param priceMax   - maximum price
+     * @param exceptions - expected error
+     */
+    @ParameterizedTest
+    @CsvSource(value = {
+            "2%0,50,NumberExceptions",
+            "50,1a0,NumberExceptions",
+            "1a0,2a0,NumberExceptions",
+            "-200,1000,NumberExceptions",
+            "200,-1000,NumberExceptions",
+            "-10,-500,NumberExceptions",
+            "100,5,NumberExceptions",
+            "-100,5,NumberExceptions",
+            ",1000,NumberExceptions",
+            "10,,NumberExceptions",
+    })
+    void searchProductsByPriceRangeExceptionTest(String priceMin, String priceMax, NumberExceptions exceptions) {
+        assertThrows(exceptions.getClass(),
+                () -> productService.searchProductsByPriceRange(priceMin, priceMax));
+    }
+
+    /**
+     * Test to check whether a method handles an error if one of the parameters is null
+     */
+    @Test
+    void searchProductsByPriceMinNullExceptionTest() {
+        String priceMax = "10";
+        assertThrows(NumberExceptions.class,
+                () -> productService.searchProductsByPriceRange(null, priceMax));
+    }
+
+    /**
+     * Test to check whether a method handles an error if one of the parameters is null
+     */
+    @Test
+    void searchProductsByPriceMaxNullExceptionTest() {
+        String priceMin = "10";
+        assertThrows(NumberExceptions.class,
+                () -> productService.searchProductsByPriceRange(priceMin, null));
+    }
+
+    /**
+     * Test to check whether a method handles an error if one of the parameters is null
+     */
+    @Test
+    void searchProductsByPriceMaxAndPriceMinNullExceptionTest() {
+        assertThrows(NumberExceptions.class,
+                () -> productService.searchProductsByPriceRange(null, null));
     }
 }
