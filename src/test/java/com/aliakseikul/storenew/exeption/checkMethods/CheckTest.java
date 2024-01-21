@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CheckTest {
 
-    // ----------Test methods valueNullOrEmptyTest() -------------------------------------
+    // ----------Test methods valueNullOrEmptyTest() -----1--------------------------------
     @Test
     void valueNullOrEmptyPositiveTest() {
         assertFalse(Check.valueNullOrEmpty("adad"));
