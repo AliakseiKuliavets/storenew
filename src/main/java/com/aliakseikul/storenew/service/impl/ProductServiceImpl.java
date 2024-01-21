@@ -70,7 +70,15 @@ public class ProductServiceImpl implements ProductService {
         if (checkNumber(minPrice) || checkNumber(maxPrice)) {
             throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
         }
-        return productRepository.findByPriceBetween(Double.parseDouble(minPrice), Double.parseDouble(maxPrice));
+        double minPriceS = Double.parseDouble(minPrice);
+        double maxPriceS = Double.parseDouble(maxPrice);
+        if (minPriceS < 0 || maxPriceS < 0) {
+            throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
+        }
+        if (minPriceS > maxPriceS) {
+            throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
+        }
+        return productRepository.findByPriceBetween(minPriceS, maxPriceS);
     }
 
     @Override
@@ -112,6 +120,10 @@ public class ProductServiceImpl implements ProductService {
                 break;
             case "price":
                 if (checkNumber(value)) {
+                    throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
+                }
+                double number = Double.parseDouble(value);
+                if (number < 0) {
                     throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
                 }
                 productRepository.updateProductPrice(productUuid, value);

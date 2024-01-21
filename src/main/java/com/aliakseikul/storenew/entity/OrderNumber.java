@@ -1,3 +1,4 @@
+
 package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.StatusTracking;
@@ -30,6 +31,10 @@ public class OrderNumber {
     @Column(name = "order_number_date")
     private LocalDate orderNumberDate;
 
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    private StatusTracking orderStatus;
+
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Product productId;
@@ -37,10 +42,6 @@ public class OrderNumber {
     @OneToOne
     @JoinColumn(name = "delivery_id", referencedColumnName = "delivery_id")
     private Delivery deliveryId;
-
-    @Column(name = "order_status")
-    @Enumerated(EnumType.STRING)
-    private StatusTracking orderStatus;
 
     @OneToOne
     @JoinColumn(name = "payment_id", referencedColumnName = "payment_id")
