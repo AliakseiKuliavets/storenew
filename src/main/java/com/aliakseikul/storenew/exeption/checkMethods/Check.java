@@ -11,7 +11,7 @@ public class Check {
     }
 
     public static boolean checkIdLength(String value) {
-        return value.length() != 36 || valueNullOrEmpty(value);
+        return  valueNullOrEmpty(value) || value.length() != 36;
     }
 
     public static boolean checkNumber(String number) {

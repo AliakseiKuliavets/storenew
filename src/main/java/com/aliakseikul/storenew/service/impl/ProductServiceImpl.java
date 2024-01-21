@@ -122,6 +122,10 @@ public class ProductServiceImpl implements ProductService {
                 if (checkNumber(value)) {
                     throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
                 }
+                double number = Double.parseDouble(value);
+                if (number < 0) {
+                    throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
+                }
                 productRepository.updateProductPrice(productUuid, value);
                 responseMessage = "set new price " + value;
                 break;
