@@ -1,3 +1,4 @@
+
 package com.aliakseikul.storenew.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;

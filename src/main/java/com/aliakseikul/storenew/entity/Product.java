@@ -1,3 +1,4 @@
+
 package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
@@ -89,3 +90,4 @@ public class Product {
                 '}';
     }
 }
+
