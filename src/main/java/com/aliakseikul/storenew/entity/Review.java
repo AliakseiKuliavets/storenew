@@ -1,6 +1,8 @@
+
 package com.aliakseikul.storenew.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -66,3 +68,4 @@ public class Review {
                 '}';
     }
 }
+

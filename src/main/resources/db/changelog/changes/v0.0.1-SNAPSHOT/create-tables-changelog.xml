@@ -84,7 +84,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="product_id" type="uuid">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="delivery_id" type="uuid">
                 <constraints nullable="false"/>
