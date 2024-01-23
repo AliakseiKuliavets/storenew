@@ -1,6 +1,6 @@
 package com.aliakseikul.storenew.controller.page;
 
-import com.aliakseikul.storenew.entity.User;
+import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +13,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/") //http://localhost:8080/api/user/?id=a197d1bb-8990-4b08-ad8a-9ec55718fcb8
-    public User getUserById(@RequestParam String id) {
+    @GetMapping("/")
+    public UserDto getUserById(@RequestParam String id) {
         return userService.findById(id);
     }
 
     @PostMapping("/add") //http://localhost:8080/api/user/add
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public UserDto addUser(@RequestBody UserDto userDto) {
+        return userService.addUser(userDto);
     }
 
     @PutMapping("/change/")
@@ -29,7 +29,7 @@ public class UserController {
             @RequestParam String property,
             @RequestParam String value
     ) {
-       return userService.updateProductParamById(userId,property,value);
+        return userService.updateProductParamById(userId, property, value);
     }
 
     //http://localhost:8080/api/user/remove/0480101b-0fa4-4b13-939e-062a7a8c49e6

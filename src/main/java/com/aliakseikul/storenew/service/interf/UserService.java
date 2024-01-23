@@ -1,13 +1,13 @@
 package com.aliakseikul.storenew.service.interf;
 
-import com.aliakseikul.storenew.entity.User;
+import com.aliakseikul.storenew.dto.UserDto;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
 
-    User findById(String id);
+    UserDto findById(String id);
 
-    User addUser(User user);
+    UserDto addUser(UserDto userDto);
 
     ResponseEntity<String> updateProductParamById(String userId, String property, String value);
 
