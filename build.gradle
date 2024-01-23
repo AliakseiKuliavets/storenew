@@ -31,9 +31,14 @@ dependencies {
     implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.2.0'
     // liquibase
     implementation group: 'org.liquibase', name: 'liquibase-core', version: '4.25.1'
-// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
-
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
+    // https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '3.2.2'
 }
 
 tasks.named('test') {

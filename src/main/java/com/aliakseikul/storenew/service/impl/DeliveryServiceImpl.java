@@ -1,8 +1,10 @@
 package com.aliakseikul.storenew.service.impl;
 
+import com.aliakseikul.storenew.dto.DeliveryDto;
 import com.aliakseikul.storenew.entity.Delivery;
 import com.aliakseikul.storenew.exeption.exeptions.DeliveryNotFoundException;
 import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.mapper.DeliveryMapper;
 import com.aliakseikul.storenew.repository.DeliveryRepository;
 import com.aliakseikul.storenew.service.interf.DeliveryService;
 import lombok.RequiredArgsConstructor;
@@ -20,21 +22,30 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
 
+    private final DeliveryMapper deliveryMapper;
+
     @Override
-    public Delivery findById(String id) {
+    public DeliveryDto findById(String id) {
         if (checkIdLength(id)) {
             throw new DeliveryNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
-        return deliveryRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND));
+        return deliveryMapper.toDto(deliveryRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND)));
     }
 
     @Override
-    public Delivery addDelivery(Delivery delivery) {
-        if (delivery == null) {
+    public DeliveryDto addDelivery(DeliveryDto deliveryDto) {
+        if (deliveryDto == null) {
             throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
         }
-        return deliveryRepository.save(delivery);
+
+        Delivery delivery = Delivery.builder()
+                .deliveryAddress(deliveryDto.getDeliveryAddress())
+                .deliveryStatusTracking(deliveryDto.getDeliveryStatusTracking())
+                .paymentMethod(deliveryDto.getPaymentMethod())
+                .build();
+
+        return deliveryMapper.toDto(deliveryRepository.save(delivery));
     }
 
     @Override

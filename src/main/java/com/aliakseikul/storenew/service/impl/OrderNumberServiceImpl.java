@@ -1,7 +1,10 @@
 package com.aliakseikul.storenew.service.impl;
 
 
-import com.aliakseikul.storenew.entity.OrderNumber;
+import com.aliakseikul.storenew.dto.OrderNumberDto;
+import com.aliakseikul.storenew.exeption.exeptions.OrderNotFoundExceptions;
+import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.mapper.OrderNumberMapper;
 import com.aliakseikul.storenew.repository.OrderNumberRepository;
 import com.aliakseikul.storenew.service.interf.OrderNumberService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +19,18 @@ public class OrderNumberServiceImpl implements OrderNumberService {
 
     private final OrderNumberRepository orderNumberRepository;
 
+    private final OrderNumberMapper orderNumberMapper;
+
     @Override
-    public List<OrderNumber> getOrderByUserRecipientId(String id) {
-        return orderNumberRepository.getOrderByUserRecipientId(UUID.fromString(id));
+    public OrderNumberDto getOrderById(String id) {
+        return orderNumberMapper
+                .toDto(orderNumberRepository.findById(UUID.fromString(id))
+                        .orElseThrow(() -> new OrderNotFoundExceptions(ErrorMessage.ORDER_NUMBER_NOT_FOUND)));
+    }
+
+    @Override
+    public List<OrderNumberDto> getOrderByUserRecipientId(String id) {
+        return orderNumberMapper.orderNumbersToOrderNumbersDto(
+                orderNumberRepository.getOrderByUserRecipientId(UUID.fromString(id)));
     }
 }

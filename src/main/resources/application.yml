@@ -6,11 +6,11 @@ spring:
     url: jdbc:mysql://localhost:3306/storeTest2
     username: root
     password: Ale_Mle2001
-#
-#  jpa:
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: none
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
 
   liquibase:
     change-log: classpath:/db/changelog/changelog-master.xml

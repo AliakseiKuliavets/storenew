@@ -1,10 +1,14 @@
 package com.aliakseikul.storenew.service.impl;
 
+import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.entity.User;
-
 import com.aliakseikul.storenew.exeption.checkMethods.Check;
-import com.aliakseikul.storenew.exeption.exeptions.*;
+import com.aliakseikul.storenew.exeption.exeptions.EmailExceptions;
+import com.aliakseikul.storenew.exeption.exeptions.NumberExceptions;
+import com.aliakseikul.storenew.exeption.exeptions.StringIsNullExceptions;
+import com.aliakseikul.storenew.exeption.exeptions.UserNotFoundException;
 import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.mapper.UserMapper;
 import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +28,30 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final UserMapper userMapper;
+
     @Override
-    public User findById(String id) {
+    public UserDto findById(String id) {
         if (Check.checkIdLength(id)) {
             throw new UserNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
-        return userRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+        return userMapper.toDto(userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND)));
     }
 
     @Override
-    public User addUser(User user) {
-        if (user == null) {
-            throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
+    public UserDto addUser(UserDto userDto) {
+        if (userDto == null) {
+            throw new IllegalArgumentException(ErrorMessage.NULL_OR_EMPTY);
         }
-        return userRepository.save(user);
+        User user = User.builder()
+                .userFirstName(userDto.getUserFirstName())
+                .userLastName(userDto.getUserLastName())
+                .userPhoneNumber(userDto.getUserPhoneNumber())
+                .userEmail(userDto.getUserEmail())
+                .userVerifiedAccount(userDto.isVerifiedAccount())
+                .build();
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override

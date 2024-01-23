@@ -1,11 +1,15 @@
 package com.aliakseikul.storenew.service.impl;
 
+import com.aliakseikul.storenew.dto.ProductDto;
 import com.aliakseikul.storenew.entity.Product;
+import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
 import com.aliakseikul.storenew.exeption.exeptions.*;
 import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.mapper.ProductMapper;
 import com.aliakseikul.storenew.repository.ProductRepository;
+import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,46 +28,52 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final UserRepository userRepository;
+
+    private final ProductMapper productMapper;
+
     @Override
-    public Product findById(String id) {
+    public ProductDto findById(String id) {
         if (checkIdLength(id)) {
             throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
-        return productRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND));
+        return productMapper.toDto(productRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND)));
     }
 
     @Override
-    public List<Product> findByName(String name) {
+    public List<ProductDto> findByName(String name) {
         if (valueNullOrEmpty(name)) {
             throw new StringIsNullExceptions(ErrorMessage.NULL_OR_EMPTY);
         }
-        return productRepository.findByName(name);
+        return productMapper.productsToProductsDto(productRepository.findByName(name));
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDto> getAllProducts() {
+        return productMapper.productsToProductsDto(productRepository.findAll());
     }
 
     @Override
-    public List<Product> getAllProductsByCategory(String category) {
+    public List<ProductDto> getAllProductsByCategory(String category) {
         if (checkCategory(category)) {
             throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
         }
-        return productRepository.getAllProductsByCategory(ProductCategory.valueOf(category));
+        return productMapper.productsToProductsDto(
+                productRepository.getAllProductsByCategory(ProductCategory.valueOf(category)));
     }
 
     @Override
-    public List<Product> getAllProductsByBrand(String brand) {
+    public List<ProductDto> getAllProductsByBrand(String brand) {
         if (checkBrand(brand)) {
             throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
         }
-        return productRepository.getAllProductsByBrand(ProductBrand.valueOf(brand));
+        return productMapper.productsToProductsDto(
+                productRepository.getAllProductsByBrand(ProductBrand.valueOf(brand)));
     }
 
     @Override
-    public List<Product> searchProductsByPriceRange(String minPrice, String maxPrice) {
+    public List<ProductDto> searchProductsByPriceRange(String minPrice, String maxPrice) {
         if (valueNullOrEmpty(minPrice) || valueNullOrEmpty(maxPrice)) {
             throw new NumberExceptions(ErrorMessage.NULL_OR_EMPTY);
         }
@@ -78,27 +88,40 @@ public class ProductServiceImpl implements ProductService {
         if (minPriceS > maxPriceS) {
             throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
         }
-        return productRepository.findByPriceBetween(minPriceS, maxPriceS);
+        return productMapper.productsToProductsDto(productRepository.findByPriceBetween(minPriceS, maxPriceS));
     }
 
     @Override
-    public List<Product> searchProductsByCategoryBrand(String category, String brand) {
+    public List<ProductDto> searchProductsByCategoryBrand(String category, String brand) {
         if (checkCategory(category)) {
             throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
         }
         if (checkBrand(brand)) {
             throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
         }
-        return productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand));
+        return productMapper.productsToProductsDto(
+                productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand)));
     }
 
     @Override
     @Transactional
-    public Product createProduct(Product product) {
-        if (product == null) {
+    public ProductDto createProduct(ProductDto productDto) {
+        if (productDto == null) {
             throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
         }
-        return productRepository.save(product);
+
+        User placedByUser = userRepository.findById(productDto.getPlacedByUserId())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+
+        Product product = Product.builder()
+                .productName(productDto.getProductName())
+                .productPrice(productDto.getProductPrice())
+                .productDescription(productDto.getProductDescription())
+                .productCategory(productDto.getProductCategory())
+                .productBrand(productDto.getProductBrand())
+                .placedByUser(placedByUser)
+                .build();
+        return productMapper.toDto(productRepository.save(product));
     }
 
     @Override
