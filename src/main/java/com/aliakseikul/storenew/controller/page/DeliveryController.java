@@ -1,7 +1,6 @@
 package com.aliakseikul.storenew.controller.page;
 
 import com.aliakseikul.storenew.dto.DeliveryDto;
-import com.aliakseikul.storenew.entity.Delivery;
 import com.aliakseikul.storenew.service.interf.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
