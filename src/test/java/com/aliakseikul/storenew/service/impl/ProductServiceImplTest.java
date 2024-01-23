@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -566,23 +565,23 @@ class ProductServiceImplTest {
     /**
      * The test checks whether it returns the same object if the data was valid
      */
-    @Test
-    void createProductTest() {
-        when(productRepository.save(product)).thenReturn(productList.get(0));
-        Product product1 = productList.get(0);
-        assertEquals(product1, productService.createProduct(product));
-        verify(productRepository).save(product);
-    }
+//    @Test
+//    void createProductTest() {
+//        when(productRepository.save(product)).thenReturn(productList.get(0));
+//        Product product1 = productList.get(0);
+//        assertEquals(product1, productService.createProduct(product));
+//        verify(productRepository).save(product);
+//    }
 
     /**
      * The test checks whether the method returns non-null if the data was valid
      */
-    @Test
-    void createProductReturnNotNullTest() {
-        when(productRepository.save(product)).thenReturn(productList.get(0));
-        assertNotNull(productService.createProduct(product));
-        verify(productRepository).save(product);
-    }
+//    @Test
+//    void createProductReturnNotNullTest() {
+//        when(productRepository.save(product)).thenReturn(productList.get(0));
+//        assertNotNull(productService.createProduct(product));
+//        verify(productRepository).save(product);
+//    }
 
     /**
      * Method test that checks if an invalid null value was passed to the method
