@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.controller.page;
 
+import com.aliakseikul.storenew.dto.DeliveryDto;
 import com.aliakseikul.storenew.entity.Delivery;
 import com.aliakseikul.storenew.service.interf.DeliveryService;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,14 @@ public class DeliveryController {
     private final DeliveryService deliveryService;
 
     @GetMapping("/")
-    public Delivery getDeliveryById(@RequestParam String id) {
+    public DeliveryDto getDeliveryById(@RequestParam String id) {
         return deliveryService.findById(id);
     }
     // http://localhost:8080/api/delivery/delivery/?id=1fac8484-5093-4532-b6d8-d632257c84cc
 
     @PostMapping("/add") // http://localhost:8080/api/delivery/add
-    public Delivery addDelivery(@RequestBody Delivery delivery) {
-        return deliveryService.addDelivery(delivery);
+    public DeliveryDto addDelivery(@RequestBody DeliveryDto deliveryDto) {
+        return deliveryService.addDelivery(deliveryDto);
     }
 
     @PutMapping("/change/")

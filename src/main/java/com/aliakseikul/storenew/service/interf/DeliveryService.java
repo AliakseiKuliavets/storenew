@@ -1,13 +1,12 @@
 package com.aliakseikul.storenew.service.interf;
 
-import com.aliakseikul.storenew.entity.Delivery;
-import org.springframework.http.ResponseEntity;
+import com.aliakseikul.storenew.dto.DeliveryDto;
 
 public interface DeliveryService {
 
-    Delivery findById(String id);
+    DeliveryDto findById(String id);
 
-    Delivery addDelivery(Delivery delivery);
+    DeliveryDto addDelivery(DeliveryDto deliveryDto);
 
     void changeAddressById(String deliveryId, String deliveryAddress);
 
