@@ -2,8 +2,6 @@ package com.aliakseikul.storenew.dto;
 
 import lombok.*;
 
-
-@Data
 @Builder
 @Getter
 @Setter
