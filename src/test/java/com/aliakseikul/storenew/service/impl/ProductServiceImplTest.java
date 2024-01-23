@@ -3,7 +3,7 @@ package com.aliakseikul.storenew.service.impl;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
-import com.aliakseikul.storenew.exeption.exeptions.*;
+import com.aliakseikul.storenew.exception.exeptions.*;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.service.entit.TestListProduct;
 import org.junit.jupiter.api.BeforeEach;

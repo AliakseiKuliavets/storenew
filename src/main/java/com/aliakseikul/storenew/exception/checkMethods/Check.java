@@ -1,4 +1,4 @@
-package com.aliakseikul.storenew.exeption.checkMethods;
+package com.aliakseikul.storenew.exception.checkMethods;
 
 public class Check {
 

@@ -1,4 +1,4 @@
-package com.aliakseikul.storenew.exeption.exeptions;
+package com.aliakseikul.storenew.exception.exeptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

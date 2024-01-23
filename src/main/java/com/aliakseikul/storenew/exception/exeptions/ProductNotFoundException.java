@@ -1,4 +1,4 @@
-package com.aliakseikul.storenew.exeption.exeptions;
+package com.aliakseikul.storenew.exception.exeptions;
 
 public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(String message) {

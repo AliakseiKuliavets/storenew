@@ -5,8 +5,8 @@ import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
-import com.aliakseikul.storenew.exeption.exeptions.*;
-import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.exception.exeptions.*;
+import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.ProductMapper;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.repository.UserRepository;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static com.aliakseikul.storenew.exeption.checkMethods.Check.*;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.*;
 
 @Service
 @RequiredArgsConstructor

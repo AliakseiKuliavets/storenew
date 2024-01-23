@@ -2,12 +2,12 @@ package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.entity.User;
-import com.aliakseikul.storenew.exeption.checkMethods.Check;
-import com.aliakseikul.storenew.exeption.exeptions.EmailExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.NumberExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.StringIsNullExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.UserNotFoundException;
-import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.exception.checkMethods.Check;
+import com.aliakseikul.storenew.exception.exeptions.EmailExceptions;
+import com.aliakseikul.storenew.exception.exeptions.NumberExceptions;
+import com.aliakseikul.storenew.exception.exeptions.StringIsNullExceptions;
+import com.aliakseikul.storenew.exception.exeptions.UserNotFoundException;
+import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.UserMapper;
 import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.UserService;
@@ -19,8 +19,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.aliakseikul.storenew.exeption.checkMethods.Check.checkNumber;
-import static com.aliakseikul.storenew.exeption.checkMethods.Check.valueNullOrEmpty;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.checkNumber;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.valueNullOrEmpty;
 
 @Service
 @RequiredArgsConstructor

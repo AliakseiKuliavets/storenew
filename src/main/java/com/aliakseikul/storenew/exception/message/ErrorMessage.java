@@ -1,4 +1,4 @@
-package com.aliakseikul.storenew.exeption.message;
+package com.aliakseikul.storenew.exception.message;
 
 public class ErrorMessage {
 

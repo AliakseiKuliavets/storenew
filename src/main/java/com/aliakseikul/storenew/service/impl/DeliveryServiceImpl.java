@@ -2,8 +2,8 @@ package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.dto.DeliveryDto;
 import com.aliakseikul.storenew.entity.Delivery;
-import com.aliakseikul.storenew.exeption.exeptions.DeliveryNotFoundException;
-import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.exception.exeptions.DeliveryNotFoundException;
+import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.DeliveryMapper;
 import com.aliakseikul.storenew.repository.DeliveryRepository;
 import com.aliakseikul.storenew.service.interf.DeliveryService;
@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static com.aliakseikul.storenew.exeption.checkMethods.Check.checkIdLength;
-import static com.aliakseikul.storenew.exeption.checkMethods.Check.valueNullOrEmpty;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.checkIdLength;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.valueNullOrEmpty;
 
 @Service
 @RequiredArgsConstructor
