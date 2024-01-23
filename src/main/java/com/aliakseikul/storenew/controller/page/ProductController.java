@@ -1,6 +1,6 @@
 package com.aliakseikul.storenew.controller.page;
 
-import com.aliakseikul.storenew.entity.Product;
+import com.aliakseikul.storenew.dto.ProductDto;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,33 +16,33 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/") //http://localhost:8080/api/product/?id=35026fc0-dbfc-4d52-9c1c-a203929ea63d
-    public Product getProductById(@RequestParam String id) {
+    public ProductDto getProductById(@RequestParam String id) {
         return productService.findById(id);
     }
 
     @GetMapping("/name") //http://localhost:8080/api/product/name?name=Iphone%208
-    public List<Product> getProductByName(@RequestParam String name) {
+    public List<ProductDto> getProductByName(@RequestParam String name) {
         return productService.findByName(name);
     }
 
     @GetMapping("/all") //http://localhost:8080/api/product/all
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/allByCategory/") //http://localhost:8080/api/product/allByCategory/?category=ELECTRONICS
-    public List<Product> getAllProductsByCategory(@RequestParam String category) {
+    public List<ProductDto> getAllProductsByCategory(@RequestParam String category) {
         return productService.getAllProductsByCategory(category);
     }
 
     @GetMapping("/allByBrand/") //http://localhost:8080/api/product/allByBrand/?brand=APPLE
-    public List<Product> getAllProductsByBrand(@RequestParam String brand) {
+    public List<ProductDto> getAllProductsByBrand(@RequestParam String brand) {
         return productService.getAllProductsByBrand(brand);
     }
 
     //http://localhost:8080/api/product/allByPrice/search?minPrice=1000.00&maxPrice=2000
     @GetMapping("/allByPrice/search")
-    public List<Product> searchProductsByPriceRange(
+    public List<ProductDto> searchProductsByPriceRange(
             @RequestParam String minPrice,
             @RequestParam String maxPrice) {
         return productService.searchProductsByPriceRange(minPrice, maxPrice);
@@ -50,7 +50,7 @@ public class ProductController {
 
     //http://localhost:8080/api/product/allByCategoryBrand/search?category=ELECTRONICS&brand=APPLE
     @GetMapping("/allByCategoryBrand/search")
-    public List<Product> searchProductsByCategoryBrand(
+    public List<ProductDto> searchProductsByCategoryBrand(
             @RequestParam String category,
             @RequestParam String brand
     ) {
@@ -58,8 +58,8 @@ public class ProductController {
     }
 
     @PostMapping("/create") //http://localhost:8080/api/product/create
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
     }
 
     @PutMapping("/update/")
