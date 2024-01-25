@@ -4,8 +4,6 @@ import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
 import lombok.*;
 
-import java.util.UUID;
-
 @Builder
 @Getter
 @Setter
@@ -18,5 +16,6 @@ public class ProductDto {
     String productDescription;
     ProductCategory productCategory;
     ProductBrand productBrand;
-    UUID placedByUserId;
+
+    String userNickname;
 }

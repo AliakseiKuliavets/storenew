@@ -7,12 +7,11 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserCreateDto {
 
     String userNickname;
+    String userPassword;
     String userFirstName;
     String userLastName;
     String userEmail;
-    String userPhoneNumber;
-    boolean verifiedAccount;
 }

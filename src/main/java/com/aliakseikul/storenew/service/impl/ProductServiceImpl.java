@@ -109,9 +109,10 @@ public class ProductServiceImpl implements ProductService {
         if (productDto == null) {
             throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
         }
-
-        User placedByUser = userRepository.findById(productDto.getPlacedByUserId())
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname());
+        if (placedByUser == null) {
+            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
+        }
 
         Product product = Product.builder()
                 .productName(productDto.getProductName())

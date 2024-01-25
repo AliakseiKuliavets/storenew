@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.service.impl;
 
+import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.exception.checkMethods.Check;
@@ -40,16 +41,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto addUser(UserDto userDto) {
-        if (userDto == null) {
+    public UserDto addUser(UserCreateDto userCreateDto) {
+        if (userCreateDto == null) {
             throw new IllegalArgumentException(ErrorMessage.NULL_OR_EMPTY);
         }
+        User userCheck = userRepository.findUserByNickName(userCreateDto.getUserNickname());
+        if (userCheck != null) {
+            throw new UserNotFoundException(ErrorMessage.USER_WITH_NAME);
+        }
         User user = User.builder()
-                .userFirstName(userDto.getUserFirstName())
-                .userLastName(userDto.getUserLastName())
-                .userPhoneNumber(userDto.getUserPhoneNumber())
-                .userEmail(userDto.getUserEmail())
-                .userVerifiedAccount(userDto.isVerifiedAccount())
+                .userPassword(userCreateDto.getUserPassword())
+                .userNickname(userCreateDto.getUserNickname())
+                .userFirstName(userCreateDto.getUserFirstName())
+                .userLastName(userCreateDto.getUserLastName())
+                .userEmail(userCreateDto.getUserEmail())
                 .build();
         return userMapper.toDto(userRepository.save(user));
     }

@@ -11,6 +11,9 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
+    @Query("select u from  User u where u.userNickname = :userNickname")
+    User findUserByNickName(String userNickname);
+
     @Modifying
     @Query("update User u set u.userFirstName = :userName where u.userId = :uuid")
     void changeUserNameById(UUID uuid, String userName);

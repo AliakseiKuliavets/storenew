@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.controller.page;
 
+import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/add") //http://localhost:8080/api/user/add
-    public UserDto addUser(@RequestBody UserDto userDto) {
+    public UserDto addUser(@RequestBody UserCreateDto userDto) {
         return userService.addUser(userDto);
     }
 
