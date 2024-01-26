@@ -26,6 +26,12 @@ public class User {
     @Column(name = "user_id")
     private UUID userId;
 
+    @Column(name = "user_nick_name")
+    private String userNickname;
+
+    @Column(name = "user_password")
+    private String userPassword;
+
     @Column(name = "user_first_name")
     private String userFirstName;
 

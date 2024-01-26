@@ -1,13 +1,14 @@
 package com.aliakseikul.storenew.service.impl;
 
+import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.entity.User;
-import com.aliakseikul.storenew.exeption.checkMethods.Check;
-import com.aliakseikul.storenew.exeption.exeptions.EmailExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.NumberExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.StringIsNullExceptions;
-import com.aliakseikul.storenew.exeption.exeptions.UserNotFoundException;
-import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.exception.checkMethods.Check;
+import com.aliakseikul.storenew.exception.exeptions.EmailExceptions;
+import com.aliakseikul.storenew.exception.exeptions.NumberExceptions;
+import com.aliakseikul.storenew.exception.exeptions.StringIsNullExceptions;
+import com.aliakseikul.storenew.exception.exeptions.UserNotFoundException;
+import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.UserMapper;
 import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.UserService;
@@ -19,8 +20,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.aliakseikul.storenew.exeption.checkMethods.Check.checkNumber;
-import static com.aliakseikul.storenew.exeption.checkMethods.Check.valueNullOrEmpty;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.checkNumber;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.valueNullOrEmpty;
 
 @Service
 @RequiredArgsConstructor
@@ -40,16 +41,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto addUser(UserDto userDto) {
-        if (userDto == null) {
+    public UserDto addUser(UserCreateDto userCreateDto) {
+        if (userCreateDto == null) {
             throw new IllegalArgumentException(ErrorMessage.NULL_OR_EMPTY);
         }
+        User userCheck = userRepository.findUserByNickName(userCreateDto.getUserNickname());
+        if (userCheck != null) {
+            throw new UserNotFoundException(ErrorMessage.USER_WITH_NAME);
+        }
         User user = User.builder()
-                .userFirstName(userDto.getUserFirstName())
-                .userLastName(userDto.getUserLastName())
-                .userPhoneNumber(userDto.getUserPhoneNumber())
-                .userEmail(userDto.getUserEmail())
-                .userVerifiedAccount(userDto.isVerifiedAccount())
+                .userPassword(userCreateDto.getUserPassword())
+                .userNickname(userCreateDto.getUserNickname())
+                .userFirstName(userCreateDto.getUserFirstName())
+                .userLastName(userCreateDto.getUserLastName())
+                .userEmail(userCreateDto.getUserEmail())
                 .build();
         return userMapper.toDto(userRepository.save(user));
     }

@@ -2,8 +2,8 @@ package com.aliakseikul.storenew.service.impl;
 
 
 import com.aliakseikul.storenew.dto.OrderNumberDto;
-import com.aliakseikul.storenew.exeption.exeptions.OrderNotFoundExceptions;
-import com.aliakseikul.storenew.exeption.message.ErrorMessage;
+import com.aliakseikul.storenew.exception.exeptions.OrderNotFoundExceptions;
+import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.OrderNumberMapper;
 import com.aliakseikul.storenew.repository.OrderNumberRepository;
 import com.aliakseikul.storenew.service.interf.OrderNumberService;

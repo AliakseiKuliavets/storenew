@@ -15,8 +15,14 @@
             <column name="user_id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="user_nick_name" type="varchar(45)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="user_password" type="varchar(45)">
+                <constraints nullable="false"/>
+            </column>
             <column name="user_first_name" type="varchar(45)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="user_last_name" type="varchar(45)">
                 <constraints nullable="false"/>
@@ -25,10 +31,10 @@
                 <constraints nullable="false"/>
             </column>
             <column name="user_phone_number" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="user_verified_account" type="boolean">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>

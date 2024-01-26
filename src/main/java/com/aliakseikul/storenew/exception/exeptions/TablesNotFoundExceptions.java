@@ -1,4 +1,4 @@
-package com.aliakseikul.storenew.exeption.exeptions;
+package com.aliakseikul.storenew.exception.exeptions;
 
 public class TablesNotFoundExceptions extends RuntimeException {
     public TablesNotFoundExceptions(String message) {

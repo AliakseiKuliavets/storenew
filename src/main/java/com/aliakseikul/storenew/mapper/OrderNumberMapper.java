@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OrderNumberMapper {
     OrderNumberDto toDto(OrderNumber orderNumber);
+
     List<OrderNumberDto> orderNumbersToOrderNumbersDto(List<OrderNumber> orderNumber);
 }
