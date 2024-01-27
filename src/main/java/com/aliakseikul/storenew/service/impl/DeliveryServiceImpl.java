@@ -3,6 +3,7 @@ package com.aliakseikul.storenew.service.impl;
 import com.aliakseikul.storenew.dto.DeliveryDto;
 import com.aliakseikul.storenew.entity.Delivery;
 import com.aliakseikul.storenew.exception.exeptions.DeliveryNotFoundException;
+import com.aliakseikul.storenew.exception.exeptions.StringNotCorrectException;
 import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.DeliveryMapper;
 import com.aliakseikul.storenew.repository.DeliveryRepository;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static com.aliakseikul.storenew.exception.checkMethods.Check.checkIdLength;
-import static com.aliakseikul.storenew.exception.checkMethods.Check.valueNullOrEmpty;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.checkString45Length;
 
 @Service
 @RequiredArgsConstructor
@@ -54,8 +55,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         if (checkId(deliveryId)) {
             throw new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
         }
-        if (valueNullOrEmpty(deliveryAddress)) {
-            throw new DeliveryNotFoundException(ErrorMessage.NULL_OR_EMPTY);
+        if (checkString45Length(deliveryAddress)) {
+            throw new StringNotCorrectException(ErrorMessage.STRING_WRONG_LENGTH);
         }
         deliveryRepository.changeAddressById(UUID.fromString(deliveryId), deliveryAddress);
     }
@@ -69,9 +70,6 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     private boolean checkId(String deliveryId) {
-        if (valueNullOrEmpty(deliveryId)) {
-            throw new DeliveryNotFoundException(ErrorMessage.NULL_OR_EMPTY);
-        }
         return findById(deliveryId) == null;
     }
 }

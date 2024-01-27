@@ -30,6 +30,7 @@ public class OrderNumberServiceImpl implements OrderNumberService {
 
     @Override
     public List<OrderNumberDto> getOrderByUserRecipientId(String id) {
+        getOrderById(id);
         return orderNumberMapper.orderNumbersToOrderNumbersDto(
                 orderNumberRepository.getOrderByUserRecipientId(UUID.fromString(id)));
     }

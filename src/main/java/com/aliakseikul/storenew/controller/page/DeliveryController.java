@@ -17,7 +17,6 @@ public class DeliveryController {
     public DeliveryDto getDeliveryById(@RequestParam String id) {
         return deliveryService.findById(id);
     }
-    // http://localhost:8080/api/delivery/delivery/?id=1fac8484-5093-4532-b6d8-d632257c84cc
 
     @PostMapping("/add") // http://localhost:8080/api/delivery/add
     public DeliveryDto addDelivery(@RequestBody DeliveryDto deliveryDto) {
@@ -32,12 +31,10 @@ public class DeliveryController {
         deliveryService.changeAddressById(deliveryId, deliveryAddress);
         return ResponseEntity.ok("Delivery with ID " + deliveryId + " has been update Address " + deliveryAddress);
     }
-    // api/delivery/change/?deliveryId=1fac8484-5093-4532-b6d8-d632257c84cc&deliveryAddress=Poland, Warsaw
 
     @DeleteMapping("/delete/")
     public ResponseEntity<String> deleteDeliveryById(@RequestParam String deliveryId) {
         deliveryService.deleteDeliveryById(deliveryId);
         return ResponseEntity.ok("Delivery with ID " + deliveryId + " has been delete");
     }
-    // http://localhost:8080/api/delivery/delete/?id=1fac8484-5093-4532-b6d8-d632257c84cc
 }

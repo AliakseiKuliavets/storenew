@@ -19,7 +19,7 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @PostMapping("/add") //http://localhost:8080/api/user/add
+    @PostMapping("/add")
     public UserDto addUser(@RequestBody UserCreateDto userDto) {
         return userService.addUser(userDto);
     }
@@ -33,7 +33,6 @@ public class UserController {
         return userService.updateProductParamById(userId, property, value);
     }
 
-    //http://localhost:8080/api/user/remove/0480101b-0fa4-4b13-939e-062a7a8c49e6
     @DeleteMapping("/remove/{userId}")
     public ResponseEntity<String> deleteUserById(@PathVariable("userId") String userId) {
         userService.deleteUserById(userId);

@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,18 +33,18 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
-    public ProductDto findById(String id) {
+    public Product findById(String id) {
         if (checkIdLength(id)) {
             throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
         }
-        return productMapper.toDto(productRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND)));
+        return productRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND));
     }
 
     @Override
     public List<ProductDto> findByName(String name) {
-        if (valueNullOrEmpty(name)) {
-            throw new StringIsNullExceptions(ErrorMessage.NULL_OR_EMPTY);
+        if (checkString45Length(name)) {
+            throw new StringNotCorrectException(ErrorMessage.STRING_WRONG_LENGTH);
         }
         return productMapper.productsToProductsDto(productRepository.findByName(name));
     }
@@ -56,32 +56,28 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAllProductsByCategory(String category) {
-        if (checkCategory(category)) {
+        String categoryUp = category.toUpperCase();
+        if (checkCategory(categoryUp)) {
             throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
         }
         return productMapper.productsToProductsDto(
-                productRepository.getAllProductsByCategory(ProductCategory.valueOf(category)));
+                productRepository.getAllProductsByCategory(ProductCategory.valueOf(categoryUp)));
     }
 
     @Override
     public List<ProductDto> getAllProductsByBrand(String brand) {
-        if (checkBrand(brand)) {
+        String brandUp = brand.toUpperCase();
+        if (checkBrand(brandUp)) {
             throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
         }
         return productMapper.productsToProductsDto(
-                productRepository.getAllProductsByBrand(ProductBrand.valueOf(brand)));
+                productRepository.getAllProductsByBrand(ProductBrand.valueOf(brandUp)));
     }
 
     @Override
-    public List<ProductDto> searchProductsByPriceRange(String minPrice, String maxPrice) {
-        if (valueNullOrEmpty(minPrice) || valueNullOrEmpty(maxPrice)) {
-            throw new NumberExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
-        if (checkNumber(minPrice) || checkNumber(maxPrice)) {
-            throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
-        }
-        double minPriceS = Double.parseDouble(minPrice);
-        double maxPriceS = Double.parseDouble(maxPrice);
+    public List<ProductDto> searchProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+        double minPriceS = minPrice.doubleValue();
+        double maxPriceS = maxPrice.doubleValue();
         if (minPriceS < 0 || maxPriceS < 0) {
             throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
         }
@@ -104,16 +100,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
     public ProductDto createProduct(ProductDto productDto) {
-        if (productDto == null) {
-            throw new NullPointerException(ErrorMessage.NULL_OR_EMPTY);
-        }
         User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname());
         if (placedByUser == null) {
             throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
         }
-
         Product product = Product.builder()
                 .productName(productDto.getProductName())
                 .productPrice(productDto.getProductPrice())
@@ -128,12 +119,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ResponseEntity<String> updateProductParamById(String productId, String tableName, String value) {
-        if (checkId(productId)) {
-            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
-        }
-        if (valueNullOrEmpty(tableName) || valueNullOrEmpty(value)) {
-            throw new StringIsNullExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
+        findById(productId);
         UUID productUuid = UUID.fromString(productId);
 
         String responseMessage;
@@ -181,47 +167,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteById(String productId) {
-        if (checkId(productId)) {
-            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
-        }
+        findById(productId);
         productRepository.deleteById(UUID.fromString(productId));
     }
 
-    private boolean checkId(String productId) {
-        if (valueNullOrEmpty(productId)) {
-            throw new ProductNotFoundException(ErrorMessage.NULL_OR_EMPTY);
-        }
-        return findById(productId) == null;
-    }
-
     private boolean checkCategory(String category) {
-        if (valueNullOrEmpty(category)) {
-            throw new CategoryNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
-        List<String> productCategoryList = Arrays.asList(
-                String.valueOf(ProductCategory.ELECTRONICS),
-                String.valueOf(ProductCategory.SPORTS),
-                String.valueOf(ProductCategory.OTHER)
-        );
-        return !(productCategoryList.contains(category));
+        return !(ProductCategory.getProductCategoryList().contains(category));
     }
 
     private boolean checkBrand(String brand) {
-        if (valueNullOrEmpty(brand)) {
-            throw new BrandNotFoundExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
-        List<String> productBrandList = Arrays.asList(
-                String.valueOf(ProductBrand.DELL),
-                String.valueOf(ProductBrand.LG),
-                String.valueOf(ProductBrand.ADIDAS),
-                String.valueOf(ProductBrand.APPLE),
-                String.valueOf(ProductBrand.ASUS),
-                String.valueOf(ProductBrand.BLACK_AND_DECKER),
-                String.valueOf(ProductBrand.HASBRO),
-                String.valueOf(ProductBrand.NIKE),
-                String.valueOf(ProductBrand.PHILIPS),
-                String.valueOf(ProductBrand.SAMSUNG)
-        );
-        return !(productBrandList.contains(brand));
+        return !(ProductBrand.getProductBrandList().contains(brand));
     }
 }
