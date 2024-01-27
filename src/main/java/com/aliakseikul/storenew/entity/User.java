@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.entity;
 
+import com.aliakseikul.storenew.entity.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -46,6 +47,10 @@ public class User {
 
     @Column(name = "user_verified_account")
     private boolean userVerifiedAccount;
+
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
     @OneToMany(mappedBy = "placedByUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("placedUserReference")

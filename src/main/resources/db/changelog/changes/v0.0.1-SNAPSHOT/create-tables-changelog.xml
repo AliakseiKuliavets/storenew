@@ -36,6 +36,9 @@
             <column name="user_verified_account" type="boolean">
                 <constraints nullable="true"/>
             </column>
+            <column name="user_role" type="varchar(45)" defaultValue="USER">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

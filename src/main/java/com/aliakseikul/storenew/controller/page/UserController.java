@@ -2,6 +2,7 @@ package com.aliakseikul.storenew.controller.page;
 
 import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
+import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public UserDto addUser(@RequestBody UserCreateDto userDto) {
+    public User addUser(@RequestBody UserCreateDto userDto) {
         return userService.addUser(userDto);
     }
 
@@ -31,6 +32,14 @@ public class UserController {
             @RequestParam String value
     ) {
         return userService.updateProductParamById(userId, property, value);
+    }
+
+    @PutMapping("/role/")
+    public ResponseEntity<String> changeRole(
+            @RequestParam String userId,
+            @RequestParam String userRole
+    ){
+        return userService.changeRole(userId, userRole);
     }
 
     @DeleteMapping("/remove/{userId}")
