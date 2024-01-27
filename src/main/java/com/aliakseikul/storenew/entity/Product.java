@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class Product {
     private String productName;
 
     @Column(name = "product_price")
-    private double productPrice;
+    private BigDecimal productPrice;
 
     @Column(name = "product_description")
     private String productDescription;

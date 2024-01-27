@@ -10,8 +10,12 @@ public class Check {
         return value == null || value.isEmpty();
     }
 
+    public static boolean checkString45Length(String s) {
+        return !(s.length() > 1 && s.length() < 45);
+    }
+
     public static boolean checkIdLength(String value) {
-        return valueNullOrEmpty(value) || value.length() != 36;
+        return value.length() != 36;
     }
 
     public static boolean checkNumber(String number) {

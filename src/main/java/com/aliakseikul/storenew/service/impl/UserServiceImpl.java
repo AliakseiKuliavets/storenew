@@ -6,7 +6,7 @@ import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.exception.checkMethods.Check;
 import com.aliakseikul.storenew.exception.exeptions.EmailExceptions;
 import com.aliakseikul.storenew.exception.exeptions.NumberExceptions;
-import com.aliakseikul.storenew.exception.exeptions.StringIsNullExceptions;
+import com.aliakseikul.storenew.exception.exeptions.StringNotCorrectException;
 import com.aliakseikul.storenew.exception.exeptions.UserNotFoundException;
 import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.UserMapper;
@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.aliakseikul.storenew.exception.checkMethods.Check.checkNumber;
-import static com.aliakseikul.storenew.exception.checkMethods.Check.valueNullOrEmpty;
+import static com.aliakseikul.storenew.exception.checkMethods.Check.checkString45Length;
 
 @Service
 @RequiredArgsConstructor
@@ -64,8 +64,8 @@ public class UserServiceImpl implements UserService {
         if (checkId(userId)) {
             throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
         }
-        if (valueNullOrEmpty(property) || valueNullOrEmpty(value)) {
-            throw new StringIsNullExceptions(ErrorMessage.NULL_OR_EMPTY);
+        if (checkString45Length(property) || checkString45Length(value)) {
+            throw new StringNotCorrectException(ErrorMessage.STRING_WRONG_LENGTH);
         }
         UUID userUuid = UUID.fromString(userId);
 
@@ -110,9 +110,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkEmail(String value) {
-        if (valueNullOrEmpty(value)) {
-            throw new EmailExceptions(ErrorMessage.NULL_OR_EMPTY);
-        }
         String patter = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b";
 
         Pattern pattern = Pattern.compile(patter);
@@ -121,9 +118,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkId(String userId) {
-        if (valueNullOrEmpty(userId)) {
-            throw new UserNotFoundException(ErrorMessage.NULL_OR_EMPTY);
-        }
         return findById(userId) == null;
     }
 }

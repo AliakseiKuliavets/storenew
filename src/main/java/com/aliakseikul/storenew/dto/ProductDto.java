@@ -4,6 +4,8 @@ import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Builder
 @Getter
 @Setter
@@ -12,7 +14,7 @@ import lombok.*;
 public class ProductDto {
 
     String productName;
-    double productPrice;
+    BigDecimal productPrice;
     String productDescription;
     ProductCategory productCategory;
     ProductBrand productBrand;

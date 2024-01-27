@@ -1,13 +1,15 @@
 package com.aliakseikul.storenew.service.interf;
 
 import com.aliakseikul.storenew.dto.ProductDto;
+import com.aliakseikul.storenew.entity.Product;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
 
-    ProductDto findById(String id);
+    Product findById(String id);
 
     List<ProductDto> findByName(String name);
 
@@ -17,7 +19,7 @@ public interface ProductService {
 
     List<ProductDto> getAllProductsByBrand(String brand);
 
-    List<ProductDto> searchProductsByPriceRange(String minPrice, String maxPrice);
+    List<ProductDto> searchProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
 
     List<ProductDto> searchProductsByCategoryBrand(String category, String brand);
 

@@ -24,7 +24,7 @@ public class OrderNumberController {
         return orderNumberService.getOrderById(id);
     }
 
-    @GetMapping("/idRecipient/")//http://localhost:8080/api/order/idRecipient/?id=a197d1bb-8990-4b08-ad8a-9ec55718fcb8
+    @GetMapping("/idRecipient/")
     public List<OrderNumberDto> getOrderByUserRecipientId(@RequestParam String id) {
         return orderNumberService.getOrderByUserRecipientId(id);
     }
