@@ -2,10 +2,12 @@ package com.aliakseikul.storenew.exception.message;
 
 public class ErrorMessage {
 
+
     private ErrorMessage() {
         throw new IllegalStateException("Utility class");
     }
 
+    public static final String ROLE_NOT_FOUND = "User role not found";
     public static final String WRONG_ID_LENGTH = "ID length is wrong";
     public static final String PRODUCT_NOT_FOUND = "Product not found";
     public static final String USER_NOT_FOUND = "User not found";

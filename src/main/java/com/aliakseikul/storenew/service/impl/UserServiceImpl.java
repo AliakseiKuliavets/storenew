@@ -3,11 +3,12 @@ package com.aliakseikul.storenew.service.impl;
 import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.entity.User;
+import com.aliakseikul.storenew.entity.enums.UserRole;
 import com.aliakseikul.storenew.exception.checkMethods.Check;
-import com.aliakseikul.storenew.exception.exeptions.EmailExceptions;
 import com.aliakseikul.storenew.exception.exeptions.NumberExceptions;
 import com.aliakseikul.storenew.exception.exeptions.StringNotCorrectException;
 import com.aliakseikul.storenew.exception.exeptions.UserNotFoundException;
+import com.aliakseikul.storenew.exception.exeptions.UserRoleNotFoundException;
 import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.UserMapper;
 import com.aliakseikul.storenew.repository.UserRepository;
@@ -15,12 +16,12 @@ import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.aliakseikul.storenew.exception.checkMethods.Check.checkNumber;
 import static com.aliakseikul.storenew.exception.checkMethods.Check.checkString45Length;
 
 @Service
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto addUser(UserCreateDto userCreateDto) {
+    public User addUser(UserCreateDto userCreateDto) {
         if (userCreateDto == null) {
             throw new IllegalArgumentException(ErrorMessage.NULL_OR_EMPTY);
         }
@@ -50,16 +51,18 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(ErrorMessage.USER_WITH_NAME);
         }
         User user = User.builder()
-                .userPassword(userCreateDto.getUserPassword())
                 .userNickname(userCreateDto.getUserNickname())
+                .userPassword(userCreateDto.getUserPassword())
                 .userFirstName(userCreateDto.getUserFirstName())
                 .userLastName(userCreateDto.getUserLastName())
                 .userEmail(userCreateDto.getUserEmail())
+                .userRole(UserRole.USER)
                 .build();
-        return userMapper.toDto(userRepository.save(user));
+        return userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public ResponseEntity<String> updateProductParamById(String userId, String property, String value) {
         if (checkId(userId)) {
             throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
@@ -88,17 +91,24 @@ public class UserServiceImpl implements UserService {
                     break;
                 }
             case "phonenumber":
-                if (checkNumber(value)) {
-                    throw new EmailExceptions(ErrorMessage.NUMBER_ERROR);
-                } else {
-                    userRepository.changePhoneNumberUserById(userUuid, value);
-                    responseMessage = "set new phone number " + value;
-                    break;
-                }
+                userRepository.changePhoneNumberUserById(userUuid, value);
+                responseMessage = "set new phone number " + value;
+                break;
             default:
                 return ResponseEntity.badRequest().body("Invalid property: " + property);
         }
         return ResponseEntity.ok("User with ID " + userId + " " + responseMessage);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> changeRole(String userId, String userRole) {
+        String userRoleUp = userRole.toUpperCase();
+        if (checkRole(userRoleUp)) {
+            throw new UserRoleNotFoundException(ErrorMessage.ROLE_NOT_FOUND);
+        }
+        userRepository.changeRole(UUID.fromString(userId), UserRole.valueOf(userRoleUp));
+        return ResponseEntity.ok("User with ID " + userId + " has change user role to " + userRole);
     }
 
     @Override
@@ -114,10 +124,14 @@ public class UserServiceImpl implements UserService {
 
         Pattern pattern = Pattern.compile(patter);
         Matcher matcher = pattern.matcher(value);
-        return matcher.matches();
+        return !(matcher.matches());
     }
 
     private boolean checkId(String userId) {
         return findById(userId) == null;
+    }
+
+    private boolean checkRole(String userRoleUp) {
+        return !(UserRole.getListRole().contains(userRoleUp));
     }
 }

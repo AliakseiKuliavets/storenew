@@ -15,6 +15,7 @@
             <column name="user_email" value="abc@gmail.com"/>
             <column name="user_phone_number" value="+487576152478"/>
             <column name="user_verified_account" value="1"/>
+            <column name="user_role" value="ADMIN"/>
         </insert>
     </changeSet>
 
@@ -28,6 +29,7 @@
             <column name="user_email" value="bogomdan@gmail.com"/>
             <column name="user_phone_number" value="+37176152478"/>
             <column name="user_verified_account" value="1"/>
+            <column name="user_role" value="USER"/>
         </insert>
     </changeSet>
 

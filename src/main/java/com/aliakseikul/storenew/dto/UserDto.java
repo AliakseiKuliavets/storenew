@@ -1,8 +1,9 @@
 package com.aliakseikul.storenew.dto;
 
+import com.aliakseikul.storenew.entity.enums.UserRole;
 import lombok.*;
 
-@Builder
+//@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,4 +16,5 @@ public class UserDto {
     String userEmail;
     String userPhoneNumber;
     boolean verifiedAccount;
+    UserRole userRole;
 }
