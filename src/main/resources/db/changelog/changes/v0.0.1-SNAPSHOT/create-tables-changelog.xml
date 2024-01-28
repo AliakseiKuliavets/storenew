@@ -28,7 +28,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="user_email" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="user_phone_number" type="varchar(45)">
                 <constraints nullable="true"/>
