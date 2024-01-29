@@ -20,8 +20,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import static com.aliakseikul.storenew.exception.checkMethods.Check.*;
-
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -34,18 +32,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(String id) {
-        if (checkIdLength(id)) {
-            throw new ProductNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
-        }
         return productRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND));
     }
 
     @Override
     public List<ProductDto> findByName(String name) {
-        if (checkString45Length(name)) {
-            throw new StringNotCorrectException(ErrorMessage.STRING_WRONG_LENGTH);
-        }
         return productMapper.productsToProductsDto(productRepository.findByName(name));
     }
 
@@ -163,6 +155,12 @@ public class ProductServiceImpl implements ProductService {
                 return ResponseEntity.badRequest().body("Invalid property: " + tableName);
         }
         return ResponseEntity.ok("Product with ID " + productId + " " + responseMessage);
+    }
+
+    private boolean checkNumber(String value) {
+        String template =
+                "^[0-9]+$\n";
+        return value.matches(template);
     }
 
     @Override

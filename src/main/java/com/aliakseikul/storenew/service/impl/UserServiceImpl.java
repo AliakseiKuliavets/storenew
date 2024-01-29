@@ -4,9 +4,7 @@ import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.entity.enums.UserRole;
-import com.aliakseikul.storenew.exception.checkMethods.Check;
-import com.aliakseikul.storenew.exception.exeptions.NumberExceptions;
-import com.aliakseikul.storenew.exception.exeptions.StringNotCorrectException;
+import com.aliakseikul.storenew.exception.exeptions.EmailExceptions;
 import com.aliakseikul.storenew.exception.exeptions.UserNotFoundException;
 import com.aliakseikul.storenew.exception.exeptions.UserRoleNotFoundException;
 import com.aliakseikul.storenew.exception.message.ErrorMessage;
@@ -22,8 +20,6 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.aliakseikul.storenew.exception.checkMethods.Check.checkString45Length;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -34,9 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findById(String id) {
-        if (Check.checkIdLength(id)) {
-            throw new UserNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
-        }
         return userMapper.toDto(userRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND)));
     }
@@ -64,12 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ResponseEntity<String> updateProductParamById(String userId, String property, String value) {
-        if (checkId(userId)) {
-            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
-        }
-        if (checkString45Length(property) || checkString45Length(value)) {
-            throw new StringNotCorrectException(ErrorMessage.STRING_WRONG_LENGTH);
-        }
+        findById(userId);
         UUID userUuid = UUID.fromString(userId);
 
         String responseMessage;
@@ -84,7 +72,7 @@ public class UserServiceImpl implements UserService {
                 break;
             case "email":
                 if (checkEmail(value)) {
-                    throw new NumberExceptions(ErrorMessage.WRONG_EMAIL);
+                    throw new EmailExceptions(ErrorMessage.WRONG_EMAIL);
                 } else {
                     userRepository.changeEmailUserById(userUuid, value);
                     responseMessage = "set new email " + value;
@@ -113,9 +101,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(String userId) {
-        if (checkId(userId)) {
-            throw new UserNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
-        }
+        findById(userId);
         userRepository.deleteById(UUID.fromString(userId));
     }
 
@@ -125,10 +111,6 @@ public class UserServiceImpl implements UserService {
         Pattern pattern = Pattern.compile(patter);
         Matcher matcher = pattern.matcher(value);
         return !(matcher.matches());
-    }
-
-    private boolean checkId(String userId) {
-        return findById(userId) == null;
     }
 
     private boolean checkRole(String userRoleUp) {

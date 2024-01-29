@@ -1,7 +1,10 @@
 package com.aliakseikul.storenew.dto;
 
 import com.aliakseikul.storenew.entity.enums.UserRole;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 //@Builder
 @Getter
