@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -19,9 +21,14 @@ public class Page {
     private final ModelAndView modelAndView = new ModelAndView();
 
     @GetMapping("/")
-    public ModelAndView welcome(Model model) {
+    public ModelAndView welcome(
+            @RequestParam(name = "name", required = false) String name,
+            Principal principal,
+            Model model
+    ) {
         modelAndView.setViewName("products.html");
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("products", productService.findByName(name));
+        model.addAttribute("user", productService.getUserByPrincipal(principal));
         return modelAndView;
     }
 
@@ -36,17 +43,23 @@ public class Page {
 
     @PostMapping("/create")
     public void createProduct(
+            Principal principal,
             @RequestParam("file1") MultipartFile file1,
             @ModelAttribute ProductDto productDto
     ) {
-        productService.createProduct(productDto, file1);
+        productService.createProduct(principal, productDto, file1);
     }
 
     @PostMapping("/remove/{productId}")
-    public ModelAndView deleteById(@PathVariable("productId") String productId, Model model) {
+    public ModelAndView deleteById(
+            @RequestParam(name = "name", required = false) String name,
+            @PathVariable("productId") String productId,
+            Model model,
+            Principal principal
+    ) {
         productService.deleteById(productId);
         model.addAttribute("products", productService.getAllProducts());
         modelAndView.setViewName("products.html");
-        return welcome(model);
+        return welcome(name,principal, model);
     }
 }

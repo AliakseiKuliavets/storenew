@@ -7,6 +7,7 @@ import com.aliakseikul.storenew.dto.auth.RegisterRequest;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.service.interf.UserService;
 import com.aliakseikul.storenew.validation.interf.IdChecker;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class UserController {
 
     @PostMapping("/register")
     public void register(
-            @RequestBody RegisterRequest request
+            RegisterRequest request
     ) {
         userService.register(request);
     }
@@ -52,11 +53,11 @@ public class UserController {
     }
 
     @PostMapping("/authentication")
-    public void authentication(
-            @RequestBody AuthenticationRequest request
-    ) {
+    public void authentication(AuthenticationRequest request) {
+        System.out.println("-----------------");
         userService.authenticate(request);
     }
+
 
     @PostMapping("/add")
     public User addUser(@RequestBody UserCreateDto userDto) {

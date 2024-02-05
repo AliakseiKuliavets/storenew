@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>BUYSELL</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-<a href="/api/user/authentication"> Назад </a>
-<h1>BUYSELL</h1>
-<hr>
+<h1>BUYSELL</h1><hr>
 <h4>Регистрация</h4>
-<form id="registrationForm">
+<form action="/api/user/register" method="post">
     Имя пользователя: <input type="text" id="userFirstName"><br><br>
     Фамилия пользователя: <input type="text" id="userLastName"><br><br>
     Ник пользователя: <input type="text" id="userNickname"><br><br>
     Эл. почта: <input type="email" id="userEmail"><br><br>
     Пароль: <input type="password" id="userPassword"><br><br>
-    <button type="button" id="registerButton">Зарегистрироваться</button>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" value="Зарегистрироваться"/>
 </form>
+<th:block th:if="${errorMessage}">
+    <h2 style="color: red" th:text="${errorMessage}"></h2>
+</th:block>
 
 <script>
     $(document).ready(function() {

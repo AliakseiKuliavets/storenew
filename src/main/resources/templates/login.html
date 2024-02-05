@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>BUYSELL</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>BUYSELL</h1>
-<hr>
-<a href="/api/start/"> Назад </a>
+<h1>BUYSELL</h1><hr>
 <h4>Авторизация</h4>
-<form id="loginForm">
+<a href="/api/start/"> Назад </a>
+<form action="/api/user/authentication" method="post" id="loginForm">
     Ник нейм пользователя: <input type="text" id="userNickname"><br><br>
     Пароль: <input type="text" id="userPassword"><br><br>
-    <button type="button" id="loginButton">Вход</button>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" id="loginButton" value="Вход"/>
 </form>
 <a href="/api/user/register">Регистрация</a>
 
 <script>
     $(document).ready(function () {
-        $('#loginButton').click(function () {
+        $('#loginForm').submit(function (event) {
+            event.preventDefault(); // предотвращаем стандартное поведение отправки формы
             loginUser();
         });
     });
@@ -33,21 +34,16 @@
             type: "POST",
             url: "/api/user/authentication",
             contentType: "application/json",
-            data: JSON.stringify({
-                userNickname: "exampleNickname",
-                userPassword: "examplePassword"
-            }),
+            data: JSON.stringify(formData),
             success: function (response) {
-                alert("Ошибка входа")
+                alert("Успешно вошел");
             },
             error: function (xhr, status, error) {
-                alert("Успешно вошел")
+                alert("Какие то проблемы и не  вошел");
             }
         });
-
     }
 </script>
 </body>
 </html>
-
 

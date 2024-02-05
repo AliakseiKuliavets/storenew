@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,7 +46,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findByName(String name) {
-        return productMapper.productsToProductsDto(productRepository.findByName(name));
+        if (name != null) return productMapper.productsToProductsDto(productRepository.findByName(name));
+        return productMapper.productsToProductsDto(productRepository.findAll());
     }
 
     @Override
@@ -114,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void createProduct(ProductDto productDto, MultipartFile file1) {
+    public void createProduct(Principal principal, ProductDto productDto, MultipartFile file1) {
         User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname())
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
         Product product = Product.builder()
@@ -127,11 +129,20 @@ public class ProductServiceImpl implements ProductService {
                 .dateOfCreate(new Date(System.currentTimeMillis()))
                 .build();
 
+        product.setPlacedByUser(getUserByPrincipal(principal));
         createImage(file1, product);
         Product product1 = productRepository.save(product);
         product1.setPreviewImageId(product1.getImages().get(0).getImageId());
 
         productMapper.toDto(productRepository.save(product));
+    }
+
+    @Override
+    public User getUserByPrincipal(Principal principal) {
+        if (principal == null){
+            return new User();
+        }
+        return userRepository.findUserByNickName(principal.getName()).orElse(new User());
     }
 
     private void createImage(MultipartFile file1, Product product) {
