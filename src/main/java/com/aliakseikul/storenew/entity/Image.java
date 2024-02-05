@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.sql.Blob;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
@@ -21,9 +22,9 @@ import java.util.UUID;
 public class Image {
 
     @Id
-    @JdbcTypeCode(SqlTypes.CHAR)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
-    private UUID imageId;
+    private Long imageId;
 
     @Column(name = "image_name")
     private String imageName;
@@ -31,8 +32,8 @@ public class Image {
     @Column(name = "image_original_file_name")
     private String imageOriginalFileName;
 
-    @Column(name = "image_size")
-    private Long imageSize;
+    @Lob
+    private Blob imageSize;
 
     @Column(name = "image_content_type")
     private String imageContentType;
@@ -40,7 +41,7 @@ public class Image {
     @Column(name = "image_is_preview_image")
     private boolean imageIsPreviewImage;
 
-    @Lob
+    @Column(name = "bytes")
     private byte[] bytes;
 
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
