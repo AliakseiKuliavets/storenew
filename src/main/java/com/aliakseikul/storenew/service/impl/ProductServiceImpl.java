@@ -100,10 +100,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
-        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname());
-        if (placedByUser == null) {
-            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
-        }
+        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
         Product product = Product.builder()
                 .productName(productDto.getProductName())
                 .productPrice(productDto.getProductPrice())
@@ -117,10 +115,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void createProduct(ProductDto productDto, MultipartFile file1) {
-        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname());
-        if (placedByUser == null){
-            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
-        }
+        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
         Product product = Product.builder()
                 .productName(productDto.getProductName())
                 .productPrice(productDto.getProductPrice())

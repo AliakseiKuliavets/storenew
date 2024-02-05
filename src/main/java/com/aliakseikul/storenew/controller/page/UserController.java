@@ -2,6 +2,8 @@ package com.aliakseikul.storenew.controller.page;
 
 import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
+import com.aliakseikul.storenew.dto.auth.AuthenticationRequest;
+import com.aliakseikul.storenew.dto.auth.RegisterRequest;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.service.interf.UserService;
 import com.aliakseikul.storenew.validation.interf.IdChecker;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Validated
 @RestController
@@ -25,6 +28,34 @@ public class UserController {
             @NotNull @IdChecker @RequestParam String id
     ) {
         return userService.findById(id);
+    }
+
+    @GetMapping("/register")
+    public ModelAndView register() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("register.html");
+        return modelAndView;
+    }
+
+    @PostMapping("/register")
+    public void register(
+            @RequestBody RegisterRequest request
+    ) {
+        userService.register(request);
+    }
+
+    @GetMapping("/authentication")
+    public ModelAndView authentication() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login.html");
+        return modelAndView;
+    }
+
+    @PostMapping("/authentication")
+    public void authentication(
+            @RequestBody AuthenticationRequest request
+    ) {
+        userService.authenticate(request);
     }
 
     @PostMapping("/add")
