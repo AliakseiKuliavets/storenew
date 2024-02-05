@@ -18,7 +18,7 @@
             <column name="user_nick_name" type="varchar(45)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="user_password" type="varchar(45)">
+            <column name="user_password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="user_first_name" type="varchar(45)">
@@ -71,6 +71,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="purchased_by_user" type="uuid">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_of_create" type="Date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preview_image_id" type="long">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -180,8 +186,8 @@
             </not>
         </preConditions>
         <createTable tableName="image">
-            <column name="image_id" type="uuid">
-                <constraints primaryKey="true" nullable="true"/>
+            <column name="image_id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="image_name" type="varchar(45)">
                 <constraints nullable="true"/>
@@ -196,6 +202,9 @@
                 <constraints nullable="true"/>
             </column>
             <column name="image_is_preview_image" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bytes" type="long">
                 <constraints nullable="true"/>
             </column>
         </createTable>

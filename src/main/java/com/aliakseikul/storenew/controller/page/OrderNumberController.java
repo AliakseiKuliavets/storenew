@@ -4,6 +4,7 @@ package com.aliakseikul.storenew.controller.page;
 import com.aliakseikul.storenew.dto.OrderNumberDto;
 import com.aliakseikul.storenew.service.interf.OrderNumberService;
 import com.aliakseikul.storenew.validation.interf.IdChecker;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +23,15 @@ public class OrderNumberController {
     private final OrderNumberService orderNumberService;
 
     @GetMapping("/")
-    public OrderNumberDto getOrderNumberById(@IdChecker @RequestParam String id) {
+    public OrderNumberDto getOrderNumberById(
+            @NotNull @IdChecker @RequestParam String id
+    ) {
         return orderNumberService.getOrderById(id);
     }
 
     @GetMapping("/idRecipient/")
-    public List<OrderNumberDto> getOrderByUserRecipientId(@IdChecker @RequestParam String id) {
+    public List<OrderNumberDto> getOrderByUserRecipientId(
+            @NotNull @IdChecker @RequestParam String id) {
         return orderNumberService.getOrderByUserRecipientId(id);
     }
 }

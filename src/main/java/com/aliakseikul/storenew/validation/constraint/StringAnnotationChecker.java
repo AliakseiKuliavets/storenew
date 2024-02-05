@@ -17,7 +17,7 @@ public class StringAnnotationChecker implements ConstraintValidator<Str45LengthC
     public boolean isValid(String value, ConstraintValidatorContext context) {
         return Optional.ofNullable(value)
                 .filter(el -> !(el.isBlank()))
-                .map(el -> el.length() > 45)
+                .map(el -> el.length() < 45)
                 .orElse(false);
     }
 }

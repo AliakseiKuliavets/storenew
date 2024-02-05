@@ -4,7 +4,7 @@ import com.aliakseikul.storenew.dto.ProductDto;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import com.aliakseikul.storenew.validation.interf.IdChecker;
-import com.aliakseikul.storenew.validation.interf.Str45LengthCheck;
+import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,13 +21,17 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/")
-    public Product getProductById(@IdChecker @RequestParam String id) {
+    @GetMapping("/id")
+    public Product getProductById(
+            @NotNull @IdChecker @RequestParam String id
+    ) {
         return productService.findById(id);
     }
 
     @GetMapping("/name")
-    public List<ProductDto> getProductByName(@Str45LengthCheck @RequestParam String name) {
+    public List<ProductDto> getProductByName(
+            @NotNull @Size(min = 1, max = 44) @RequestParam String name
+    ) {
         return productService.findByName(name);
     }
 
@@ -37,26 +41,39 @@ public class ProductController {
     }
 
     @GetMapping("/allByCategory/")
-    public List<ProductDto> getAllProductsByCategory(@RequestParam String category) {
+    public List<ProductDto> getAllProductsByCategory(
+            @NotNull @Size(min = 1, max = 44) @RequestParam String category
+    ) {
         return productService.getAllProductsByCategory(category);
     }
 
     @GetMapping("/allByBrand/")
-    public List<ProductDto> getAllProductsByBrand(@RequestParam String brand) {
+    public List<ProductDto> getAllProductsByBrand(
+            @NotNull @Size(min = 1, max = 44) @RequestParam String brand
+    ) {
         return productService.getAllProductsByBrand(brand);
     }
 
     @GetMapping("/allByPrice/search")
     public List<ProductDto> searchProductsByPriceRange(
+            @NotNull
+            @Positive
+            @DecimalMin(value = "0.01", message = "Price should be greater than 0")
+            @DecimalMax(value = "999999.99", message = "Price should be less than 1 000 000.00")
             @RequestParam BigDecimal minPrice,
-            @RequestParam BigDecimal maxPrice) {
+            @NotNull
+            @Positive
+            @DecimalMin(value = "0.01", message = "Price should be greater than 0")
+            @DecimalMax(value = "999999.99", message = "Price should be less than 1 000 000.00")
+            @RequestParam BigDecimal maxPrice
+    ) {
         return productService.searchProductsByPriceRange(minPrice, maxPrice);
     }
 
     @GetMapping("/allByCategoryBrand/search")
     public List<ProductDto> searchProductsByCategoryBrand(
-            @RequestParam String category,
-            @RequestParam String brand
+            @NotNull @Size(min = 1, max = 44) @RequestParam String category,
+            @NotNull @Size(min = 1, max = 44) @RequestParam String brand
     ) {
         return productService.searchProductsByCategoryBrand(category, brand);
     }
@@ -68,15 +85,17 @@ public class ProductController {
 
     @PutMapping("/update/")
     public ResponseEntity<String> updateProductPropertyId(
-            @IdChecker @RequestParam String productId,
-            @Str45LengthCheck @RequestParam String tableName,
-            @Str45LengthCheck @RequestParam String value
+            @NotNull @IdChecker @RequestParam String productId,
+            @NotNull @Size(min = 1, max = 44) @RequestParam String tableName,
+            @NotNull @Size(min = 1, max = 44) @RequestParam String value
     ) {
         return productService.updateProductParamById(productId, tableName, value);
     }
 
     @DeleteMapping("/remove/{productId}")
-    public ResponseEntity<String> deleteById(@IdChecker @PathVariable("productId") String productId) {
+    public ResponseEntity<String> deleteById(
+            @NotNull @IdChecker @PathVariable("productId") String productId
+    ) {
         productService.deleteById(productId);
         return ResponseEntity.ok("Product with ID " + productId + " has been deleted");
     }
