@@ -1,10 +1,13 @@
 package com.aliakseikul.storenew.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,14 +21,17 @@ import java.util.UUID;
 public class Review {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "reviewed_id")
     private UUID reviewedId;
 
     @ManyToOne
+    @JsonBackReference("userReviewReference")
     @JoinColumn(name = "user_reviewed", referencedColumnName = "user_id")
     private User userReviewed;
 
     @ManyToOne
+    @JsonBackReference("userReceivedReviewReference")
     @JoinColumn(name = "user_received_review", referencedColumnName = "user_id")
     private User userReceivedReview;
 
@@ -55,3 +61,4 @@ public class Review {
                 '}';
     }
 }
+

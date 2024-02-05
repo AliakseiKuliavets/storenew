@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class Image {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "image_id")
     private UUID imageId;
 
@@ -40,7 +43,7 @@ public class Image {
     @Lob
     private byte[] bytes;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Product product;
 
     @Override

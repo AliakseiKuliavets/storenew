@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet author="AliakseiKuliavets" id="add fk product to user">
         <addForeignKeyConstraint baseTableName="product"
                                  baseColumnNames="placed_by_user"
                                  constraintName="fk_product_placed_by_user"
                                  referencedTableName="user"
-                                 referencedColumnNames="user_id"/>
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="product"
                                  baseColumnNames="purchased_by_user"
                                  constraintName="fk_product_purchased_by_user"
                                  referencedTableName="user"
-                                 referencedColumnNames="user_id"/>
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
     </changeSet>
 
     <changeSet author="AliakseiKuliavets" id="add fk order_number">
@@ -26,40 +27,37 @@
                                  baseColumnNames="product_id"
                                  constraintName="fk_order_number_product"
                                  referencedTableName="product"
-                                 referencedColumnNames="product_id"/>
+                                 referencedColumnNames="product_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="order_number"
                                  baseColumnNames="delivery_id"
                                  constraintName="fk_order_number_delivery"
                                  referencedTableName="delivery"
-                                 referencedColumnNames="delivery_id"/>
+                                 referencedColumnNames="delivery_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="order_number"
                                  baseColumnNames="payment_id"
                                  constraintName="fk_order_number_payment"
                                  referencedTableName="payment"
-                                 referencedColumnNames="payment_id"/>
+                                 referencedColumnNames="payment_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="order_number"
                                  baseColumnNames="recipient_user_id"
                                  constraintName="fk_order_number_recipient_user"
                                  referencedTableName="user"
-                                 referencedColumnNames="user_id"/>
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="order_number"
                                  baseColumnNames="sender_user_id"
                                  constraintName="fk_order_number_sender_user"
                                  referencedTableName="user"
-                                 referencedColumnNames="user_id"/>
-    </changeSet>
-
-    <changeSet author="AliakseiKuliavets" id="add fk image to product">
-        <addColumn tableName="image">
-            <column name="product_id" type="uuid">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-        <addForeignKeyConstraint baseTableName="image"
-                                 baseColumnNames="product_id"
-                                 constraintName="fk_image_product"
-                                 referencedTableName="product"
-                                 referencedColumnNames="product_id"/>
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
     </changeSet>
 
     <changeSet author="AliakseiKuliavets" id="add fk reviewed to user">
@@ -67,12 +65,16 @@
                                  baseColumnNames="user_reviewed"
                                  constraintName="fk_reviewed_user_reviewed"
                                  referencedTableName="user"
-                                 referencedColumnNames="user_id"/>
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="reviewed"
                                  baseColumnNames="user_received_review"
                                  constraintName="fk_reviewed_user_received_review"
                                  referencedTableName="user"
-                                 referencedColumnNames="user_id"/>
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
     </changeSet>
 
 </databaseChangeLog>

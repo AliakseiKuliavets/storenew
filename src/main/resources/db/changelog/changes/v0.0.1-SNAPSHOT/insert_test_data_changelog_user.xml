@@ -2,20 +2,20 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet author="AliakseiKuliavets" id="insert test data into user table">
         <insert tableName="user">
             <column name="user_id" value="a197d1bb-8990-4b08-ad8a-9ec55718fcb8"/>
+            <column name="user_nick_name" value="admin"/>
+            <column name="user_password" value="admin"/>
             <column name="user_first_name" value="Aliaksei"/>
             <column name="user_last_name" value="Kuliavets"/>
             <column name="user_email" value="abc@gmail.com"/>
             <column name="user_phone_number" value="+487576152478"/>
             <column name="user_verified_account" value="1"/>
+            <column name="user_role" value="ADMIN"/>
         </insert>
     </changeSet>
 
@@ -23,10 +23,13 @@
         <insert tableName="user">
             <column name="user_id" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
             <column name="user_first_name" value="Bogdan"/>
+            <column name="user_nick_name" value="boss"/>
+            <column name="user_password" value="12345678"/>
             <column name="user_last_name" value="Podalevic"/>
             <column name="user_email" value="bogomdan@gmail.com"/>
             <column name="user_phone_number" value="+37176152478"/>
             <column name="user_verified_account" value="1"/>
+            <column name="user_role" value="USER"/>
         </insert>
     </changeSet>
 

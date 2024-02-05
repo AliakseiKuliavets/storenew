@@ -3,9 +3,9 @@ spring:
     banner-mode: off
 
   datasource:
-    url: jdbc:mysql://localhost:3306/storeTest2
+    url: jdbc:mysql://localhost:3306/storenew
     username: root
-    password: Ale_Mle2001
+    password: 1234
 
   jpa:
     show-sql: true

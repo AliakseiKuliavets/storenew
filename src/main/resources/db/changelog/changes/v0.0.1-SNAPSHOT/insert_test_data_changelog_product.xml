@@ -2,21 +2,20 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet author="AliakseiKuliavets" id="insert test data into product_1 table">
         <insert tableName="product">
             <column name="product_id" value="35026fc0-dbfc-4d52-9c1c-a203929ea63d"/>
             <column name="product_name" value="Iphone 8"/>
+            <column name="product_price" value="1800.00"/>
             <column name="product_description" value="Simple description"/>
             <column name="product_category" value="ELECTRONICS"/>
             <column name="product_brand" value="APPLE"/>
             <column name="placed_by_user" value="a197d1bb-8990-4b08-ad8a-9ec55718fcb8"/>
             <column name="purchased_by_user" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
+            <column name="date_of_create" value="2024-05-09"/>
         </insert>
     </changeSet>
 

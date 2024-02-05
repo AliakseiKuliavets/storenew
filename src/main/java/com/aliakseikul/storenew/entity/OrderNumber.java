@@ -1,11 +1,14 @@
 package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.StatusTracking;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -20,11 +23,16 @@ import java.util.UUID;
 public class OrderNumber {
 
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "order_number_id")
     private UUID orderNumberId;
 
     @Column(name = "order_number_date")
     private LocalDate orderNumberDate;
+
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    private StatusTracking orderStatus;
 
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
@@ -34,20 +42,19 @@ public class OrderNumber {
     @JoinColumn(name = "delivery_id", referencedColumnName = "delivery_id")
     private Delivery deliveryId;
 
-    @Column(name = "order_status")
-    private StatusTracking orderStatus;
-
     @OneToOne
     @JoinColumn(name = "payment_id", referencedColumnName = "payment_id")
     private Payment paymentId;
 
     @ManyToOne
+    @JsonBackReference("recipientOrderNumbersReference")
     @JoinColumn(name = "recipient_user_id", referencedColumnName = "user_id")
-    private User recipientUserId;
+    private User recipientUser;
 
     @ManyToOne
+    @JsonBackReference("senderOrderNumbersReference")
     @JoinColumn(name = "sender_user_id", referencedColumnName = "user_id")
-    private User senderUserId;
+    private User senderUser;
 
     @Override
     public boolean equals(Object o) {
@@ -71,8 +78,8 @@ public class OrderNumber {
                 ", deliveryId=" + deliveryId +
                 ", orderStatus=" + orderStatus +
                 ", paymentId=" + paymentId +
-                ", recipientUserId=" + recipientUserId +
-                ", senderUserId=" + senderUserId +
+                ", recipientUserId=" + recipientUser +
+                ", senderUserId=" + senderUser +
                 '}';
     }
 }

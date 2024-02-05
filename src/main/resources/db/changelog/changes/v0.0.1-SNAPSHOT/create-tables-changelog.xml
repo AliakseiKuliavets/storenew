@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext
-        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet author="AliakseiKuliavets" id="create user table">
         <preConditions onFail="CONTINUE" onFailMessage="Table user already exists">
@@ -18,19 +15,28 @@
             <column name="user_id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="user_nick_name" type="varchar(45)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="user_password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="user_first_name" type="varchar(45)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="user_last_name" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
             <column name="user_email" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="user_phone_number" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="user_verified_account" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_role" type="varchar(45)" defaultValue="USER">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -49,6 +55,9 @@
             <column name="product_name" type="varchar(45)">
                 <constraints nullable="true"/>
             </column>
+            <column name="product_price" type="decimal(8,2)">
+                <constraints nullable="true"/>
+            </column>
             <column name="product_description" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -62,7 +71,13 @@
                 <constraints nullable="false"/>
             </column>
             <column name="purchased_by_user" type="uuid">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_of_create" type="Date">
                 <constraints nullable="false"/>
+            </column>
+            <column name="preview_image_id" type="long">
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -81,7 +96,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="product_id" type="uuid">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="delivery_id" type="uuid">
                 <constraints nullable="false"/>
@@ -171,23 +186,26 @@
             </not>
         </preConditions>
         <createTable tableName="image">
-            <column name="image_id" type="uuid">
+            <column name="image_id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="image_name" type="varchar(45)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_original_file_name" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_size" type="long">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_content_type" type="varchar(45)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="image_is_preview_image" type="boolean">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
+            </column>
+            <column name="bytes" type="long">
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>

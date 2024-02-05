@@ -2,53 +2,63 @@ package com.aliakseikul.storenew.entity;
 
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
 import com.aliakseikul.storenew.entity.enums.ProductCategory;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product")
 public class Product {
 
     @Id
+    @UuidGenerator
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "product_id")
     private UUID productId;
 
     @Column(name = "product_name")
     private String productName;
 
+    @Column(name = "product_price")
+    private BigDecimal productPrice;
+
     @Column(name = "product_description")
     private String productDescription;
 
     @Column(name = "product_category")
+    @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
     @Column(name = "product_brand")
+    @Enumerated(EnumType.STRING)
     private ProductBrand productBrand;
 
     @ManyToOne
+    @JsonBackReference("placedUserReference")
     @JoinColumn(name = "placed_by_user", referencedColumnName = "user_id")
     private User placedByUser;
 
     @ManyToOne
+    @JsonBackReference("purchasedUserReference")
     @JoinColumn(name = "purchased_by_user", referencedColumnName = "user_id")
     private User purchasedByUser;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-    mappedBy = "product")
-    private List<Image> images = new ArrayList<>();
-    private Long previewImageId;
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+//    mappedBy = "product")
+//    private List<Image> images = new ArrayList<>();
+//    private Long previewImageId;
 
     @Override
     public boolean equals(Object o) {
@@ -73,8 +83,9 @@ public class Product {
                 ", productBrand=" + productBrand +
                 ", placedByUser=" + placedByUser +
                 ", purchasedByUser=" + purchasedByUser +
-                ", images=" + images +
-                ", previewImageId=" + previewImageId +
+//                ", images=" + images +
+//                ", previewImageId=" + previewImageId +
                 '}';
     }
 }
+
