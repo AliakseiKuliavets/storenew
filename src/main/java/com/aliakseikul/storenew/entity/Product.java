@@ -10,8 +10,7 @@ import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -45,6 +44,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductBrand productBrand;
 
+    @Column(name = "date_of_create")
+    private Date dateOfCreate;
+
+    @Column(name = "preview_image_id")
+    private Long previewImageId;
+
     @ManyToOne
     @JsonBackReference("placedUserReference")
     @JoinColumn(name = "placed_by_user", referencedColumnName = "user_id")
@@ -55,10 +60,8 @@ public class Product {
     @JoinColumn(name = "purchased_by_user", referencedColumnName = "user_id")
     private User purchasedByUser;
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-//    mappedBy = "product")
-//    private List<Image> images = new ArrayList<>();
-//    private Long previewImageId;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Image> images = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -83,8 +86,6 @@ public class Product {
                 ", productBrand=" + productBrand +
                 ", placedByUser=" + placedByUser +
                 ", purchasedByUser=" + purchasedByUser +
-//                ", images=" + images +
-//                ", previewImageId=" + previewImageId +
                 '}';
     }
 }
