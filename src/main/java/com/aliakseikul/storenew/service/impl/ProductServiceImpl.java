@@ -1,6 +1,7 @@
 package com.aliakseikul.storenew.service.impl;
 
 import com.aliakseikul.storenew.dto.ProductDto;
+import com.aliakseikul.storenew.entity.Image;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.entity.enums.ProductBrand;
@@ -15,8 +16,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,6 +113,70 @@ public class ProductServiceImpl implements ProductService {
                 .placedByUser(placedByUser)
                 .build();
         return productMapper.toDto(productRepository.save(product));
+    }
+
+    @Override
+    public void createProduct(ProductDto productDto, MultipartFile file1) {
+        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname());
+        if (placedByUser == null){
+            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
+        }
+        Product product = Product.builder()
+                .productName(productDto.getProductName())
+                .productPrice(productDto.getProductPrice())
+                .productDescription(productDto.getProductDescription())
+                .productCategory(productDto.getProductCategory())
+                .productBrand(productDto.getProductBrand())
+                .placedByUser(placedByUser)
+                .dateOfCreate(new Date(System.currentTimeMillis()))
+                .build();
+
+        createImage(file1, product);
+        Product product1 = productRepository.save(product);
+        product1.setPreviewImageId(product1.getImages().get(0).getImageId());
+
+        productMapper.toDto(productRepository.save(product));
+    }
+
+    private void createImage(MultipartFile file1, Product product) {
+        Image image;
+        if (file1.getSize() != 0) {
+            image = toImage(file1);
+            image.setImageIsPreviewImage(true);
+            image.setProduct(product);
+            List<Image> list = product.getImages();
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+            list.add(image);
+            product.setImages(list);
+        }
+    }
+
+    private Image toImage(MultipartFile file) {
+        byte[] bytes;
+        try {
+            bytes = file.getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Blob blob;
+        try {
+            blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        Image image = new Image();
+        image.setImageName(file.getName());
+        image.setImageOriginalFileName(file.getOriginalFilename());
+        image.setImageContentType(file.getContentType());
+        image.setImageSize(blob);
+        try {
+            image.setBytes(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return image;
     }
 
     @Override

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<a href="/api/start/"> Refresh </a>
+<a href="/api/user/authentication"> Войти </a>
+<h1>Store</h1>
+<h4>Goods</h4>
+<form action="/api/start/name" method="get">
+    <label>
+        Поиск по имени:
+        <input type="text" name="name">
+    </label><br>
+    <input type="submit" value="Search">
+</form>
+<div th:each="product : ${products}">
+    <div>
+        <p>
+            <b th:text="${product.productName}"></b>
+            <span th:text="${product.productPrice}"></span> eur. |
+            <a th:href="@{/api/start/{id}(id=${product.productId})}">Подробнее...</a>
+        </p>
+    </div>
+    <div th:if="${#lists.isEmpty(products)}">
+        Товаров нет
+    </div>
+</div>
+<hr>
+<h3>Add new product</h3>
+<form action="/api/start/create" method="post" enctype="multipart/form-data">
+    <label>
+        User Nickname:
+        <input type="text" name="userNickname" id="userNickname"/>
+    </label><br><br>
+    <label>
+        Название объявления:
+        <input type="text" name="productName" id="productName"/>
+    </label><br><br>
+    <label>
+        Описание объявления:
+        <input type="text" name="productDescription" id="productDescription"/>
+    </label><br><br>
+    <label>
+        Price:
+        <input type="number" name="productPrice" id="productPrice"/>
+    </label><br><br>
+    <label>
+        Category:
+        <select name="productCategory" id="productCategory"></select>
+    </label><br><br>
+    <label>
+        Brand:
+        <select name="productBrand" id="productBrand"></select>
+    </label><br><br>
+    <label>
+        Image 1:
+        <input type="file" name="file1" id="file1"/>
+    </label><br><br>
+    <input type="button" value="Добавить товар" onclick="addProduct()"/>
+</form>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/enum/allCategory',
+            method: 'GET',
+            success: function (data) {
+                data.forEach(function (category) {
+                    $('#productCategory').append('<option value="' + category + '">' + category + '</option>');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Failed to fetch product categories: ' + status + ', ' + error);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/enum/allBrand',
+            method: 'GET',
+            success: function (data) {
+                data.forEach(function (brand) {
+                    $('#productBrand').append('<option value="' + brand + '">' + brand + '</option>');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Failed to fetch product categories: ' + status + ', ' + error);
+            }
+        });
+    });
+
+    function addProduct() {
+        const formData = new FormData();
+        formData.append('productName', $('#productName').val());
+        formData.append('productDescription', $('#productDescription').val());
+        formData.append('productPrice', $('#productPrice').val());
+        formData.append('productCategory', $('#productCategory').val());
+        formData.append('productBrand', $('#productBrand').val());
+        formData.append('userNickname', $('#userNickname').val());
+        formData.append('file1', $('#file1')[0].files[0]); // добавляем первый файл
+
+        $.ajax({
+            type: "POST",
+            processData: false,  // Обязательно отключите обработку данных перед отправкой FormData
+            contentType: false,  // Также обязательно отключите установку contentType
+            url: "/api/start/create",
+            data: formData,
+            success: function () {
+                alert('Продукт успешно добавлен!');
+            },
+            error: function (e) {
+                alert('Произошла ошибка при добавлении продукта!');
+                console.log('Error:', e);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
+

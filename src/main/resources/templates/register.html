@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BUYSELL</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<a href="/api/user/authentication"> Назад </a>
+<h1>BUYSELL</h1>
+<hr>
+<h4>Регистрация</h4>
+<form id="registrationForm">
+    Имя пользователя: <input type="text" id="userFirstName"><br><br>
+    Фамилия пользователя: <input type="text" id="userLastName"><br><br>
+    Ник пользователя: <input type="text" id="userNickname"><br><br>
+    Эл. почта: <input type="email" id="userEmail"><br><br>
+    Пароль: <input type="password" id="userPassword"><br><br>
+    <button type="button" id="registerButton">Зарегистрироваться</button>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#registerButton').click(function() {
+            registerUser();
+        });
+    });
+
+    function registerUser() {
+        // Собираем данные из полей формы
+        var formData = {
+            userFirstName: $('#userFirstName').val(),
+            userLastName: $('#userLastName').val(),
+            userNickname: $('#userNickname').val(),
+            userEmail: $('#userEmail').val(),
+            userPassword: $('#userPassword').val()
+        };
+
+        // Отправляем AJAX запрос
+        $.ajax({
+            type: "POST",
+            url: "/api/user/register",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            success: function () {
+                alert('Пользователь успешно зарегистрирован!');
+            },
+            error: function (xhr, status, error) {
+                alert('Произошла ошибка при регистрации пользователя!');
+                console.log('Error:', error);
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+
+

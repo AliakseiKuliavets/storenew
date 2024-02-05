@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BUYSELL</title>
+</head>
+<body>
+<a href="/api/start/"> Home </a>
+<h1>BUYSELL</h1>
+<hr>
+<h4>Подробная информация о товаре</h4>
+
+<div th:each="img : ${product.images}">
+    <img th:src="@{/images/{id}(id=${img.imageId})}" height="300px"/><br>
+</div>
+
+<b>Название товара: </b><span th:text="${product.productName}"></span><br>
+<b>Описание товара: </b><span th:text="${product.productDescription}"></span><br>
+<b>Цена: </b><span th:text="${product.productPrice}"></span><br>
+<b>Категория: </b><span th:text="${product.productCategory}"></span><br>
+<b>Бренд: </b><span th:text="${product.productBrand}"></span><br>
+<b>Автор: </b><span th:text="${product.placedByUser.userNickname}"></span><br>
+<b>Дата добавления: </b><span th:text="${product.dateOfCreate}"></span><br>
+<hr>
+<form th:action="@{/api/start/remove/{id}(id=${product.productId})}" method="post">
+    <input type="submit" value="Удалить товар"/>
+</form>
+</body>
+</html>
