@@ -15,6 +15,7 @@
             <column name="product_brand" value="APPLE"/>
             <column name="placed_by_user" value="a197d1bb-8990-4b08-ad8a-9ec55718fcb8"/>
             <column name="purchased_by_user" value="0480101b-0fa4-4b13-939e-062a7a8c49e6"/>
+            <column name="date_of_create" value="2024-05-09"/>
         </insert>
     </changeSet>
 

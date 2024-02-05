@@ -3,7 +3,6 @@ package com.aliakseikul.storenew.service.impl;
 import com.aliakseikul.storenew.dto.DeliveryDto;
 import com.aliakseikul.storenew.entity.Delivery;
 import com.aliakseikul.storenew.exception.exeptions.DeliveryNotFoundException;
-import com.aliakseikul.storenew.exception.exeptions.StringNotCorrectException;
 import com.aliakseikul.storenew.exception.message.ErrorMessage;
 import com.aliakseikul.storenew.mapper.DeliveryMapper;
 import com.aliakseikul.storenew.repository.DeliveryRepository;
@@ -13,9 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
-
-import static com.aliakseikul.storenew.exception.checkMethods.Check.checkIdLength;
-import static com.aliakseikul.storenew.exception.checkMethods.Check.checkString45Length;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +23,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public DeliveryDto findById(String id) {
-        if (checkIdLength(id)) {
-            throw new DeliveryNotFoundException(ErrorMessage.WRONG_ID_LENGTH);
-        }
         return deliveryMapper.toDto(deliveryRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND)));
     }
@@ -52,24 +45,13 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     @Transactional
     public void changeAddressById(String deliveryId, String deliveryAddress) {
-        if (checkId(deliveryId)) {
-            throw new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
-        }
-        if (checkString45Length(deliveryAddress)) {
-            throw new StringNotCorrectException(ErrorMessage.STRING_WRONG_LENGTH);
-        }
+        findById(deliveryId);
         deliveryRepository.changeAddressById(UUID.fromString(deliveryId), deliveryAddress);
     }
 
     @Override
     public void deleteDeliveryById(String deliveryId) {
-        if (checkId(deliveryId)) {
-            throw new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND);
-        }
+        findById(deliveryId);
         deliveryRepository.deleteById(UUID.fromString(deliveryId));
-    }
-
-    private boolean checkId(String deliveryId) {
-        return findById(deliveryId) == null;
     }
 }
