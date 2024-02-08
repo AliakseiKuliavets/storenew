@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,9 +71,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AuthenticationResponse register(RegisterRequest request) {
-        if(userRepository.findUserByNickName(request.getUserNickname()).isPresent()){
-            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
+    public User getUserByNickname(String userNickname) {
+        return userRepository.findUserByNickName(userNickname).orElse(new User());
+    }
+
+    @Override
+    public ResponseEntity<?> register(RegisterRequest request) {
+        if (userRepository.findUserByNickName(request.getUserNickname()).isPresent()) {
+            throw new UserNotFoundException(ErrorMessage.USER_WITH_NAME);
         }
         User user = User.builder()
                 .userFirstName(request.getUserFirstName())
@@ -84,27 +90,34 @@ public class UserServiceImpl implements UserService {
                 .build();
         userRepository.save(user);
         var jwtToken = service.generateToken(user);
-        return AuthenticationResponse
-                .builder()
-                .token(jwtToken)
-                .build();
+        return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public User getUserByPrincipal(Principal principal) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if (principal == null) {
+            return new User();
+        }
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        return userRepository.findUserByNickName(principal.getName()).orElse(new User());
+    }
+
+    @Override
+    public void authenticate(AuthenticationRequest request) {
+        System.out.println("Im in User Impl");
         manager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserNickname(),
                         request.getUserPassword()
                 )
         );
-        var user = userRepository.findUserByNickName(request.getUserNickname())
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
-        var jwtToken = service.generateToken(user);
-        return AuthenticationResponse
-                .builder()
-                .token(jwtToken)
-                .build();
+        System.out.println("OKKKKK");
+//        var user = userRepository.findUserByNickName(request.getUserNickname())
+//                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+//        var jwtToken = service.generateToken(user);
+//
+//        return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
     }
 
     @Override

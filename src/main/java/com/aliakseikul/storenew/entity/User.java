@@ -132,17 +132,13 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
+                ", userNickname='" + userNickname + '\'' +
+                ", userPassword='" + userPassword + '\'' +
                 ", userFirstName='" + userFirstName + '\'' +
                 ", userLastName='" + userLastName + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 ", userPhoneNumber='" + userPhoneNumber + '\'' +
-                ", userVerifiedAccount=" + userVerifiedAccount +
-                ", productsPlaced=" + productsPlaced +
-                ", productsPurchased=" + productsPurchased +
-                ", recipientOrderNumbers=" + recipientOrderNumbers +
-                ", senderOrderNumber=" + senderOrderNumber +
-                ", userReviewed=" + userReviewed +
-                ", userReceivedReview=" + userReceivedReview +
+                ", userRole=" + userRole +
                 '}';
     }
 }

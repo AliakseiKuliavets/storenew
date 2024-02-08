@@ -7,7 +7,6 @@ import com.aliakseikul.storenew.dto.auth.RegisterRequest;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.service.interf.UserService;
 import com.aliakseikul.storenew.validation.interf.IdChecker;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -23,39 +22,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 
     private final UserService userService;
+    private final ModelAndView modelAndView = new ModelAndView();
 
     @GetMapping("/")
     public UserDto getUserById(
             @NotNull @IdChecker @RequestParam String id
     ) {
         return userService.findById(id);
-    }
-
-    @GetMapping("/register")
-    public ModelAndView register() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("register.html");
-        return modelAndView;
-    }
-
-    @PostMapping("/register")
-    public void register(
-            RegisterRequest request
-    ) {
-        userService.register(request);
-    }
-
-    @GetMapping("/authentication")
-    public ModelAndView authentication() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login.html");
-        return modelAndView;
-    }
-
-    @PostMapping("/authentication")
-    public void authentication(AuthenticationRequest request) {
-        System.out.println("-----------------");
-        userService.authenticate(request);
     }
 
 

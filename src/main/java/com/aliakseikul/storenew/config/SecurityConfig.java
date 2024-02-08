@@ -6,11 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
@@ -31,8 +29,15 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/api/product/**"),
                                         new AntPathRequestMatcher("/api/user/**"),
                                         new AntPathRequestMatcher("/api/start/**"),
+                                        new AntPathRequestMatcher("/images/**"),
                                         new AntPathRequestMatcher("/api/enum/**"),
-                                        new AntPathRequestMatcher("/images/**")
+
+
+                                        new AntPathRequestMatcher("/**"),
+                                        new AntPathRequestMatcher("/registration"),
+                                        new AntPathRequestMatcher("/login"),
+                                        new AntPathRequestMatcher("/login/**"),
+                                        new AntPathRequestMatcher("/authentication/login/**")
                                 )
                                 .permitAll()
                                 .anyRequest()
@@ -41,6 +46,13 @@ public class SecurityConfig {
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+//                .formLogin((formLogin) ->
+//                formLogin
+//                        .usernameParameter("request.userNickname")
+//                        .passwordParameter("request.userPassword")
+//                        .loginPage("/login")
+//                        .failureUrl("/login?failed")
+//                        .loginProcessingUrl("/authentication/login/"))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -12,6 +12,7 @@ import com.aliakseikul.storenew.mapper.ProductMapper;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
+import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     private final ProductMapper productMapper;
 
     @Override
@@ -46,7 +49,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findByName(String name) {
-        if (name != null) return productMapper.productsToProductsDto(productRepository.findByName(name));
+        if (name != null) {
+            return productMapper.productsToProductsDto(productRepository.findByName(name));
+        }
         return productMapper.productsToProductsDto(productRepository.findAll());
     }
 
@@ -129,20 +134,12 @@ public class ProductServiceImpl implements ProductService {
                 .dateOfCreate(new Date(System.currentTimeMillis()))
                 .build();
 
-        product.setPlacedByUser(getUserByPrincipal(principal));
+        product.setPlacedByUser(userService.getUserByPrincipal(principal));
         createImage(file1, product);
         Product product1 = productRepository.save(product);
         product1.setPreviewImageId(product1.getImages().get(0).getImageId());
 
         productMapper.toDto(productRepository.save(product));
-    }
-
-    @Override
-    public User getUserByPrincipal(Principal principal) {
-        if (principal == null){
-            return new User();
-        }
-        return userRepository.findUserByNickName(principal.getName()).orElse(new User());
     }
 
     private void createImage(MultipartFile file1, Product product) {

@@ -1,46 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head>
     <title>BUYSELL</title>
 </head>
 <body>
 <h1>BUYSELL</h1>
 <hr>
-<th:block th:if="${user.userNickname}">
-    <h3>Имя пользователя: <i th:text="${user.userNickname}"></i></h3>
+<#if user.userNickname??>
+    <h3>Имя пользователя: <i>${user.userFirstName}</i></h3>
     <form action="/logout" method="post">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Выйти"/>
     </form>
-</th:block>
-<th:block th:unless="${user.userNickname}">
-    <a href="/api/user/authentication">Войти</a></h1>
-</th:block>
+<#else>
+    <a href="/login">Войти</a>
+</#if>
 <hr>
 <h4>Товары со всей России</h4>
-<form action="/api/start/" method="get">
-    Поиск по названию объявления: <input type="text" name="name">
-    <input type="submit" value="Поиск"/>
+<form action="/" method="get">
+    Поиск по названию объявления:
+    <label><input type="text" name="name"></label><input type="submit" value="Поиск"/>
 </form>
-<th:block th:if="${not #lists.isEmpty(products)}">
-    <th:block th:each="product : ${products}">
-        <div>
-            <p><b th:text="${product.productName}"></b> <span th:text="${product.productPrice}"></span> eur. | <a
-                    th:href="@{/api/start/{id}(id=${product.productId})}">Подробнее...</a></p>
-        </div>
-    </th:block>
-</th:block>
-<th:block th:if="${#lists.isEmpty(products)}">
+<#list products as product>
+    <div>
+        <p><b>${product.productName}</b> ${product.productPrice} руб. |
+            <a href="/product/${product.productId}">Подробнее...</a>
+        </p>
+    </div>
+<#else>
     <h3>Товаров нет</h3>
-</th:block>
-<th:block th:if="${user.userNickname}">
+</#list>
+
+<#if user.userNickname??>
     <hr>
-    <h3>Add new product</h3>
-    <form action="/api/start/create" method="post" enctype="multipart/form-data">
-        <label>
-            User Nickname:
-            <input type="text" name="userNickname" id="userNickname"/>
-        </label><br><br>
+    <h3>Создать новый товар</h3>
+    <form action="/create" method="post" enctype="multipart/form-data">
+        <!--        <label>-->
+        <!--            User Nickname:-->
+        <!--            <input type="text" name="userNickname" id="userNickname"/>-->
+        <!--        </label><br><br>-->
         <label>
             Название объявления:
             <input type="text" name="productName" id="productName"/>
@@ -65,8 +64,8 @@
             Image 1:
             <input type="file" name="file1" id="file1"/>
         </label><br><br>
-        <input type="button" value="Добавить товар" onclick="addProduct()"/>
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="hidden" name="_csrf" value="_csrf.token">
+        <input type="submit" value="Добавить товар"/>
     </form>
 
     <script>
@@ -103,31 +102,30 @@
 
         function addProduct() {
             const formData = new FormData();
-            formData.append('productName', $('#productName').val());
             formData.append('productDescription', $('#productDescription').val());
             formData.append('productPrice', $('#productPrice').val());
             formData.append('productCategory', $('#productCategory').val());
             formData.append('productBrand', $('#productBrand').val());
-            formData.append('userNickname', $('#userNickname').val());
-            formData.append('file1', $('#file1')[0].files[0]); // добавляем первый файл
+            formData.append('userNickname', $('#userNickname').val(user.userNickname));
+            formData.append('file1', $('#file1')[0].files[0]);
 
+            // Выполнение AJAX-запроса для отправки данных формы
             $.ajax({
-                type: "POST",
-                processData: false,  // Обязательно отключите обработку данных перед отправкой FormData
-                contentType: false,  // Также обязательно отключите установку contentType
-                url: "/api/start/create",
+                url: '/api/start/create',
+                method: 'POST',
                 data: formData,
-                success: function () {
-                    alert('Продукт успешно добавлен!');
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Обработка успешного ответа
                 },
-                error: function (e) {
-                    alert('Произошла ошибка при добавлении продукта!');
-                    console.log('Error:', e);
+                error: function (xhr, status, error) {
+                    // Обработка ошибки
                 }
             });
         }
     </script>
-</th:block>
+</#if>
 </body>
 </html>
 

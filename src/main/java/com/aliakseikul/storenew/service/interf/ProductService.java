@@ -30,8 +30,6 @@ public interface ProductService {
 
     void createProduct(Principal principal, ProductDto productDto, MultipartFile file1);
 
-    User getUserByPrincipal(Principal principal);
-
     ResponseEntity<String> updateProductParamById(String productId, String tableName, String value);
 
     void deleteById(String productId);

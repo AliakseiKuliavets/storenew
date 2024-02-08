@@ -57,8 +57,8 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.3'
 
     //web
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '3.2.2'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-freemarker
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: '3.2.2'
     // https://mvnrepository.com/artifact/org.webjars/jquery
     implementation group: 'org.webjars', name: 'jquery', version: '3.7.1'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
