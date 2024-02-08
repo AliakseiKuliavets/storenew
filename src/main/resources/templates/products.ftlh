@@ -36,10 +36,6 @@
     <hr>
     <h3>Создать новый товар</h3>
     <form action="/create" method="post" enctype="multipart/form-data">
-        <!--        <label>-->
-        <!--            User Nickname:-->
-        <!--            <input type="text" name="userNickname" id="userNickname"/>-->
-        <!--        </label><br><br>-->
         <label>
             Название объявления:
             <input type="text" name="productName" id="productName"/>
@@ -64,7 +60,7 @@
             Image 1:
             <input type="file" name="file1" id="file1"/>
         </label><br><br>
-        <input type="hidden" name="_csrf" value="_csrf.token">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Добавить товар"/>
     </form>
 
@@ -106,7 +102,7 @@
             formData.append('productPrice', $('#productPrice').val());
             formData.append('productCategory', $('#productCategory').val());
             formData.append('productBrand', $('#productBrand').val());
-            formData.append('userNickname', $('#userNickname').val(user.userNickname));
+            formData.append('userNickname', user["userNickname"]);
             formData.append('file1', $('#file1')[0].files[0]);
 
             // Выполнение AJAX-запроса для отправки данных формы

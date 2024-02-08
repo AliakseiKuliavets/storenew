@@ -9,7 +9,7 @@
 <h4>Подробная информация о товаре</h4>
 
 <#list images as img>
-    <img src="/images/${img.imageId}" height="60px"/><br><br>
+    <img src="/images/${img.imageId}" height="60px" alt="20px"/><br><br>
 </#list>
 
 <b>Название товара: </b> ${product.productName}<br>
@@ -18,7 +18,7 @@
 <b>Категория: </b>${product.productCategory}<br>
 <b>Бренд: </b>${product.productBrand}<br>
 <b>Автор: </b>${product.placedByUser.userNickname}<br>
-<b>Дата добавления: </b><span th:text="${product.dateOfCreate}"></span><br>
+<b>Дата добавления: </b>${product.dateOfCreate}<br>
 <hr>
 <form>
     <a href="/remove/${product.productId})}" methods="post"></a>

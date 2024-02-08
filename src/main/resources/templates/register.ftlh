@@ -26,40 +26,6 @@
 <#if errorMessage??>
     <h2 style="color: red">${errorMessage}</h2>
 </#if>
-
-<#--<script>-->
-<#--    $(document).ready(function () {-->
-<#--        $('#registerButton').click(function () {-->
-<#--            registerUser();-->
-<#--        });-->
-<#--    });-->
-
-<#--    function registerUser() {-->
-<#--        // Собираем данные из полей формы-->
-<#--        var formData = {-->
-<#--            userFirstName: $('#userFirstName').val(),-->
-<#--            userLastName: $('#userLastName').val(),-->
-<#--            userNickname: $('#userNickname').val(),-->
-<#--            userEmail: $('#userEmail').val(),-->
-<#--            userPassword: $('#userPassword').val()-->
-<#--        };-->
-
-<#--        // Отправляем AJAX запрос-->
-<#--        $.ajax({-->
-<#--            type: "POST",-->
-<#--            url: "/api/user/registration",-->
-<#--            contentType: "application/json",-->
-<#--            data: JSON.stringify(formData),-->
-<#--            success: function () {-->
-<#--                alert('Пользователь успешно зарегистрирован!');-->
-<#--            },-->
-<#--            error: function (xhr, status, error) {-->
-<#--                alert('Произошла ошибка при регистрации пользователя!');-->
-<#--                console.log('Error:', error);-->
-<#--            }-->
-<#--        });-->
-<#--    }-->
-<#--</script>-->
 </body>
 </html>
 

@@ -7,6 +7,7 @@
 <h1>BUYSELL</h1>
 <hr>
 <h4>Авторизация</h4>
+<a href="/">Home</a>
 <form action="/authentication/login" method="post">
 
         Ник нейм пользователя:

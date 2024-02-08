@@ -122,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void createProduct(Principal principal, ProductDto productDto, MultipartFile file1) {
-        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname())
+        User placedByUser = userRepository.findUserByNickName(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
         Product product = Product.builder()
                 .productName(productDto.getProductName())

@@ -22,11 +22,12 @@ public class Page {
     private final ProductService productService;
 
     private final UserService userService;
-    private  Principal principal = () -> null;
+    private Principal principal = () -> null;
 
     @GetMapping("/")
     public String welcome(
             @RequestParam(name = "name", required = false) String name,
+            //Principal principal
             Model model
     ) {
         model.addAttribute("products", productService.findByName(name));
@@ -45,7 +46,6 @@ public class Page {
     @PostMapping("/create")
     public String createProduct(
             @ModelAttribute ProductDto productDto,
-            Principal principal,
             @RequestParam("file1") MultipartFile file1
     ) {
         productService.createProduct(principal, productDto, file1);
@@ -75,7 +75,7 @@ public class Page {
     }
 
     @GetMapping("/register")
-    public String  register() {
+    public String register() {
         return "register";
     }
 
