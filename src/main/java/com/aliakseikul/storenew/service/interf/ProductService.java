@@ -2,10 +2,12 @@ package com.aliakseikul.storenew.service.interf;
 
 import com.aliakseikul.storenew.dto.ProductDto;
 import com.aliakseikul.storenew.entity.Product;
+import com.aliakseikul.storenew.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
 public interface ProductService {
@@ -26,7 +28,7 @@ public interface ProductService {
 
     ProductDto createProduct(ProductDto productDto);
 
-    void createProduct(ProductDto productDto, MultipartFile file1);
+    void createProduct(Principal principal, ProductDto productDto, MultipartFile file1);
 
     ResponseEntity<String> updateProductParamById(String productId, String tableName, String value);
 

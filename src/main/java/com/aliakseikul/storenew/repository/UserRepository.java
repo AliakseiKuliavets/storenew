@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select u from  User u where u.userNickname = :userNickname")
-    User findUserByNickName(String userNickname);
+    Optional<User> findUserByNickName(String userNickname);
 
     @Modifying
     @Query("update User u set u.userFirstName = :userName where u.userId = :uuid")

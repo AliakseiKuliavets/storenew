@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductDto {
 
+    String productId;
+
     @NotNull(message = "Product name shouldn't be null")
     @Size(min = 1, max = 44, message = "Product should be not null and from 1 to 44 symbols")
     String productName;

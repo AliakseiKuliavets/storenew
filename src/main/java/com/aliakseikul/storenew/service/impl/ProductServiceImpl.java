@@ -12,6 +12,7 @@ import com.aliakseikul.storenew.mapper.ProductMapper;
 import com.aliakseikul.storenew.repository.ProductRepository;
 import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
+import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     private final ProductMapper productMapper;
 
     @Override
@@ -45,7 +49,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findByName(String name) {
-        return productMapper.productsToProductsDto(productRepository.findByName(name));
+        if (name != null) {
+            return productMapper.productsToProductsDto(productRepository.findByName(name));
+        }
+        return productMapper.productsToProductsDto(productRepository.findAll());
     }
 
     @Override
@@ -100,10 +107,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
-        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname());
-        if (placedByUser == null) {
-            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
-        }
+        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
         Product product = Product.builder()
                 .productName(productDto.getProductName())
                 .productPrice(productDto.getProductPrice())
@@ -116,11 +121,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void createProduct(ProductDto productDto, MultipartFile file1) {
-        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname());
-        if (placedByUser == null){
-            throw new UserNotFoundException(ErrorMessage.USER_NOT_FOUND);
-        }
+    public void createProduct(Principal principal, ProductDto productDto, MultipartFile file1) {
+        User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
         Product product = Product.builder()
                 .productName(productDto.getProductName())
                 .productPrice(productDto.getProductPrice())
@@ -131,6 +134,7 @@ public class ProductServiceImpl implements ProductService {
                 .dateOfCreate(new Date(System.currentTimeMillis()))
                 .build();
 
+        product.setPlacedByUser(userService.getUserByPrincipal(principal));
         createImage(file1, product);
         Product product1 = productRepository.save(product);
         product1.setPreviewImageId(product1.getImages().get(0).getImageId());

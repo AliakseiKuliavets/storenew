@@ -4,10 +4,9 @@ import com.aliakseikul.storenew.dto.ErrorDto;
 import com.aliakseikul.storenew.exception.exeptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ResponseExceptionHandler {
 
     @ExceptionHandler(value = BrandNotFoundExceptions.class)

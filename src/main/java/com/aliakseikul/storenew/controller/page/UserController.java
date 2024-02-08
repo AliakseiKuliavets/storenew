@@ -2,6 +2,8 @@ package com.aliakseikul.storenew.controller.page;
 
 import com.aliakseikul.storenew.dto.UserCreateDto;
 import com.aliakseikul.storenew.dto.UserDto;
+import com.aliakseikul.storenew.dto.auth.AuthenticationRequest;
+import com.aliakseikul.storenew.dto.auth.RegisterRequest;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.service.interf.UserService;
 import com.aliakseikul.storenew.validation.interf.IdChecker;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Validated
 @RestController
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final ModelAndView modelAndView = new ModelAndView();
 
     @GetMapping("/")
     public UserDto getUserById(
@@ -26,6 +30,7 @@ public class UserController {
     ) {
         return userService.findById(id);
     }
+
 
     @PostMapping("/add")
     public User addUser(@RequestBody UserCreateDto userDto) {
