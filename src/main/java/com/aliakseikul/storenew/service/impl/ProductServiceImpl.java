@@ -240,6 +240,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteById(String productId) {
+        System.out.println("NEN");
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(productId);
         findById(productId);
         productRepository.deleteById(UUID.fromString(productId));
     }

@@ -95,24 +95,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByPrincipal(Principal principal) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (principal == null) {
             return new User();
         }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return userRepository.findUserByNickName(principal.getName()).orElse(new User());
     }
 
     @Override
     public void authenticate(AuthenticationRequest request) {
-        System.out.println("Im in User Impl");
         manager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserNickname(),
                         request.getUserPassword()
                 )
         );
-        System.out.println("OKKKKK");
 //        var user = userRepository.findUserByNickName(request.getUserNickname())
 //                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
 //        var jwtToken = service.generateToken(user);

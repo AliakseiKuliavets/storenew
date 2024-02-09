@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <title>BUYSELL</title>
 </head>
 <body>
 <h1>BUYSELL</h1>
 <hr>
-<h4>Подробная информация о товаре</h4>
+<h4>Product details</h4>
 
 <#list images as img>
-    <img src="/images/${img.imageId}" height="60px" alt="20px"/><br><br>
+    <div>
+        <img src="/images/${img.imageId}" height="300px"/><br><br>
+    </div>
 </#list>
 
-<b>Название товара: </b> ${product.productName}<br>
-<b>Описание товара: </b>${product.productDescription}<br>
-<b>Цена: </b>${product.productPrice}<br>
-<b>Категория: </b>${product.productCategory}<br>
-<b>Бренд: </b>${product.productBrand}<br>
-<b>Автор: </b>${product.placedByUser.userNickname}<br>
-<b>Дата добавления: </b>${product.dateOfCreate}<br>
+<b>Product Name: </b> ${product.productName}<br>
+<b>Product description: </b>${product.productDescription}<br>
+<b>Price: </b>${product.productPrice}<br>
+<b>Category: </b>${product.productCategory}<br>
+<b>Brand: </b>${product.productBrand}<br>
+<b>Author: </b>${product.placedByUser.userNickname}<br>
+<b>Date added: </b>${product.dateOfCreate}<br>
 <hr>
-<form>
-    <a href="/remove/${product.productId})}" methods="post"></a>
-    <input type="submit" value="Удалить товар"/>
-</form>
+<#if user.userNickname??>
+    <form action="/remove/${product.productId}" method="post">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Удалить товар"/>
+    </form>
+</#if>
 </body>
 </html>

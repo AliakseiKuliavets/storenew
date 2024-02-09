@@ -10,7 +10,6 @@
 
     <include file="/db/changelog/changes/v0.0.1-SNAPSHOT/insert_test_data_changelog_product.xml"/>
     <include file="/db/changelog/changes/v0.0.1-SNAPSHOT/insert_test_data_changelog_delivery.xml"/>
-    <include file="/db/changelog/changes/v0.0.1-SNAPSHOT/insert_test_data_changelog_image.xml"/>
     <include file="/db/changelog/changes/v0.0.1-SNAPSHOT/insert_test_data_changelog_payment.xml"/>
     <include file="/db/changelog/changes/v0.0.1-SNAPSHOT/insert_test_data_changelog_reviewed.xml"/>
     <include file="/db/changelog/changes/v0.0.1-SNAPSHOT/insert_test_data_changelog_order_number.xml"/>

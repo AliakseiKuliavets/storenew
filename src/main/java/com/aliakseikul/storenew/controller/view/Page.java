@@ -6,7 +6,13 @@ import com.aliakseikul.storenew.dto.auth.RegisterRequest;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import com.aliakseikul.storenew.service.interf.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +33,6 @@ public class Page {
     @GetMapping("/")
     public String welcome(
             @RequestParam(name = "name", required = false) String name,
-            //Principal principal
             Model model
     ) {
         model.addAttribute("products", productService.findByName(name));
@@ -39,6 +44,7 @@ public class Page {
     public String getProductById(@PathVariable String id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("images", product.getImages());
         return "productsinfo";
     }

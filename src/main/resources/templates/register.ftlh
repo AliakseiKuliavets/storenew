@@ -6,18 +6,18 @@
 <body>
 <h1>BUYSELL</h1>
 <hr>
-<h4>Регистрация</h4>
+<h4>Registration</h4>
 <form action="/registration" method="post">
 
-    Имя пользователя:
+    Username:
     <label for="userFirstName"></label><input type="text" id="userFirstName" name="userFirstName"><br><br>
-    Фамилия пользователя:
+    User Last Name:
     <label for="userLastName"></label><input type="text" id="userLastName" name="userLastName"><br><br>
-    Ник пользователя:
+    User nickname:
     <label for="userNickname"></label><input type="text" id="userNickname" name="userNickname"><br><br>
-    Эл. почта:
+    Email:
     <label for="userEmail"></label><input type="email" id="userEmail" name="userEmail"><br><br>
-    Пароль:
+    Password:
     <label for="userPassword"></label><input type="password" id="userPassword" name="userPassword"><br><br>
 
     <input type="hidden" name="_csrf" value="${_csrf.token}">

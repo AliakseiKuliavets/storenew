@@ -11,37 +11,37 @@
     <h3>Имя пользователя: <i>${user.userFirstName}</i></h3>
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Выйти"/>
+        <input type="submit" value="Sign out"/>
     </form>
 <#else>
-    <a href="/login">Войти</a>
+    <a href="/login">Sign in</a>
 </#if>
 <hr>
-<h4>Товары со всей России</h4>
+<h4>Products from all over the world</h4>
 <form action="/" method="get">
-    Поиск по названию объявления:
+    Search by ad title:
     <label><input type="text" name="name"></label><input type="submit" value="Поиск"/>
 </form>
 <#list products as product>
     <div>
-        <p><b>${product.productName}</b> ${product.productPrice} руб. |
-            <a href="/product/${product.productId}">Подробнее...</a>
+        <p><b>${product.productName}</b> ${product.productPrice} eur. |
+            <a href="/product/${product.productId}">Details...</a>
         </p>
     </div>
 <#else>
-    <h3>Товаров нет</h3>
+    <h3>Products not found</h3>
 </#list>
 
 <#if user.userNickname??>
     <hr>
-    <h3>Создать новый товар</h3>
+    <h3>Create a new product</h3>
     <form action="/create" method="post" enctype="multipart/form-data">
         <label>
-            Название объявления:
+            Product Name:
             <input type="text" name="productName" id="productName"/>
         </label><br><br>
         <label>
-            Описание объявления:
+            Ad Description:
             <input type="text" name="productDescription" id="productDescription"/>
         </label><br><br>
         <label>

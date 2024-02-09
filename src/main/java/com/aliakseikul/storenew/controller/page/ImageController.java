@@ -20,8 +20,9 @@ public class ImageController {
     private final ImageService imageService;
 
     @GetMapping("/images/{id}")
-    private ResponseEntity<?> getImageById(@PathVariable Long id) {
-        Image image = imageService.findById(id);
+    private ResponseEntity<?> getImageById(@PathVariable String id) {
+        String idN = id.replaceAll("[^0-9]", "");
+        Image image = imageService.findById(Long.valueOf(idN));
         byte [] imageBytes;
         try {
             imageBytes = image.getImageSize().getBytes(1,(int) (image.getImageSize().length()));
