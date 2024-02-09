@@ -6,6 +6,29 @@ The aim of the "SecondTreasure" project is to provide a convenient platform wher
 goods across a diverse range. This online marketplace facilitates the second life of items, promoting their resale and
 contributing to the reduction of environmental impact.
 
+### Technologies used:
+
+- Java 17 (latest master commits)
+- Gradle
+- MySql
+- Spring MVC
+- Spring Data JPA and Hibernate
+- Spring Security
+- Freemarker
+
+### How to run the app:
+
+1. Setup MySQL DB
+2. Use your username and password to connect to the DB in Application.yml
+3. Access URL: http://localhost:8080/
+
+### Roles:
+
+#### administrator
+
+- login: admin
+- password: admin
+
 ## Database structure
 
 This section outlines the database schema for the "SecondTreasure" project, serving as the backend structure for
@@ -13,14 +36,17 @@ managing users, product listings, orders, payments, deliveries, reviews, and ima
 
 ### Table User (Users of the Platform)
 
-| Column name           | Type        | Description                                                 |
-|-----------------------|-------------|-------------------------------------------------------------|
-| user_id               | uuid        | Unique identifier for the user - primary key, not null      |
-| user_first_name       | varchar(45) | First name of the user                                      |
-| user_last_name        | varchar(45) | Last name of the user, not null                             |
-| user_email            | varchar(45) | Email address of the user, not null                         |
-| user_phone_number     | varchar(45) | Phone number of the user, not null                          |
-| user_verified_account | boolean     | Flag indicating if the user's account is verified, not null |
+| Column name           | Type         | Description                                                 |
+|-----------------------|--------------|-------------------------------------------------------------|
+| user_id               | uuid         | Unique identifier for the user - primary key, not null      |
+| user_nick_name        | varchar(45)  | Unique nickname, not null                                   |
+| user_password         | varchar(255) | Password of user accaunt                                    |
+| user_first_name       | varchar(45)  | First name of the user                                      |
+| user_last_name        | varchar(45)  | Last name of the user, not null                             |
+| user_email            | varchar(45)  | Email address of the user, not null                         |
+| user_phone_number     | varchar(45)  | Phone number of the user, not null                          |
+| user_verified_account | boolean      | Flag indicating if the user's account is verified, not null |
+| user_role             | varchar(45)  | User role                                                   |
 
 ### Table Product (Listings of Second-Hand Goods)
 
@@ -34,6 +60,8 @@ managing users, product listings, orders, payments, deliveries, reviews, and ima
 | product_brand       | varchar(45)  | Brand of the product, not null                            |
 | placed_by_user      | uuid         | User ID who placed the product listing, not null          |
 | purchased_by_user   | uuid         | User ID who purchased the product, not null               |
+| date_of_create      | Date         | Date of create product                                    |
+| preview_image_id    | long         | Image id                                                  |
 
 ### Table Order Number (Order Information)
 
@@ -78,9 +106,10 @@ managing users, product listings, orders, payments, deliveries, reviews, and ima
 
 | Column name              | Type        | Description                                               |
 |--------------------------|-------------|-----------------------------------------------------------|
-| image_id                 | uuid        | Unique identifier for the image - primary key, nullable   |
+| image_id                 | BIGSERIAL   | Unique identifier for the image - primary key, nullable   |
 | image_name               | varchar(45) | Name of the image, nullable                               |
 | image_original_file_name | varchar(45) | Original file name of the image, nullable                 |
 | image_size	              | long        | Size of the image file, nullable                          |
 | image_content_type       | varchar(45) | Content type of the image, nullable                       |
 | image_is_preview_image   | boolean     | Flag indicating if the image is a preview image, nullable |
+| bytes                    | long        | Storing pictures                                          |
