@@ -18,9 +18,16 @@
 </#if>
 <hr>
 <h4>Products from all over the world</h4>
-<form action="/" method="get">
+<form id="searchForm" action="/" method="get">
     Search by ad title:
-    <label><input type="text" name="name"></label><input type="submit" value="Поиск"/>
+    <label><input type="text" name="name"></label>
+    <label for="productCategorySearch"></label><select name="category" id="productCategorySearch">
+        <option value="">-- Choose Category --</option>
+    </select>
+    <label for="productBrandSearch"></label><select name="brand" id="productBrandSearch">
+        <option value="">-- Choose Brand --</option>
+    </select>
+    <input type="submit" value="Поиск"/>
 </form>
 <#list products as product>
     <div>
@@ -35,7 +42,7 @@
 <#if user.userNickname??>
     <hr>
     <h3>Create a new product</h3>
-    <form action="/create" method="post" enctype="multipart/form-data">
+    <form id="createProductForm" action="/create" method="post" enctype="multipart/form-data">
         <label>
             Product Name:
             <input type="text" name="productName" id="productName"/>
@@ -50,11 +57,11 @@
         </label><br><br>
         <label>
             Category:
-            <select name="productCategory" id="productCategory"></select>
+            <select name="productCategory" id="productCategoryCreate"></select>
         </label><br><br>
         <label>
             Brand:
-            <select name="productBrand" id="productBrand"></select>
+            <select name="productBrand" id="productBrandCreate"></select>
         </label><br><br>
         <label>
             Image 1:
@@ -63,65 +70,76 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Добавить товар"/>
     </form>
-
-    <script>
-
-        $(document).ready(function () {
-            $.ajax({
-                url: '/api/enum/allCategory',
-                method: 'GET',
-                success: function (data) {
-                    data.forEach(function (category) {
-                        $('#productCategory').append('<option value="' + category + '">' + category + '</option>');
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error('Failed to fetch product categories: ' + status + ', ' + error);
-                }
-            });
-        });
-
-        $(document).ready(function () {
-            $.ajax({
-                url: '/api/enum/allBrand',
-                method: 'GET',
-                success: function (data) {
-                    data.forEach(function (brand) {
-                        $('#productBrand').append('<option value="' + brand + '">' + brand + '</option>');
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error('Failed to fetch product categories: ' + status + ', ' + error);
-                }
-            });
-        });
-
-        function addProduct() {
-            const formData = new FormData();
-            formData.append('productDescription', $('#productDescription').val());
-            formData.append('productPrice', $('#productPrice').val());
-            formData.append('productCategory', $('#productCategory').val());
-            formData.append('productBrand', $('#productBrand').val());
-            formData.append('userNickname', user["userNickname"]);
-            formData.append('file1', $('#file1')[0].files[0]);
-
-            // Выполнение AJAX-запроса для отправки данных формы
-            $.ajax({
-                url: '/api/start/create',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    // Обработка успешного ответа
-                },
-                error: function (xhr, status, error) {
-                    // Обработка ошибки
-                }
-            });
-        }
-    </script>
 </#if>
+<script>
+    $(document).ready(function () {
+        $('#searchForm').submit(function (event) {
+            let category = $('#productCategorySearch').val();
+            let brand = $('#productBrandSearch').val();
+
+            $('input[name="category"]').val(category);
+            $('input[name="brand"]').val(brand);
+        });
+    });
+
+    $('#createProductForm').submit(function (event) {
+        const formData = new FormData();
+        formData.append('productDescription', $('#productDescription').val());
+        formData.append('productPrice', $('#productPrice').val());
+        formData.append('productCategory', $('#productCategoryCreate').val());
+        formData.append('productBrand', $('#productBrandCreate').val());
+        formData.append('userNickname', user["userNickname"]);
+        formData.append('file1', $('#file1')[0].files[0]);
+
+        $.ajax({
+            url: '/api/start/create',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                // Обработка успешного ответа
+            },
+            error: function (xhr, status, error) {
+                // Обработка ошибки
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '/api/enum/allCategory',
+            method: 'GET',
+            success: function (data) {
+                data.forEach(function (category) {
+                    $('#searchForm #productCategorySearch')
+                        .append('<option value="' + category + '">' + category + '</option>');
+                    $('#createProductForm #productCategoryCreate')
+                        .append('<option value="' + category + '">' + category + '</option>');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Failed to fetch product categories: ' + status + ', ' + error);
+            }
+        });
+
+        $.ajax({
+            url: '/api/enum/allBrand',
+            method: 'GET',
+            success: function (data) {
+                data.forEach(function (brand) {
+                    $('#searchForm #productBrandSearch')
+                        .append('<option value="' + brand + '">' + brand + '</option>');
+                    $('#createProductForm #productBrandCreate')
+                        .append('<option value="' + brand + '">' + brand + '</option>');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Failed to fetch product brands: ' + status + ', ' + error);
+            }
+        });
+    });
+</script>
 </body>
 </html>
 

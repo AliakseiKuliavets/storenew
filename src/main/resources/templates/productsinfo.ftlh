@@ -23,10 +23,7 @@
 <b>Date added: </b>${product.dateOfCreate}<br>
 <hr>
 <#if user.userNickname??>
-    <form action="/remove/${product.productId}" method="post">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Удалить товар"/>
-    </form>
+    <a href="/product/update/${product.productId}">Изменить товар...</a>
 </#if>
 </body>
 </html>
