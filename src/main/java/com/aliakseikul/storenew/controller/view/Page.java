@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 
 @Controller
@@ -27,10 +28,28 @@ public class Page {
     @GetMapping("/")
     public String welcome(
             @RequestParam(name = "name", required = false) String name,
-            //Principal principal
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "brand", required = false) String brand,
             Model model
     ) {
-        model.addAttribute("products", productService.findByName(name));
+        String attributeName = "products";
+        List<ProductDto> filteredProducts;
+
+        if (name != null && category != null && brand != null) {
+            if (!name.isEmpty() && (category.isEmpty() && brand.isEmpty())) {
+                filteredProducts = productService.findByName(name);
+            } else if (name.isEmpty() && !category.isEmpty() && !brand.isEmpty()) {
+                filteredProducts = productService.searchProductsByCategoryBrand(category, brand);
+            } else if (!name.isEmpty() && !category.isEmpty() && !brand.isEmpty()) {
+                filteredProducts = productService.searchProductsByCategoryBrandAndName(category, brand, name);
+            } else {
+                filteredProducts = productService.getAllProducts();
+            }
+        } else {
+            filteredProducts = productService.getAllProducts();
+        }
+
+        model.addAttribute(attributeName, filteredProducts);
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "products";
     }
@@ -39,6 +58,7 @@ public class Page {
     public String getProductById(@PathVariable String id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("images", product.getImages());
         return "productsinfo";
     }
@@ -50,6 +70,18 @@ public class Page {
     ) {
         productService.createProduct(principal, productDto, file1);
         return "redirect:/";
+    }
+
+    @GetMapping("/product/update/{productId}")
+    public String updateById(
+            @PathVariable("productId") String productId,
+            Model model
+    ) {
+        Product product = productService.findById(productId);
+        model.addAttribute("product", product);
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("images", product.getImages());
+        return "productupdate";
     }
 
     @PostMapping("/remove/{productId}")

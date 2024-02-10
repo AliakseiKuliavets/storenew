@@ -22,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
@@ -71,11 +72,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public User getUserByNickname(String userNickname) {
         return userRepository.findUserByNickName(userNickname).orElse(new User());
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ResponseEntity<?> register(RegisterRequest request) {
         if (userRepository.findUserByNickName(request.getUserNickname()).isPresent()) {
             throw new UserNotFoundException(ErrorMessage.USER_WITH_NAME);
@@ -95,33 +98,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByPrincipal(Principal principal) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (principal == null) {
             return new User();
         }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return userRepository.findUserByNickName(principal.getName()).orElse(new User());
     }
 
     @Override
     public void authenticate(AuthenticationRequest request) {
-        System.out.println("Im in User Impl");
         manager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserNickname(),
                         request.getUserPassword()
                 )
         );
-        System.out.println("OKKKKK");
-//        var user = userRepository.findUserByNickName(request.getUserNickname())
-//                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
-//        var jwtToken = service.generateToken(user);
-//
-//        return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public ResponseEntity<String> updateProductParamById(String userId, String property, String value) {
         findById(userId);
         UUID userUuid = UUID.fromString(userId);

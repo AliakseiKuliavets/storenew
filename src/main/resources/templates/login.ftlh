@@ -6,21 +6,21 @@
 <body>
 <h1>BUYSELL</h1>
 <hr>
-<h4>Авторизация</h4>
+<h4>Authorization</h4>
 <a href="/">Home</a>
 <form action="/authentication/login" method="post">
 
-        Ник нейм пользователя:
+       User nickname:
         <input type="text" name="userNickname">
     <br><br>
 
-        Пароль:
+        Password:
         <input type="password" name="userPassword">
     <br><br>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Вход"/>
+    <input type="submit" value="Sign in"/>
 </form>
-<a href="/register">Регистрация</a>
+<a href="/register">Registration</a>
 </body>
 </html>
 

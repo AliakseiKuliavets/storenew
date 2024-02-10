@@ -14,11 +14,12 @@ import com.aliakseikul.storenew.repository.UserRepository;
 import com.aliakseikul.storenew.service.interf.ProductService;
 import com.aliakseikul.storenew.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -49,10 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findByName(String name) {
-        if (name != null) {
-            return productMapper.productsToProductsDto(productRepository.findByName(name));
-        }
-        return productMapper.productsToProductsDto(productRepository.findAll());
+        return productMapper.productsToProductsDto(productRepository.findByName(name));
     }
 
     @Override
@@ -101,8 +99,26 @@ public class ProductServiceImpl implements ProductService {
         if (checkBrand(brand)) {
             throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
         }
+
         return productMapper.productsToProductsDto(
                 productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand)));
+    }
+
+    @Override
+    public List<ProductDto> searchProductsByCategoryBrandAndName(String category, String brand, String name) {
+        if (checkCategory(category)) {
+            throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
+        }
+        if (checkBrand(brand)) {
+            throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
+        }
+
+        return productMapper.productsToProductsDto(
+                productRepository.searchProductsByCategoryBrandAndName(
+                        ProductCategory.valueOf(category),
+                        ProductBrand.valueOf(brand),
+                        name
+                ));
     }
 
     @Override
@@ -135,15 +151,17 @@ public class ProductServiceImpl implements ProductService {
                 .build();
 
         product.setPlacedByUser(userService.getUserByPrincipal(principal));
-        createImage(file1, product);
-        Product product1 = productRepository.save(product);
-        product1.setPreviewImageId(product1.getImages().get(0).getImageId());
+        Image image = createImage(file1, product);
+        if (image != null) {
+            Product product1 = productRepository.save(product);
+            product1.setPreviewImageId(product1.getImages().get(0).getImageId());
+        }
 
         productMapper.toDto(productRepository.save(product));
     }
 
-    private void createImage(MultipartFile file1, Product product) {
-        Image image;
+    private Image createImage(MultipartFile file1, Product product) {
+        Image image = null;
         if (file1.getSize() != 0) {
             image = toImage(file1);
             image.setImageIsPreviewImage(true);
@@ -155,6 +173,7 @@ public class ProductServiceImpl implements ProductService {
             list.add(image);
             product.setImages(list);
         }
+        return image;
     }
 
     private Image toImage(MultipartFile file) {
@@ -166,7 +185,7 @@ public class ProductServiceImpl implements ProductService {
         }
         Blob blob;
         try {
-            blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+            blob = new SerialBlob(bytes);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -183,63 +202,21 @@ public class ProductServiceImpl implements ProductService {
         return image;
     }
 
+
     @Override
-    @Transactional
-    public ResponseEntity<String> updateProductParamById(String productId, String tableName, String value) {
-        findById(productId);
-        UUID productUuid = UUID.fromString(productId);
-
-        String responseMessage;
-        switch (tableName.toLowerCase()) {
-            case "name":
-                productRepository.updateProductName(productUuid, value);
-                responseMessage = "set new name " + value;
-                break;
-            case "price":
-                if (checkNumber(value)) {
-                    throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
-                }
-                double number = Double.parseDouble(value);
-                if (number < 0) {
-                    throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
-                }
-                productRepository.updateProductPrice(productUuid, value);
-                responseMessage = "set new price " + value;
-                break;
-            case "descriptions":
-                productRepository.updateProductDescriptions(productUuid, value);
-                responseMessage = "set new descriptions " + value;
-                break;
-            case "category":
-                if (checkCategory(value)) {
-                    throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
-                } else {
-                    productRepository.updateProductCategory(productUuid, ProductCategory.valueOf(value));
-                    responseMessage = "set new category " + value;
-                    break;
-                }
-            case "brand":
-                if (checkBrand(value)) {
-                    throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
-                } else {
-                    productRepository.updateProductBrand(productUuid, ProductBrand.valueOf(value));
-                    responseMessage = "set new phone brand " + value;
-                    break;
-                }
-            default:
-                return ResponseEntity.badRequest().body("Invalid property: " + tableName);
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void updateProductNameWithId(String productId, String name) {
+        Product product = findById(productId);
+        if (product.getProductId() != null) {
+            productRepository.updateProductNameWithId(UUID.fromString(productId), name);
         }
-        return ResponseEntity.ok("Product with ID " + productId + " " + responseMessage);
-    }
-
-    private boolean checkNumber(String value) {
-        String template =
-                "^[0-9]+$\n";
-        return value.matches(template);
     }
 
     @Override
     public void deleteById(String productId) {
+        System.out.println("NEN");
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(productId);
         findById(productId);
         productRepository.deleteById(UUID.fromString(productId));
     }

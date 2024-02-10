@@ -83,13 +83,12 @@ public class ProductController {
         return productService.createProduct(productDto);
     }
 
-    @PutMapping("/update/")
-    public ResponseEntity<String> updateProductPropertyId(
-            @NotNull @IdChecker @RequestParam String productId,
-            @NotNull @Size(min = 1, max = 44) @RequestParam String tableName,
-            @NotNull @Size(min = 1, max = 44) @RequestParam String value
+    @PostMapping("/update/{productId}and{productName}")
+    public void updateProductNameWithId(
+            @NotNull @IdChecker @PathVariable("productId") String productId,
+            @NotNull @PathVariable("productName") String name
     ) {
-        return productService.updateProductParamById(productId, tableName, value);
+        productService.updateProductNameWithId(productId, name);
     }
 
     @DeleteMapping("/remove/{productId}")
