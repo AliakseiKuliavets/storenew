@@ -25,6 +25,7 @@ public class Page {
     private final UserService userService;
     private Principal principal = () -> null;
 
+
     @GetMapping("/")
     public String welcome(
             @RequestParam(name = "name", required = false) String name,
@@ -42,7 +43,11 @@ public class Page {
                 filteredProducts = productService.searchProductsByCategoryBrand(category, brand);
             } else if (!name.isEmpty() && !category.isEmpty() && !brand.isEmpty()) {
                 filteredProducts = productService.searchProductsByCategoryBrandAndName(category, brand, name);
-            } else {
+            } else if (name.isEmpty() && category.isEmpty() && !brand.isEmpty()) {
+                filteredProducts = productService.getAllProductsByBrand(brand);
+            }else if (name.isEmpty() && !category.isEmpty()) {
+                filteredProducts = productService.getAllProductsByCategory(category);
+            }else {
                 filteredProducts = productService.getAllProducts();
             }
         } else {
@@ -69,7 +74,7 @@ public class Page {
             @RequestParam("file1") MultipartFile file1
     ) {
         productService.createProduct(principal, productDto, file1);
-        return "redirect:/";
+        return redirect();
     }
 
     @GetMapping("/product/update/{productId}")
@@ -89,7 +94,7 @@ public class Page {
             @PathVariable("productId") String productId
     ) {
         productService.deleteById(productId);
-        return "redirect:/";
+        return redirect();
     }
 
     @GetMapping("/login")
@@ -99,11 +104,10 @@ public class Page {
 
     @PostMapping("/authentication/login")
     public String login(AuthenticationRequest request, Model model) {
-        System.out.println("Im in Page");
         userService.authenticate(request);
         principal = request::getUserNickname;
 //        return welcome(null,principal,model);
-        return "redirect:/";
+        return redirect();
     }
 
     @GetMapping("/register")
@@ -117,5 +121,9 @@ public class Page {
     ) {
         userService.register(request);
         return "redirect:/login";
+    }
+
+    public String redirect(){
+        return "redirect:/";
     }
 }
