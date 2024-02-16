@@ -32,6 +32,14 @@ public interface ProductService {
 
     void updateProductNameWithId(String productId, String name);
 
+    void updateProductDescriptionWithId(String productId, String description);
+
+    void updateProductPriceWithId(String productId, String price);
+
+    void updateProductCategoryWithId(String productId, String category);
+
+    void updateProductBrandWithId(String productId, String brand);
+
     void deleteById(String productId);
 
 }

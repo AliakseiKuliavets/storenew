@@ -1,5 +1,6 @@
 package com.aliakseikul.storenew.controller.page;
 
+import com.aliakseikul.storenew.controller.view.Page;
 import com.aliakseikul.storenew.dto.ProductDto;
 import com.aliakseikul.storenew.entity.Product;
 import com.aliakseikul.storenew.service.interf.ProductService;
@@ -20,6 +21,8 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+
+    private final Page page;
 
     @GetMapping("/id")
     public Product getProductById(
@@ -83,12 +86,47 @@ public class ProductController {
         return productService.createProduct(productDto);
     }
 
-    @PostMapping("/update/{productId}and{productName}")
+    @PostMapping("/update/name/{productId}and{productName}")
     public void updateProductNameWithId(
             @NotNull @IdChecker @PathVariable("productId") String productId,
-            @NotNull @PathVariable("productName") String name
+            @NotNull @Size(min = 1, max = 44) @PathVariable("productName") String name
     ) {
         productService.updateProductNameWithId(productId, name);
+        page.redirect();
+    }
+
+    @PostMapping("/update/description/{productId}and{productDescription}")
+    public void updateProductDescriptionWithId(
+            @NotNull @IdChecker @PathVariable("productId") String productId,
+            @NotNull
+            @Size(min = 1, max = 254)
+            @PathVariable("productDescription") String description
+    ) {
+        productService.updateProductDescriptionWithId(productId, description);
+    }
+
+    @PostMapping("/update/price/{productId}and{productPrice}")
+    public void updateProductPriceWithId(
+            @NotNull @IdChecker @PathVariable("productId") String productId,
+            @NotNull @PathVariable("productPrice") String price
+    ) {
+        productService.updateProductPriceWithId(productId, price);
+    }
+
+    @PostMapping("/update/category/{productId}and{productCategory}")
+    public void updateProductCategoryWithId(
+            @NotNull @IdChecker @PathVariable("productId") String productId,
+            @NotNull @PathVariable("productCategory") String category
+    ) {
+        productService.updateProductCategoryWithId(productId, category);
+    }
+
+    @PostMapping("/update/brand/{productId}and{productBrand}")
+    public void updateProductBrandWithId(
+            @NotNull @IdChecker @PathVariable("productId") String productId,
+            @NotNull @PathVariable("productBrand") String brand
+    ) {
+        productService.updateProductBrandWithId(productId, brand);
     }
 
     @DeleteMapping("/remove/{productId}")

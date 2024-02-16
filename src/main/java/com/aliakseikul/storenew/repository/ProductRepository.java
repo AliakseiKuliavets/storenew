@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,4 +38,20 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Modifying
     @Query("update Product p set p.productName = :name where p.productId = :uuid")
     void updateProductNameWithId(UUID uuid, String name);
+
+    @Modifying
+    @Query("update Product p set p.productDescription = :description where p.productId = :uuid")
+    void updateProductDescriptionWithId(UUID uuid, String description);
+
+    @Modifying
+    @Query("update Product p set p.productPrice = :newPrice where p.productId = :uuid")
+    void updateProductPriceWithId(UUID uuid, BigDecimal newPrice);
+
+    @Modifying
+    @Query("update Product p set p.productCategory = :productCategory where p.productId = :uuid")
+    void updateProductCategoryWithId(UUID uuid, ProductCategory productCategory);
+
+    @Modifying
+    @Query("update Product p set p.productBrand = :productBrand where p.productId = :uuid")
+    void updateProductBrandWithId(UUID uuid, ProductBrand productBrand);
 }

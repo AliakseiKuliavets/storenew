@@ -137,6 +137,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void createProduct(Principal principal, ProductDto productDto, MultipartFile file1) {
         User placedByUser = userRepository.findUserByNickName(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
@@ -163,7 +164,11 @@ public class ProductServiceImpl implements ProductService {
     private Image createImage(MultipartFile file1, Product product) {
         Image image = null;
         if (file1.getSize() != 0) {
-            image = toImage(file1);
+            try {
+                image = toImage(file1);
+            } catch (IOException | SQLException e) {
+                throw new RuntimeException(e);
+            }
             image.setImageIsPreviewImage(true);
             image.setProduct(product);
             List<Image> list = product.getImages();
@@ -176,29 +181,17 @@ public class ProductServiceImpl implements ProductService {
         return image;
     }
 
-    private Image toImage(MultipartFile file) {
+    private Image toImage(MultipartFile file) throws IOException, SQLException {
         byte[] bytes;
-        try {
-            bytes = file.getBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        bytes = file.getBytes();
         Blob blob;
-        try {
-            blob = new SerialBlob(bytes);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        blob = new SerialBlob(bytes);
         Image image = new Image();
         image.setImageName(file.getName());
         image.setImageOriginalFileName(file.getOriginalFilename());
         image.setImageContentType(file.getContentType());
         image.setImageSize(blob);
-        try {
-            image.setBytes(file.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        image.setBytes(file.getBytes());
         return image;
     }
 
@@ -213,10 +206,56 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void updateProductDescriptionWithId(String productId, String description) {
+        Product product = findById(productId);
+        if (product.getProductId() != null) {
+            productRepository.updateProductDescriptionWithId(UUID.fromString(productId), description);
+        }
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void updateProductPriceWithId(String productId, String price) {
+        Product product = findById(productId);
+        if (product.getProductId() != null) {
+            long longPrice = Long.parseLong(price);
+            if (longPrice > 1_000_000 || longPrice < 0) {
+                throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
+            }
+            BigDecimal newPrice = BigDecimal.valueOf(longPrice);
+            productRepository.updateProductPriceWithId(UUID.fromString(productId), newPrice);
+        }
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void updateProductCategoryWithId(String productId, String category) {
+        Product product = findById(productId);
+        if (product.getProductId() != null) {
+            if (checkCategory(category)) {
+                throw new CategoryNotFoundExceptions(ErrorMessage.CATEGORY_NOT_FOUND);
+            }
+            productRepository.updateProductCategoryWithId(
+                    UUID.fromString(productId), ProductCategory.valueOf(category));
+        }
+    }
+
+
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void updateProductBrandWithId(String productId, String brand) {
+        Product product = findById(productId);
+        if (product.getProductId() != null) {
+            if (checkBrand(brand)) {
+                throw new BrandNotFoundExceptions(ErrorMessage.BRAND_NOT_FOUND);
+            }
+            productRepository.updateProductBrandWithId(UUID.fromString(productId), ProductBrand.valueOf(brand));
+        }
+    }
+
+    @Override
     public void deleteById(String productId) {
-        System.out.println("NEN");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(productId);
         findById(productId);
         productRepository.deleteById(UUID.fromString(productId));
     }
