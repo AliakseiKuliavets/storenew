@@ -68,8 +68,12 @@ dependencies {
     //validation
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.2.2'
-}
 
+    //swagger
+    // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-core
+    implementation group: 'io.swagger.core.v3', name: 'swagger-core', version: '2.2.20'
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+}
 tasks.named('test') {
     useJUnitPlatform()
 }
