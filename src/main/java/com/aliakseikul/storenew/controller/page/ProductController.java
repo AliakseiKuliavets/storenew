@@ -92,7 +92,7 @@ public class ProductController {
             @NotNull @Size(min = 1, max = 44) @PathVariable("productName") String name
     ) {
         productService.updateProductNameWithId(productId, name);
-        page.redirect();
+//        page.redirect();
     }
 
     @PostMapping("/update/description/{productId}and{productDescription}")
