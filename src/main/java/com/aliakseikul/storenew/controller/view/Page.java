@@ -18,6 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class Page {
 
     private final ProductService productService;
@@ -89,7 +90,7 @@ public class Page {
             @PathVariable("productId") String productId
     ) {
         productService.deleteById(productId);
-        return "redirect:/";
+        return "redirect:/api/";
     }
 
     @GetMapping("/login")
@@ -103,7 +104,7 @@ public class Page {
         userService.authenticate(request);
         principal = request::getUserNickname;
 //        return welcome(null,principal,model);
-        return "redirect:/";
+        return "redirect:/api/";
     }
 
     @GetMapping("/register")
@@ -116,6 +117,6 @@ public class Page {
             RegisterRequest request
     ) {
         userService.register(request);
-        return "redirect:/login";
+        return "redirect:/api/login";
     }
 }

@@ -11,7 +11,7 @@
 
 <#list images as img>
     <div>
-        <img src="/images/${img.imageId}" height="300px"/><br><br>
+        <img src="/api/images/${img.imageId}" height="300px"/><br><br>
     </div>
 </#list>
 
