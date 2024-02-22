@@ -14,11 +14,11 @@
         <input type="submit" value="Sign out"/>
     </form>
 <#else>
-    <a href="/login">Sign in</a>
+    <a href="/api/login">Sign in</a>
 </#if>
 <hr>
 <h4>Products from all over the world</h4>
-<form id="searchForm" action="/" method="get">
+<form id="searchForm" action="/api" method="get">
     Search by ad title:
     <label><input type="text" name="name"></label>
     <label for="productCategorySearch"></label><select name="category" id="productCategorySearch">
@@ -32,7 +32,7 @@
 <#list products as product>
     <div>
         <p><b>${product.productName}</b> ${product.productPrice} eur. |
-            <a href="/product/${product.productId}">Details...</a>
+            <a href="/api/product/${product.productId}">Details...</a>
         </p>
     </div>
 <#else>
@@ -42,7 +42,7 @@
 <#if user.userNickname??>
     <hr>
     <h3>Create a new product</h3>
-    <form id="createProductForm" action="/create" method="post" enctype="multipart/form-data">
+    <form id="createProductForm" action="/api/create" method="post" enctype="multipart/form-data">
         <label>
             Product Name:
             <input type="text" name="productName" id="productName"/>

@@ -23,7 +23,7 @@
 <b>Date added: </b>${product.dateOfCreate}<br>
 <hr>
 <#if user.userNickname??>
-    <a href="/product/update/${product.productId}">Изменить товар...</a>
+    <a href="/api/product/update/${product.productId}">Изменить товар...</a>
 </#if>
 </body>
 </html>

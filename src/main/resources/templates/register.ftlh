@@ -7,7 +7,7 @@
 <h1>BUYSELL</h1>
 <hr>
 <h4>Registration</h4>
-<form action="/registration" method="post">
+<form action="/api/registration" method="post">
 
     Username:
     <label for="userFirstName"></label><input type="text" id="userFirstName" name="userFirstName"><br><br>

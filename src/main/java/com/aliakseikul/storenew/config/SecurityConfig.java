@@ -26,18 +26,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(
-                                        new AntPathRequestMatcher("/api/product/**"),
-                                        new AntPathRequestMatcher("/api/user/**"),
-                                        new AntPathRequestMatcher("/api/start/**"),
                                         new AntPathRequestMatcher("/images/**"),
                                         new AntPathRequestMatcher("/api/enum/**"),
 
 
-                                        new AntPathRequestMatcher("/**"),
-                                        new AntPathRequestMatcher("/registration"),
-                                        new AntPathRequestMatcher("/login"),
-                                        new AntPathRequestMatcher("/login/**"),
-                                        new AntPathRequestMatcher("/authentication/login/**")
+                                        new AntPathRequestMatcher("/api/"),
+                                        new AntPathRequestMatcher("/api/product/**"),
+                                        new AntPathRequestMatcher("/api/login"),
+                                        new AntPathRequestMatcher("/api/register"),
+                                        new AntPathRequestMatcher("/api/registration"),
+                                        new AntPathRequestMatcher("/api/authentication/login"),
+                                        new AntPathRequestMatcher("/swagger-ui/index.html")
                                 )
                                 .permitAll()
                                 .anyRequest()
