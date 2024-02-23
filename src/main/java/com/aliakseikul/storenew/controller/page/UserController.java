@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "UserController", description = "rest class for processing requests for user")
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +28,6 @@ public class UserController {
 
     private final UserService userService;
 
-
-    @GetMapping("/")
     @Operation(summary = "Finds the User",
             description = "Finds the user, converts it to UserDto and returns",
             responses = {
@@ -45,6 +45,7 @@ public class UserController {
                                     mediaType = "application/json")})
             }
     )
+    @GetMapping("/")
     public UserDto getUserById(
             @Parameter(
                     description = "ID of employee to be retrieved",
@@ -55,11 +56,10 @@ public class UserController {
     }
 
 
-    @PostMapping("/add")
     @Operation(summary = "Saves the user",
             description = "Stores UserDto and returns User",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Author data for saving",
+                    description = "UserDto data for saving",
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
@@ -81,17 +81,19 @@ public class UserController {
                                     mediaType = "application/json")})
             }
     )
+    @PostMapping("/add")
     public User addUser(@RequestBody UserCreateDto userDto) {
         return userService.addUser(userDto);
     }
 
-    @PutMapping("/change/")
     @Operation(summary = "Change the property user",
             description = "Changing the user's fields depending on data entry and fields ",
             responses = {
                     @ApiResponse(responseCode = "200",
                             description = "All its great",
-                            content = {@Content(schema = @Schema(),
+                            content = {@Content(
+                                    schema = @Schema(defaultValue = "User with ID \" + userId + \" " +
+                                            " + set new \" + property \""),
                                     mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Employee not found, or wrong property or value",
@@ -103,24 +105,26 @@ public class UserController {
                                     mediaType = "application/json")})
             }
     )
+    @PutMapping("/change/")
     public ResponseEntity<String> changeUserPropertyById(
             @Parameter(
                     description = "ID of employee to be retrieved",
                     required = true)
             @NotNull @IdChecker @RequestParam String userId,
-            @Parameter(
-                    description = "Which field will be changed choose between {name,last name,email,phone number}",
-                    required = true)
+
+            @Schema(minLength = 1, maxLength = 44,
+                    requiredMode = Schema.RequiredMode.REQUIRED,
+                    description = "Which field will be changed choose between {name,last name,email,phone number}")
             @NotNull @Size(min = 1, max = 44) @RequestParam String property,
-            @Parameter(
-                    description = "The value that will need to be changed to",
-                    required = true)
+
+            @Schema(minLength = 1, maxLength = 44,
+                    requiredMode = Schema.RequiredMode.REQUIRED,
+                    description = "The value that will need to be changed to")
             @NotNull @Size(min = 1, max = 44) @RequestParam String value
     ) {
         return userService.updateProductParamById(userId, property, value);
     }
 
-    @PutMapping("/change/role")
     @Operation(summary = "Change the role user",
             description = "Changing the user's role",
             responses = {
@@ -138,21 +142,21 @@ public class UserController {
                                     mediaType = "application/json")})
             }
     )
+    @PutMapping("/change/role")
     public ResponseEntity<String> changeUserRoleById(
             @Parameter(
                     description = "ID of employee to be retrieved",
                     required = true)
             @NotNull @IdChecker @RequestParam String userId,
-            @Parameter(
-                    description = "User role for which changes will be made",
-                    required = true)
+            @Schema(minLength = 1, maxLength = 44,
+                    requiredMode = Schema.RequiredMode.REQUIRED,
+                    description = "User role for which changes will be made")
             @NotNull @Size(min = 1, max = 44) @RequestParam String role
     ) {
         return userService.changeRole(userId, role);
     }
 
-    @DeleteMapping("/remove/{userId}")
-    @Operation(summary = "basic user rest delete method by provided id",
+    @Operation(summary = "Delete user",
             description = "deletes a user from database by given id",
             responses = {
                     @ApiResponse(responseCode = "200",
@@ -169,6 +173,7 @@ public class UserController {
                             content = {@Content(schema = @Schema(implementation = ErrorDto.class),
                                     mediaType = "application/json")})
             })
+    @DeleteMapping("/remove/{userId}")
     public ResponseEntity<String> deleteUserById(
             @Parameter(
                     description = "ID of employee to be retrieved",
