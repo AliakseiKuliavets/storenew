@@ -42,22 +42,26 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public Product findById(String id) {
         return productRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND));
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<ProductDto> findByName(String name) {
         return productMapper.productsToProductsDto(productRepository.findByName(name));
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<ProductDto> getAllProducts() {
         return productMapper.productsToProductsDto(productRepository.findAll());
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<ProductDto> getAllProductsByCategory(String category) {
         String categoryUp = category.toUpperCase();
@@ -68,6 +72,7 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.getAllProductsByCategory(ProductCategory.valueOf(categoryUp)));
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<ProductDto> getAllProductsByBrand(String brand) {
         String brandUp = brand.toUpperCase();
@@ -78,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.getAllProductsByBrand(ProductBrand.valueOf(brandUp)));
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<ProductDto> searchProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         double minPriceS = minPrice.doubleValue();
@@ -91,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.productsToProductsDto(productRepository.findByPriceBetween(minPriceS, maxPriceS));
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<ProductDto> searchProductsByCategoryBrand(String category, String brand) {
         if (checkCategory(category)) {
@@ -104,6 +111,8 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.findByCategoryBrand(ProductCategory.valueOf(category), ProductBrand.valueOf(brand)));
     }
 
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<ProductDto> searchProductsByCategoryBrandAndName(String category, String brand, String name) {
         if (checkCategory(category)) {
@@ -121,6 +130,7 @@ public class ProductServiceImpl implements ProductService {
                 ));
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public ProductDto createProduct(ProductDto productDto) {
         User placedByUser = userRepository.findUserByNickName(productDto.getUserNickname())
@@ -136,8 +146,8 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toDto(productRepository.save(product));
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void createProduct(Principal principal, ProductDto productDto, MultipartFile file1) {
         User placedByUser = userRepository.findUserByNickName(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
@@ -196,8 +206,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateProductNameWithId(String productId, String name) {
         Product product = findById(productId);
         if (product.getProductId() != null) {
@@ -205,8 +215,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateProductDescriptionWithId(String productId, String description) {
         Product product = findById(productId);
         if (product.getProductId() != null) {
@@ -214,8 +224,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateProductPriceWithId(String productId, String price) {
         Product product = findById(productId);
         if (product.getProductId() != null) {
@@ -228,8 +238,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateProductCategoryWithId(String productId, String category) {
         Product product = findById(productId);
         if (product.getProductId() != null) {
@@ -242,8 +252,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateProductBrandWithId(String productId, String brand) {
         Product product = findById(productId);
         if (product.getProductId() != null) {
@@ -254,6 +264,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public void deleteById(String productId) {
         findById(productId);

@@ -45,12 +45,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public UserDto findById(String id) {
         return userMapper.toDto(userRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND)));
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public User addUser(UserCreateDto userCreateDto) {
         if (userCreateDto == null) {
@@ -71,14 +73,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public User getUserByNickname(String userNickname) {
-        return userRepository.findUserByNickName(userNickname).orElse(new User());
-    }
-
-    @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ResponseEntity<?> register(RegisterRequest request) {
         if (userRepository.findUserByNickName(request.getUserNickname()).isPresent()) {
             throw new UserNotFoundException(ErrorMessage.USER_WITH_NAME);
@@ -96,6 +92,7 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) {
@@ -114,8 +111,8 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public ResponseEntity<String> updateProductParamById(String userId, String property, String value) {
         findById(userId);
         UUID userUuid = UUID.fromString(userId);
@@ -148,17 +145,19 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok("User with ID " + userId + " " + responseMessage);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional
     public ResponseEntity<String> changeRole(String userId, String userRole) {
         String userRoleUp = userRole.toUpperCase();
         if (checkRole(userRoleUp)) {
             throw new UserRoleNotFoundException(ErrorMessage.ROLE_NOT_FOUND);
         }
+        findById(userId);
         userRepository.changeRole(UUID.fromString(userId), UserRole.valueOf(userRoleUp));
         return ResponseEntity.ok("User with ID " + userId + " has change user role to " + userRole);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public void deleteUserById(String userId) {
         findById(userId);

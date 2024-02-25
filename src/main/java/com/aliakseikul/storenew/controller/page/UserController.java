@@ -69,7 +69,7 @@ public class UserController {
             responses = {
                     @ApiResponse(responseCode = "200",
                             description = "All its great",
-                            content = {@Content(schema = @Schema(implementation = User.class),
+                            content = {@Content(schema = @Schema(implementation = UserDto.class),
                                     mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Employee not create, because NickName is already taken",
@@ -157,7 +157,7 @@ public class UserController {
     }
 
     @Operation(summary = "Delete user",
-            description = "deletes a user from database by given id",
+            description = "Deletes a user from database by given id",
             responses = {
                     @ApiResponse(responseCode = "200",
                             description = "All its great",
