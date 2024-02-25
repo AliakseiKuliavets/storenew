@@ -74,6 +74,9 @@ dependencies {
     implementation group: 'io.swagger.core.v3', name: 'swagger-core', version: '2.2.20'
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
+
+    // https://mvnrepository.com/artifact/com.h2database/h2
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.2.224'
 }
 tasks.named('test') {
     useJUnitPlatform()
