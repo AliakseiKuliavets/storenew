@@ -31,11 +31,23 @@ public class SecurityConfig {
 
 
                                         new AntPathRequestMatcher("/api/"),
+                                        new AntPathRequestMatcher("/api/create"),
                                         new AntPathRequestMatcher("/api/product/**"),
                                         new AntPathRequestMatcher("/api/login"),
                                         new AntPathRequestMatcher("/api/register"),
                                         new AntPathRequestMatcher("/api/registration"),
                                         new AntPathRequestMatcher("/api/authentication/login"),
+
+                                        //swagger
+                                        new AntPathRequestMatcher("/v2/api-docs"),
+                                        new AntPathRequestMatcher("/v3/api-docs"),
+                                        new AntPathRequestMatcher("/v3/api-docs/**"),
+                                        new AntPathRequestMatcher("/swagger-resources"),
+                                        new AntPathRequestMatcher("/swagger-resources/**"),
+                                        new AntPathRequestMatcher("/configuration/ui"),
+                                        new AntPathRequestMatcher("/configuration/security"),
+                                        new AntPathRequestMatcher("/swagger-ui/**"),
+                                        new AntPathRequestMatcher("/webjars/**"),
                                         new AntPathRequestMatcher("/swagger-ui/index.html")
                                 )
                                 .permitAll()

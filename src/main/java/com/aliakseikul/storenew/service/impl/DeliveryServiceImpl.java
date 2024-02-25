@@ -9,6 +9,7 @@ import com.aliakseikul.storenew.repository.DeliveryRepository;
 import com.aliakseikul.storenew.service.interf.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -21,12 +22,14 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryMapper deliveryMapper;
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public DeliveryDto findById(String id) {
         return deliveryMapper.toDto(deliveryRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new DeliveryNotFoundException(ErrorMessage.DELIVERY_NOT_FOUND)));
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DeliveryDto addDelivery(DeliveryDto deliveryDto) {
         if (deliveryDto == null) {
@@ -42,13 +45,14 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryMapper.toDto(deliveryRepository.save(delivery));
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    @Transactional
     public void changeAddressById(String deliveryId, String deliveryAddress) {
         findById(deliveryId);
         deliveryRepository.changeAddressById(UUID.fromString(deliveryId), deliveryAddress);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public void deleteDeliveryById(String deliveryId) {
         findById(deliveryId);
