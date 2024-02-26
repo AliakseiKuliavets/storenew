@@ -28,8 +28,11 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/images/**"),
                                         new AntPathRequestMatcher("/api/enum/**"),
+
+
                                         new AntPathRequestMatcher("/**"),
                                         new AntPathRequestMatcher("/api/**"),
+                                        new AntPathRequestMatcher("/api/user/**"),
 
 
                                         new AntPathRequestMatcher("/api/"),
