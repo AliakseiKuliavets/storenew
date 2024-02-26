@@ -1,14 +1,14 @@
 
-drop table image;
+drop table `image`;
 
-drop table order_number;
+drop table `order_number`;
 
-drop table delivery;
+drop table `delivery`;
 
-drop table payment;
+drop table `payment`;
 
-drop table product;
+drop table `product`;
 
-drop table reviewed;
+drop table `reviewed`;
 
-drop table user;
+drop table `user`;

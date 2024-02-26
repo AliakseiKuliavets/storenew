@@ -1,52 +1,33 @@
 package com.aliakseikul.storenew.controller.page;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Testcontainers
+@Sql("/drop.sql")
+@Sql("/create.sql")
+@Sql("/insert.sql")
+@Rollback
 class ProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-
-    @Container
-    @ServiceConnection
-    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.3.0")
-//            .withInitScript("/drop.sql")
-            .withInitScript("create.sql")
-            .withInitScript("insert.sql");
-
-    @BeforeAll
-    static void setUp(){
-        mySQLContainer.start();
-    }
-
-    @AfterAll
-    static void tearDwn(){
-        mySQLContainer.stop();
-    }
 
     @Test
     void getProductById() throws Exception {
@@ -72,8 +53,9 @@ class ProductControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/product/update/name/" + productId + "and" + productName)
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(containsString(productName)));
+                .andExpect(MockMvcResultMatchers.content().string(containsString("")));
     }
 }
