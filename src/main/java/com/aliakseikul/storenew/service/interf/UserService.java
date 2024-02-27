@@ -21,7 +21,6 @@ public interface UserService {
 
     void authenticate(AuthenticationRequest request);
 
-    ResponseEntity<String> updateProductParamById(String userId, String property, String value);
 
     ResponseEntity<String> changeRole(String userId, String userRole);
 

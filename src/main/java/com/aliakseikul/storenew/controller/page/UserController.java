@@ -87,44 +87,6 @@ public class UserController {
         return userService.addUser(userDto);
     }
 
-    @Operation(summary = "Change the property user",
-            description = "Changing the user's fields depending on data entry and fields ",
-            responses = {
-                    @ApiResponse(responseCode = "200",
-                            description = "All its great",
-                            content = {@Content(
-                                    schema = @Schema(defaultValue = "User with ID \" + userId + \" " +
-                                            " + set new \" + property \""),
-                                    mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "404",
-                            description = "Employee not found, or wrong property or value",
-                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
-                                    mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "500",
-                            description = "Something wrong",
-                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
-                                    mediaType = "application/json")})
-            }
-    )
-    @PutMapping("/change/")
-    public ResponseEntity<String> changeUserPropertyById(
-            @Parameter(
-                    description = "ID of employee to be retrieved",
-                    required = true)
-            @NotNull @IdChecker @RequestParam String userId,
-
-            @Schema(minLength = 1, maxLength = 44,
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    description = "Which field will be changed choose between {name,last name,email,phone number}")
-            @NotNull @Size(min = 1, max = 44) @RequestParam String property,
-
-            @Schema(minLength = 1, maxLength = 44,
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    description = "The value that will need to be changed to")
-            @NotNull @Size(min = 1, max = 44) @RequestParam String value
-    ) {
-        return userService.updateProductParamById(userId, property, value);
-    }
 
     @Operation(summary = "Change the role user",
             description = "Changing the user's role",

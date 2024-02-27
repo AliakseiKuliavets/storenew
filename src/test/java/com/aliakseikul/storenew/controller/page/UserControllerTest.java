@@ -2,6 +2,9 @@ package com.aliakseikul.storenew.controller.page;
 
 
 import com.aliakseikul.storenew.dto.UserCreateDto;
+import com.aliakseikul.storenew.entity.User;
+import com.aliakseikul.storenew.entity.enums.UserRole;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -69,5 +72,51 @@ class UserControllerTest {
                         .andReturn();
 
         Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+    }
+
+    //-----------------------------changeUserRoleById()------------------------------------
+    @WithMockUser("/some")
+    @Test
+    void changeUserRoleById() throws Exception {
+        UserRole userRole = UserRole.USER;
+        String role = String.valueOf(userRole);
+
+        MvcResult mvcResult =
+                mockMvc.perform(MockMvcRequestBuilders.put("/api/user/change/role")
+                                .param("userId", USER_ID_VALID)
+                                .param("role", role)
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn();
+
+        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+        Assertions.assertEquals(userRole, getById().getUserRole());
+    }
+
+    //-----------------------------deleteUserById()------------------------------------
+    @WithMockUser("/some")
+    @Test
+    void deleteUserById() throws Exception {
+
+        MvcResult mvcResult =
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/remove/" + USER_ID_VALID)
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn();
+
+        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+    }
+
+    @WithMockUser("/some")
+    private User getById() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id")
+                        .param("id", USER_ID_VALID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        String userJson = mvcResult.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return objectMapper.readValue(userJson, User.class);
     }
 }
