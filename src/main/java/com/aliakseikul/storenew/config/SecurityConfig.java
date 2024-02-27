@@ -29,12 +29,12 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/images/**"),
                                         new AntPathRequestMatcher("/api/enum/**"),
 
-
                                         new AntPathRequestMatcher("/api/"),
                                         new AntPathRequestMatcher("/api/create"),
                                         new AntPathRequestMatcher("/api/product/**"),
                                         new AntPathRequestMatcher("/api/login"),
                                         new AntPathRequestMatcher("/api/register"),
+                                        new AntPathRequestMatcher("/api/user/add"),
                                         new AntPathRequestMatcher("/api/registration"),
                                         new AntPathRequestMatcher("/api/authentication/login"),
 

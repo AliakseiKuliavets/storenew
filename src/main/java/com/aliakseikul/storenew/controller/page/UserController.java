@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class UserController {
                                     mediaType = "application/json")})
             }
     )
-    @GetMapping("/")
+    @GetMapping("/id")
     public UserDto getUserById(
             @Parameter(
                     description = "ID of employee to be retrieved",
@@ -82,7 +83,7 @@ public class UserController {
             }
     )
     @PostMapping("/add")
-    public User addUser(@RequestBody UserCreateDto userDto) {
+    public User addUser(@RequestBody @Valid UserCreateDto userDto) {
         return userService.addUser(userDto);
     }
 

@@ -2,115 +2,72 @@ package com.aliakseikul.storenew.controller.page;
 
 
 import com.aliakseikul.storenew.dto.UserCreateDto;
-import com.aliakseikul.storenew.dto.UserDto;
-import com.aliakseikul.storenew.entity.User;
-import com.aliakseikul.storenew.entity.enums.UserRole;
-import com.aliakseikul.storenew.mapper.UserMapper;
-import com.aliakseikul.storenew.repository.UserRepository;
-import com.aliakseikul.storenew.service.impl.UserServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
-import java.util.UUID;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@Sql("/drop.sql")
+@Sql("/create.sql")
+@Sql("/insert.sql")
 class UserControllerTest {
 
-    @InjectMocks
-    private UserServiceImpl userService;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Mock
-    private UserRepository userRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @Mock
-    private UserMapper userMapper;
+    private final static String USER_ID_VALID = "a197d1bb-8990-4b08-ad8a-9ec55718fcb8";
 
+    private final static UserCreateDto USER_CREATE_DTO = new UserCreateDto(
+            "TestUserNickName",
+            "TestUserPassword",
+            "TestUserFirstName",
+            "TestUserLastName",
+            "TestUserEmail@gmail.com"
+    );
 
-    private final UUID validId = UUID.fromString("10d83df1-7247-4a7e-af09-96d418317ec2");
-
-    private User user;
-    private UserDto userDto;
-    private UserCreateDto userCreateDto;
-
-    @BeforeEach
-    public void init() {
-        user = new User(
-                validId,
-                "TestNickName",
-                "TestPassword",
-                "TestFirstName",
-                "TestLastName",
-                "TestEmail",
-                "TestNumber",
-                true,
-                UserRole.USER,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        userDto = new UserDto(
-                "TestNickNameDto",
-                "TestFirstNameDto",
-                "TestLastNameDto",
-                "TestEmailDto",
-                "TestNumberDto",
-                true,
-                UserRole.USER
-        );
-        userCreateDto = new UserCreateDto(
-                "TestNickNameCreateDto",
-                "TestPasswordCreateDto",
-                "TestFirstNameCreateDto",
-                "TestLastNameCreateDto",
-                "TestEmailCreateDto"
-        );
+    //-----------------------------getUserById()------------------------------------
+    @WithMockUser("/some")
+    @Test
+    void getUserByIdPositiveTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id")
+                        .param("id", USER_ID_VALID)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-//    private Product product;
-//
-//    @BeforeEach
-//    public void init() {
-//        product = new Product(
-//                validId,
-//                "Banana",
-//                BigDecimal.valueOf(10),
-//                "Simple description",
-//                ProductCategory.OTHER,
-//                ProductBrand.APPLE,
-//                Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),
-//                1234L,
-//                new User(),
-//                new User(),
-//                null
-//        );
-//    }
+    //-----------------------------addUser()------------------------------------
 
     @Test
-    void getProductById() {
-        Mockito.when(userRepository.findById(validId)).thenReturn(Optional.of(user));
-        Mockito.when(userMapper.toDto(user)).thenReturn(userDto);
-        Assertions.assertEquals(userDto, userService.findById(validId.toString()));
-        Mockito.verify(userRepository).findById(validId);
-        Mockito.verify(userMapper).toDto(user);
-    }
+    void addUserPositiveTest() throws Exception {
+        String requestBody = objectMapper.writeValueAsString(USER_CREATE_DTO);
 
-    @Test
-    void addUser() {
-        Mockito.when(userRepository.findUserByNickName(userCreateDto.getUserNickname()))
-                .thenReturn(null);
-        Mockito.when(userRepository.save(user)).thenReturn(user);
-        Assertions.assertEquals(user, userService.addUser(userCreateDto));
-        Mockito.verify(userRepository).findUserByNickName(userCreateDto.getUserNickname());
-        Mockito.verify(userRepository).save(user);
+        MvcResult mvcResult =
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/user/add")
+                                .content(requestBody)
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn();
+
+        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
     }
 }
