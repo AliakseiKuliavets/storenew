@@ -11,20 +11,23 @@ contributing to the reduction of environmental impact.
 - Java 17 (latest master commits)
 - Gradle
 - MySql
+- Liquibase
 - Spring MVC
 - Spring Data JPA and Hibernate
 - Spring Security
 - Freemarker
+- Swagger
+- Inegration Test
 
 ### How to run the app:
 
-1. Setup MySQL DB
+1. Setup MySQL DB (create db "test_database" for test and "storenew" for app
 2. Use your username and password to connect to the DB in Application.yml
-3. Access URL: http://localhost:8080/
+3. Access URL: http://localhost:8080/api/ for demo view
+4. Or test app in Postman
+5. Documentation on Swagger http://localhost:8080/swagger-ui/index.html#/
 
-### Roles:
-
-#### administrator
+## Entrance on app
 
 - login: admin
 - password: admin
