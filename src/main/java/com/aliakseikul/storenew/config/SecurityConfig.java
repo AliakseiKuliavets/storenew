@@ -30,11 +30,6 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/api/enum/**"),
 
 
-                                        new AntPathRequestMatcher("/**"),
-                                        new AntPathRequestMatcher("/api/**"),
-                                        new AntPathRequestMatcher("/api/user/**"),
-
-
                                         new AntPathRequestMatcher("/api/"),
                                         new AntPathRequestMatcher("/api/create"),
                                         new AntPathRequestMatcher("/api/product/**"),
@@ -62,13 +57,6 @@ public class SecurityConfig {
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .formLogin((formLogin) ->
-//                formLogin
-//                        .usernameParameter("request.userNickname")
-//                        .passwordParameter("request.userPassword")
-//                        .loginPage("/login")
-//                        .failureUrl("/login?failed")
-//                        .loginProcessingUrl("/authentication/login/"))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

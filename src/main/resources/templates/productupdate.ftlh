@@ -33,7 +33,7 @@
         <input type="text" name="productDescription" id="productDescription" value="${product.productDescription}"/>
     </label>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Изменить описание"/>
+    <input type="submit" value="change description"/>
 </form>
 <br>
 
@@ -44,7 +44,7 @@
         <input type="number" name="productPrice" id="productPrice" value="${product.productPrice}"/>
     </label>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Изменить цену"/>
+    <input type="submit" value="change the price"/>
 </form>
 <br>
 
@@ -57,7 +57,7 @@
         <option value=""> ${product.productCategory} </option>
     </select>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Изменить категорию"/>
+    <input type="submit" value="Change category"/>
 </form>
 <br>
 
@@ -69,14 +69,14 @@
         <option value=""> ${product.productBrand} </option>
     </select>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Изменить бренд"/>
+    <input type="submit" value="Change brand"/>
 </form>
 <br>
 
 <hr>
 <form action="/remove/${product.productId}" method="post">
     <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Удалить товар"/>
+    <input type="submit" value="Remove product"/>
 </form>
 <script>
 
