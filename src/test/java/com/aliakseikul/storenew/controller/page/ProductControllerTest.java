@@ -43,13 +43,13 @@ class ProductControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final String PRODUCT_ID_VALID = "35026fc0-dbfc-4d52-9c1c-a203929ea63d";
-    private final String PRODUCT_ID_NOT_VALID = "35026fc0-dbfc-4d52-9c1c-a203929ea63E";
-    private final String MORE_44_CHARS = "123456789012345678901234567890123456789012345";
-    private final String PRODUCT_CATEGORY_VALID = "ELECTRONICS";
-    private final String PRODUCT_BRAND_VALID = "APPLE";
+    private final static String PRODUCT_ID_VALID = "35026fc0-dbfc-4d52-9c1c-a203929ea63d";
+    private final static String PRODUCT_ID_NOT_VALID = "35026fc0-dbfc-4d52-9c1c-a203929ea63E";
+    private final static String MORE_44_CHARS = "123456789012345678901234567890123456789012345";
+    private final static String PRODUCT_CATEGORY_VALID = "ELECTRONICS";
+    private final static String PRODUCT_BRAND_VALID = "APPLE";
 
-    private final ProductDto PRODUCT_DTO_VALID = new ProductDto();
+    private final static ProductDto PRODUCT_DTO_VALID = new ProductDto();
 
     @BeforeEach
     void setUp() {
