@@ -8,7 +8,7 @@
 <h1>BUYSELL</h1>
 <hr>
 <#if user.userNickname??>
-    <h3>Имя пользователя: <i>${user.userFirstName}</i></h3>
+    <h3>USER-NAME: <i>${user.userFirstName}</i></h3>
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Sign out"/>
@@ -18,7 +18,7 @@
 </#if>
 <hr>
 <h4>Products from all over the world</h4>
-<form id="searchForm" action="/api" method="get">
+<form id="searchForm" action="/api/" method="get">
     Search by ad title:
     <label><input type="text" name="name"></label>
     <label for="productCategorySearch"></label><select name="category" id="productCategorySearch">

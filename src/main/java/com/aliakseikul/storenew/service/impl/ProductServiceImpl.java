@@ -25,10 +25,8 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -88,9 +86,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> searchProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         double minPriceS = minPrice.doubleValue();
         double maxPriceS = maxPrice.doubleValue();
-        if (minPriceS < 0 || maxPriceS < 0) {
-            throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
-        }
         if (minPriceS > maxPriceS) {
             throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
         }
@@ -142,6 +137,7 @@ public class ProductServiceImpl implements ProductService {
                 .productCategory(productDto.getProductCategory())
                 .productBrand(productDto.getProductBrand())
                 .placedByUser(placedByUser)
+                .dateOfCreate(new Date(System.currentTimeMillis()))
                 .build();
         return productMapper.toDto(productRepository.save(product));
     }

@@ -57,13 +57,6 @@ public class SecurityConfig {
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-//                .formLogin((formLogin) ->
-//                formLogin
-//                        .usernameParameter("request.userNickname")
-//                        .passwordParameter("request.userPassword")
-//                        .loginPage("/login")
-//                        .failureUrl("/login?failed")
-//                        .loginProcessingUrl("/authentication/login/"))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

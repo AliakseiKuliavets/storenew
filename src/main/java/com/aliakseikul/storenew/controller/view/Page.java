@@ -70,7 +70,7 @@ public class Page {
             @RequestParam("file1") MultipartFile file1
     ) {
         productService.createProduct(principal, productDto, file1);
-        return "redirect:/aoi/";
+        return "redirect:/api/";
     }
 
     @GetMapping("/product/update/{productId}")

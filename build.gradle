@@ -74,6 +74,20 @@ dependencies {
     implementation group: 'io.swagger.core.v3', name: 'swagger-core', version: '2.2.20'
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
+
+
+    //test
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.10.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.2'
+    // https://mvnrepository.com/artifact/org.testcontainers/mysql
+    testImplementation group: 'org.testcontainers', name: 'mysql', version: '1.15.3'
+//    testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.19.6'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '6.2.2'
+
+
 }
 tasks.named('test') {
     useJUnitPlatform()
