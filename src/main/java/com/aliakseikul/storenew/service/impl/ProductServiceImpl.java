@@ -86,9 +86,6 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> searchProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         double minPriceS = minPrice.doubleValue();
         double maxPriceS = maxPrice.doubleValue();
-        if (minPriceS < 0 || maxPriceS < 0) {
-            throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
-        }
         if (minPriceS > maxPriceS) {
             throw new NumberExceptions(ErrorMessage.NUMBER_ERROR);
         }
