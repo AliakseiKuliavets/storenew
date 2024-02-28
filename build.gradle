@@ -75,10 +75,11 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
 
-
     //test
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
     testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '6.2.2'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.10.0'
 }
 tasks.named('test') {
     useJUnitPlatform()
