@@ -1,14 +1,7 @@
-
-drop table `image`;
-
-drop table `order_number`;
-
-drop table `delivery`;
-
-drop table `payment`;
-
-drop table `product`;
-
-drop table `reviewed`;
-
-drop table `user`;
+DROP TABLE IF EXISTS `image`;
+DROP TABLE IF EXISTS `order_number`;
+DROP TABLE IF EXISTS `delivery`;
+DROP TABLE IF EXISTS `payment`;
+DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `reviewed`;
+DROP TABLE IF EXISTS `user`;
