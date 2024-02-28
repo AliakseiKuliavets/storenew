@@ -60,6 +60,7 @@ public class Product {
     @JoinColumn(name = "purchased_by_user", referencedColumnName = "user_id")
     private User purchasedByUser;
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Image> images = new ArrayList<>();
 

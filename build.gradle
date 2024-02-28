@@ -82,6 +82,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.10.0'
 }
+
 tasks.named('test') {
     useJUnitPlatform()
 }
@@ -101,6 +102,6 @@ jacocoTestCoverageVerification {
 jacocoTestReport {
     dependsOn test
 }
-check{
+check {
     dependsOn jacocoTestCoverageVerification
 }
