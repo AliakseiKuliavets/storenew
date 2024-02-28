@@ -17,22 +17,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findUserByNickName(String userNickname);
 
     @Modifying
-    @Query("update User u set u.userFirstName = :userName where u.userId = :uuid")
-    void changeUserNameById(UUID uuid, String userName);
-
-    @Modifying
-    @Query("update User u set u.userLastName = :userLastName where u.userId = :uuid")
-    void changeLastNameUserById(UUID uuid, String userLastName);
-
-    @Modifying
-    @Query("update User u set u.userEmail = :email where u.userId = :uuid")
-    void changeEmailUserById(UUID uuid, String email);
-
-    @Modifying
-    @Query("update User u set u.userPhoneNumber = :phoneNumber where u.userId = :uuid")
-    void changePhoneNumberUserById(UUID uuid, String phoneNumber);
-
-    @Modifying
     @Query("update User u set u.userRole = :userRole where u.userId = :uuid")
     void changeRole(UUID uuid, UserRole userRole);
 }

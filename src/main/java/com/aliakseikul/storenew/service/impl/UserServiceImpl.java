@@ -8,7 +8,6 @@ import com.aliakseikul.storenew.dto.auth.AuthenticationResponse;
 import com.aliakseikul.storenew.dto.auth.RegisterRequest;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.entity.enums.UserRole;
-import com.aliakseikul.storenew.exception.exeptions.EmailExceptions;
 import com.aliakseikul.storenew.exception.exeptions.UserNotFoundException;
 import com.aliakseikul.storenew.exception.exeptions.UserRoleNotFoundException;
 import com.aliakseikul.storenew.exception.message.ErrorMessage;
@@ -27,8 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -113,40 +110,6 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
-    public ResponseEntity<String> updateProductParamById(String userId, String property, String value) {
-        findById(userId);
-        UUID userUuid = UUID.fromString(userId);
-
-        String responseMessage;
-        switch (property.toLowerCase()) {
-            case "name":
-                userRepository.changeUserNameById(userUuid, value);
-                responseMessage = "set new name " + value;
-                break;
-            case "lastname":
-                userRepository.changeLastNameUserById(userUuid, value);
-                responseMessage = "set new lastname " + value;
-                break;
-            case "email":
-                if (checkEmail(value)) {
-                    throw new EmailExceptions(ErrorMessage.WRONG_EMAIL);
-                } else {
-                    userRepository.changeEmailUserById(userUuid, value);
-                    responseMessage = "set new email " + value;
-                    break;
-                }
-            case "phonenumber":
-                userRepository.changePhoneNumberUserById(userUuid, value);
-                responseMessage = "set new phone number " + value;
-                break;
-            default:
-                return ResponseEntity.badRequest().body("Invalid property: " + property);
-        }
-        return ResponseEntity.ok("User with ID " + userId + " " + responseMessage);
-    }
-
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    @Override
     public ResponseEntity<String> changeRole(String userId, String userRole) {
         String userRoleUp = userRole.toUpperCase();
         if (checkRole(userRoleUp)) {
@@ -162,14 +125,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(String userId) {
         findById(userId);
         userRepository.deleteById(UUID.fromString(userId));
-    }
-
-    private boolean checkEmail(String value) {
-        String patter = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b";
-
-        Pattern pattern = Pattern.compile(patter);
-        Matcher matcher = pattern.matcher(value);
-        return !(matcher.matches());
     }
 
     private boolean checkRole(String userRoleUp) {

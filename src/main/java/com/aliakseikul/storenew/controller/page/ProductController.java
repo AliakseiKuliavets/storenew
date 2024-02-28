@@ -98,14 +98,6 @@ public class ProductController {
                                             implementation = ProductDto.class
                                     ),
                                     mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "404",
-                            description = "Product not found",
-                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
-                                    mediaType = "application/json")}),
-                    @ApiResponse(responseCode = "500",
-                            description = "Something wrong",
-                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
-                                    mediaType = "application/json")})
             }
     )
     @GetMapping("/all")
@@ -267,6 +259,10 @@ public class ProductController {
                             description = "All its great",
                             content = {@Content(schema = @Schema(implementation = ProductDto.class),
                                     mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "403",
+                            description = "Not Autowired",
+                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
+                                    mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Product not save because user Nick Name is not valid",
                             content = {@Content(schema = @Schema(implementation = ErrorDto.class),
@@ -289,6 +285,10 @@ public class ProductController {
                             description = "All its great",
                             content = {@Content(
                                     schema = @Schema(),
+                                    mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "403",
+                            description = "Not Autowired",
+                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
                                     mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Product not found",
@@ -321,6 +321,10 @@ public class ProductController {
                             description = "All its great",
                             content = {@Content(
                                     schema = @Schema(),
+                                    mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "403",
+                            description = "Not Autowired",
+                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
                                     mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Product not found",
@@ -355,6 +359,10 @@ public class ProductController {
                             description = "All its great",
                             content = {@Content(
                                     schema = @Schema(),
+                                    mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "403",
+                            description = "Not Autowired",
+                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
                                     mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Product not found",
@@ -391,6 +399,10 @@ public class ProductController {
                             content = {@Content(
                                     schema = @Schema(),
                                     mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "403",
+                            description = "Not Autowired",
+                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
+                                    mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Product not found",
                             content = {@Content(schema = @Schema(implementation = ErrorDto.class),
@@ -422,6 +434,10 @@ public class ProductController {
                             description = "All its great",
                             content = {@Content(
                                     schema = @Schema(),
+                                    mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "403",
+                            description = "Not Autowired",
+                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
                                     mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Product not found",
@@ -456,6 +472,10 @@ public class ProductController {
                                     (schema = @Schema(
                                             defaultValue = "Product with ID \" + productId + \" has been deleted"),
                                             mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "403",
+                            description = "Not Autowired",
+                            content = {@Content(schema = @Schema(implementation = ErrorDto.class),
+                                    mediaType = "application/json")}),
                     @ApiResponse(responseCode = "404",
                             description = "Product not found",
                             content = {@Content(schema = @Schema(implementation = ErrorDto.class),

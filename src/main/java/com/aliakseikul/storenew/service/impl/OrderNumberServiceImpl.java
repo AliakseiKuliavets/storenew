@@ -34,7 +34,6 @@ public class OrderNumberServiceImpl implements OrderNumberService {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public List<OrderNumberDto> getOrderByUserRecipientId(String id) {
-        getOrderById(id);
         return orderNumberMapper.orderNumbersToOrderNumbersDto(
                 orderNumberRepository.getOrderByUserRecipientId(UUID.fromString(id)));
     }

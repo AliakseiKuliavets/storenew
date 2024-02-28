@@ -2,115 +2,236 @@ package com.aliakseikul.storenew.controller.page;
 
 
 import com.aliakseikul.storenew.dto.UserCreateDto;
-import com.aliakseikul.storenew.dto.UserDto;
 import com.aliakseikul.storenew.entity.User;
 import com.aliakseikul.storenew.entity.enums.UserRole;
-import com.aliakseikul.storenew.mapper.UserMapper;
-import com.aliakseikul.storenew.repository.UserRepository;
-import com.aliakseikul.storenew.service.impl.UserServiceImpl;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
-import java.util.UUID;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@Sql("/drop.sql")
+@Sql("/create.sql")
+@Sql("/insert.sql")
 class UserControllerTest {
 
-    @InjectMocks
-    private UserServiceImpl userService;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Mock
-    private UserRepository userRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @Mock
-    private UserMapper userMapper;
+    private static final String USER_ID_VALID = "a197d1bb-8990-4b08-ad8a-9ec55718fcb8";
 
+    private static final String USER_ID_VALID_NOT_VALID = "a197d1bb-8990-4b08-ad8a-9ec55718fcb2";
 
-    private final UUID validId = UUID.fromString("10d83df1-7247-4a7e-af09-96d418317ec2");
+    private final static UserCreateDto USER_CREATE_DTO = new UserCreateDto(
+            "TestUserNickName",
+            "TestUserPassword",
+            "TestUserFirstName",
+            "TestUserLastName",
+            "TestUserEmail@gmail.com"
+    );
 
-    private User user;
-    private UserDto userDto;
-    private UserCreateDto userCreateDto;
-
-    @BeforeEach
-    public void init() {
-        user = new User(
-                validId,
-                "TestNickName",
-                "TestPassword",
-                "TestFirstName",
-                "TestLastName",
-                "TestEmail",
-                "TestNumber",
-                true,
-                UserRole.USER,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        userDto = new UserDto(
-                "TestNickNameDto",
-                "TestFirstNameDto",
-                "TestLastNameDto",
-                "TestEmailDto",
-                "TestNumberDto",
-                true,
-                UserRole.USER
-        );
-        userCreateDto = new UserCreateDto(
-                "TestNickNameCreateDto",
-                "TestPasswordCreateDto",
-                "TestFirstNameCreateDto",
-                "TestLastNameCreateDto",
-                "TestEmailCreateDto"
-        );
-    }
-
-//    private Product product;
-//
-//    @BeforeEach
-//    public void init() {
-//        product = new Product(
-//                validId,
-//                "Banana",
-//                BigDecimal.valueOf(10),
-//                "Simple description",
-//                ProductCategory.OTHER,
-//                ProductBrand.APPLE,
-//                Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),
-//                1234L,
-//                new User(),
-//                new User(),
-//                null
-//        );
-//    }
-
+    //-----------------------------getUserById()------------------------------------
+    @WithMockUser("/some")
     @Test
-    void getProductById() {
-        Mockito.when(userRepository.findById(validId)).thenReturn(Optional.of(user));
-        Mockito.when(userMapper.toDto(user)).thenReturn(userDto);
-        Assertions.assertEquals(userDto, userService.findById(validId.toString()));
-        Mockito.verify(userRepository).findById(validId);
-        Mockito.verify(userMapper).toDto(user);
+    void getUserByIdPositiveTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id")
+                        .param("id", USER_ID_VALID)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void addUser() {
-        Mockito.when(userRepository.findUserByNickName(userCreateDto.getUserNickname()))
-                .thenReturn(null);
-        Mockito.when(userRepository.save(user)).thenReturn(user);
-        Assertions.assertEquals(user, userService.addUser(userCreateDto));
-        Mockito.verify(userRepository).findUserByNickName(userCreateDto.getUserNickname());
-        Mockito.verify(userRepository).save(user);
+    void getProductByIdTest403() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id")
+                        .param("id", USER_ID_VALID)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @WithMockUser("/some")
+    @Test
+    void getProductByIdTest404() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id")
+                        .param("id", USER_ID_VALID_NOT_VALID)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @WithMockUser("/some")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "35026fc0-dbfc-4d52-9c1c-a203929ea63",
+            "35026fc0-dbfc-4d52-9c1c-a203929ea63E2",
+    })
+    void getProductByIdTest500(String productId) throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id")
+                        .param("id", productId)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
+    }
+
+    //-----------------------------addUser()------------------------------------
+
+    @Test
+    void addUserPositiveTest() throws Exception {
+        String requestBody = objectMapper.writeValueAsString(USER_CREATE_DTO);
+
+        MvcResult mvcResult =
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/user/add")
+                                .content(requestBody)
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn();
+
+        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+    }
+
+    //-----------------------------changeUserRoleById()------------------------------------
+    @WithMockUser("/some")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "UsEr",
+            "USER",
+            "user"
+    })
+    void changeUserRoleById(String userRole) throws Exception {
+        MvcResult mvcResult =
+                mockMvc.perform(MockMvcRequestBuilders.put("/api/user/change/role")
+                                .param("userId", USER_ID_VALID)
+                                .param("role", userRole)
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn();
+
+        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+        Assertions.assertEquals(UserRole.USER, getById().getUserRole());
+    }
+
+    @Test
+    void changeUserRoleById403() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/user/change/role")
+                        .param("userId", USER_ID_VALID)
+                        .param("role", String.valueOf(UserRole.USER))
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @WithMockUser("/some")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "a197d1bb-8990-4b08-ad8a-9ec55718fcb2, USER",
+            "a197d1bb-8990-4b08-ad8a-9ec55718fcb2, user",
+            "a197d1bb-8990-4b08-ad8a-9ec55718fcb2, UsEr",
+            "a197d1bb-8990-4b08-ad8a-9ec55718fcb8, UEr",
+            "a197d1bb-8990-4b08-ad8a-9ec55718fcb8, Usser",
+
+    })
+    void getAllProductsByCategoryTest404(String userId, String userRole) throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/user/change/role")
+                        .param("userId", userId)
+                        .param("role", userRole)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @WithMockUser("/some")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "a197d1bb-8990-4b08-ad8a-9ec55718f, USER",
+            "a197d1bb-8990-4b08-ad8a-9ec55718fcb22, user",
+            "a197d1bb-8990-4b08-ad8a-9ec55718fcb8, 12345678901234567890123456789012345678901234567"
+    })
+    void getAllProductsByCategoryTest500(String userId, String userRole) throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/user/change/role")
+                        .param("userId", userId)
+                        .param("role", userRole)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
+    }
+
+    //-----------------------------deleteUserById()------------------------------------
+    @WithMockUser("/some")
+    @Test
+    void deleteUserById() throws Exception {
+
+        MvcResult mvcResult =
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/remove/" + USER_ID_VALID)
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn();
+
+        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+    }
+
+    @Test
+    void deleteUserById403() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/remove/" + USER_ID_VALID)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @WithMockUser("/some")
+    @Test
+    void deleteUserById404() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/remove/" + USER_ID_VALID_NOT_VALID)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @WithMockUser("/some")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "35026fc0-dbfc-4d52-9c1c-a203929ea63",
+            "35026fc0-dbfc-4d52-9c1c-a203929ea63E2",
+    })
+    void deleteUserById500(String id) throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/remove/" + id)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
+    }
+
+    @WithMockUser("/some")
+    private User getById() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/id")
+                        .param("id", USER_ID_VALID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        String userJson = mvcResult.getResponse().getContentAsString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return objectMapper.readValue(userJson, User.class);
     }
 }

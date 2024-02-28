@@ -4,6 +4,7 @@ import com.aliakseikul.storenew.dto.ErrorDto;
 import com.aliakseikul.storenew.exception.exeptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -71,6 +72,15 @@ public class ResponseExceptionHandler {
                 exception.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<ErrorDto> userNotAutowired(Exception exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(
+                        new ErrorDto(
+                                "User not Autowired",
+                                exception.getMessage()));
     }
 
     @ExceptionHandler(value = Exception.class)
