@@ -300,7 +300,7 @@ public class ProductController {
                                     mediaType = "application/json")})
             }
     )
-    @PutMapping("/update/name/{productId}and{productName}")
+    @PostMapping("/update/name/{productId}and{productName}")
     public void updateProductNameWithId(
             @Parameter(
                     description = "ID of product to be retrieved",
@@ -336,7 +336,7 @@ public class ProductController {
                                     mediaType = "application/json")})
             }
     )
-    @PutMapping("/update/description/{productId}and{productDescription}")
+    @PostMapping("/update/description/{productId}and{productDescription}")
     public void updateProductDescriptionWithId(
             @Parameter(
                     description = "ID of product to be retrieved",
@@ -374,7 +374,7 @@ public class ProductController {
                                     mediaType = "application/json")})
             }
     )
-    @PutMapping("/update/price/{productId}and{productPrice}")
+    @PostMapping("/update/price/{productId}and{productPrice}")
     public void updateProductPriceWithId(
             @Parameter(
                     description = "ID of product to be retrieved",
@@ -413,7 +413,7 @@ public class ProductController {
                                     mediaType = "application/json")})
             }
     )
-    @PutMapping("/update/category/{productId}and{productCategory}")
+    @PostMapping("/update/category/{productId}and{productCategory}")
     public void updateProductCategoryWithId(
             @Parameter(
                     description = "ID of product to be retrieved",
@@ -449,7 +449,7 @@ public class ProductController {
                                     mediaType = "application/json")})
             }
     )
-    @PutMapping("/update/brand/{productId}and{productBrand}")
+    @PostMapping("/update/brand/{productId}and{productBrand}")
     public void updateProductBrandWithId(
             @Parameter(
                     description = "ID of product to be retrieved",
