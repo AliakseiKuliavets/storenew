@@ -357,7 +357,7 @@ class ProductControllerTest {
         String productName = "some";
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/name/" + PRODUCT_ID_VALID + "and" + productName)
+                        .put("/api/product/update/name/" + PRODUCT_ID_VALID + "and" + productName)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -369,7 +369,7 @@ class ProductControllerTest {
     @Test
     void updateProductNameWithIdTest404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/name/" + PRODUCT_ID_NOT_VALID + "and" + "adabhd")
+                        .put("/api/product/update/name/" + PRODUCT_ID_NOT_VALID + "and" + "adabhd")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -378,7 +378,7 @@ class ProductControllerTest {
     @Test
     void updateProductNameWithIdTest500() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/name/" + PRODUCT_ID_VALID + "and" + MORE_44_CHARS)
+                        .put("/api/product/update/name/" + PRODUCT_ID_VALID + "and" + MORE_44_CHARS)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError());
@@ -391,7 +391,7 @@ class ProductControllerTest {
         String productDescription = "some";
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/description/"
+                        .put("/api/product/update/description/"
                                 + PRODUCT_ID_VALID + "and" + productDescription)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -404,7 +404,7 @@ class ProductControllerTest {
     @Test
     void updateProductDescriptionWithIdTest404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/description/"
+                        .put("/api/product/update/description/"
                                 + PRODUCT_ID_NOT_VALID + "and" + "adabhd")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -417,7 +417,7 @@ class ProductControllerTest {
         String productPrice = "1234";
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/price/"
+                        .put("/api/product/update/price/"
                                 + PRODUCT_ID_VALID + "and" + productPrice)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -430,7 +430,7 @@ class ProductControllerTest {
     @Test
     void updateProductPriceWithIdTest404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/price/"
+                        .put("/api/product/update/price/"
                                 + PRODUCT_ID_NOT_VALID + "and" + "123415")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -444,7 +444,7 @@ class ProductControllerTest {
         String prodCategory = String.valueOf(productCategory);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/category/"
+                        .put("/api/product/update/category/"
                                 + PRODUCT_ID_VALID + "and" + prodCategory)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -457,7 +457,7 @@ class ProductControllerTest {
     @Test
     void updateProductCategoryWithIdTest404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/category/"
+                        .put("/api/product/update/category/"
                                 + PRODUCT_ID_NOT_VALID + "and" + "akufgkayfsu")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -467,7 +467,7 @@ class ProductControllerTest {
     @Test
     void updateProductCategoryWithIdNotValidCategoryTest404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/category/"
+                        .put("/api/product/update/category/"
                                 + PRODUCT_ID_VALID + "and" + "akufgkayfsu")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -477,7 +477,7 @@ class ProductControllerTest {
     @Test
     void updateProductCategoryWithIdTest500() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/category/"
+                        .put("/api/product/update/category/"
                                 + PRODUCT_ID_VALID + "and" + MORE_44_CHARS)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -491,7 +491,7 @@ class ProductControllerTest {
         String prodBrand = String.valueOf(productBrand);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/brand/"
+                        .put("/api/product/update/brand/"
                                 + PRODUCT_ID_VALID + "and" + prodBrand)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -504,7 +504,7 @@ class ProductControllerTest {
     @Test
     void updateProductBrandWithIdTest404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/brand/"
+                        .put("/api/product/update/brand/"
                                 + PRODUCT_ID_NOT_VALID + "and" + "akufgkayfsu")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -514,7 +514,7 @@ class ProductControllerTest {
     @Test
     void updateProductBrandWithIdNotValidCategoryTest404() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/brand/"
+                        .put("/api/product/update/brand/"
                                 + PRODUCT_ID_VALID + "and" + "akufgkayfsu")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -524,7 +524,7 @@ class ProductControllerTest {
     @Test
     void updateProductBrandWithIdTest500() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/product/update/brand/"
+                        .put("/api/product/update/brand/"
                                 + PRODUCT_ID_VALID + "and" + MORE_44_CHARS)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
