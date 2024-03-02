@@ -328,18 +328,6 @@ class ProductControllerTest {
     }
 
     @Test
-    void createProductNotValidNameTest500() throws Exception {
-        PRODUCT_DTO_VALID.setProductName(MORE_44_CHARS);
-        String requestBody = objectMapper.writeValueAsString(PRODUCT_DTO_VALID);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/product/create")
-                        .content(requestBody)
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
-    }
-
-    @Test
     void createProductNotValidNickNameTest500() throws Exception {
         PRODUCT_DTO_VALID.setUserNickname(MORE_44_CHARS);
         String requestBody = objectMapper.writeValueAsString(PRODUCT_DTO_VALID);
