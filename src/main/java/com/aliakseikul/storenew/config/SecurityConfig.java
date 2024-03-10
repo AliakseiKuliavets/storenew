@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
@@ -20,35 +19,38 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    private static final String[] WHITE_LIST_URL = {
+            "/images/**",
+            "/api/enum/**",
+            "/api/",
+            "/api/create",
+            "/api/product/**",
+            "/api/login",
+            "/api/register",
+            "/api/user/add",
+            "/api/registration",
+            "/api/authentication/login",
+            "/api/v1/auth/authenticate",
+
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(
-                                        new AntPathRequestMatcher("/images/**"),
-                                        new AntPathRequestMatcher("/api/enum/**"),
-
-                                        new AntPathRequestMatcher("/api/"),
-                                        new AntPathRequestMatcher("/api/create"),
-                                        new AntPathRequestMatcher("/api/product/**"),
-                                        new AntPathRequestMatcher("/api/login"),
-                                        new AntPathRequestMatcher("/api/register"),
-                                        new AntPathRequestMatcher("/api/user/add"),
-                                        new AntPathRequestMatcher("/api/registration"),
-                                        new AntPathRequestMatcher("/api/authentication/login"),
-
-                                        //swagger
-                                        new AntPathRequestMatcher("/v2/api-docs"),
-                                        new AntPathRequestMatcher("/v3/api-docs"),
-                                        new AntPathRequestMatcher("/v3/api-docs/**"),
-                                        new AntPathRequestMatcher("/swagger-resources"),
-                                        new AntPathRequestMatcher("/swagger-resources/**"),
-                                        new AntPathRequestMatcher("/configuration/ui"),
-                                        new AntPathRequestMatcher("/configuration/security"),
-                                        new AntPathRequestMatcher("/swagger-ui/**"),
-                                        new AntPathRequestMatcher("/webjars/**"),
-                                        new AntPathRequestMatcher("/swagger-ui/index.html")
+                                        WHITE_LIST_URL
                                 )
                                 .permitAll()
                                 .anyRequest()

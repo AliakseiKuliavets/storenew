@@ -100,7 +100,6 @@ public class Page {
 
     @PostMapping("/authentication/login")
     public String login(AuthenticationRequest request, Model model) {
-        System.out.println("Im in Page");
         userService.authenticate(request);
         principal = request::getUserNickname;
 //        return welcome(null,principal,model);
