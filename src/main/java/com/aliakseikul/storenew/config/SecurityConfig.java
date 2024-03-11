@@ -31,7 +31,8 @@ public class SecurityConfig {
             "/api/register",
             "/api/user/add",
             "/api/registration",
-            "/api/authentication/login"
+            "/api/authentication/login",
+            "/api/authenticate"
     };
 
     private static final String[] SWAGGER_LIST = {
@@ -57,7 +58,6 @@ public class SecurityConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(WHITE_LIST_URL).permitAll()
                                 .requestMatchers(SWAGGER_LIST).permitAll()
-                                .requestMatchers("/api/authenticate").permitAll()
                                 .anyRequest().authenticated())
                 .logout(logoutPage -> logoutPage.logoutSuccessUrl("/logout"))
                 .sessionManagement(sessionManagement ->
