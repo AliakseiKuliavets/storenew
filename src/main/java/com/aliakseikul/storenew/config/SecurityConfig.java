@@ -3,6 +3,7 @@ package com.aliakseikul.storenew.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +26,6 @@ public class SecurityConfig {
             "/api/enum/**",
             "/api/",
             "/api/create",
-            "/api/product/**",
             "/api/login",
             "/logout",
             "/api/register",
@@ -58,6 +58,7 @@ public class SecurityConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(WHITE_LIST_URL).permitAll()
                                 .requestMatchers(SWAGGER_LIST).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/product/**").permitAll()
                                 .anyRequest().authenticated())
                 .logout(logoutPage -> logoutPage.logoutSuccessUrl("/logout"))
                 .sessionManagement(sessionManagement ->
