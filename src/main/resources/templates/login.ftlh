@@ -17,7 +17,7 @@
         Password:
         <input type="password" name="userPassword">
     <br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
+<#--    <input type="hidden" name="_csrf" value="${_csrf.token}">-->
     <input type="submit" value="Sign in"/>
 </form>
 <a href="/api/register">Registration</a>

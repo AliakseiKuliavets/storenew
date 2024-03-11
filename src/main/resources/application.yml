@@ -25,4 +25,11 @@ spring:
   freemarker:
     expose-request-attributes: true
 
-    #http://localhost:8080/swagger-ui/index.html
+springdoc:
+  webjars:
+    prefix:
+  swagger-ui:
+    path: /store/v3/swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /store/v3/api-docs

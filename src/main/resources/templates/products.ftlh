@@ -10,7 +10,6 @@
 <#if user.userNickname??>
     <h3>USER-NAME: <i>${user.userFirstName}</i></h3>
     <form action="/logout" method="post">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Sign out"/>
     </form>
 <#else>
@@ -67,7 +66,7 @@
             Image 1:
             <input type="file" name="file1" id="file1"/>
         </label><br><br>
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
+<#--        <input type="hidden" name="_csrf" value="${_csrf.token}">-->
         <input type="submit" value="Добавить товар"/>
     </form>
 </#if>

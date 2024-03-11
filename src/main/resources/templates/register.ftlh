@@ -20,7 +20,7 @@
     Password:
     <label for="userPassword"></label><input type="password" id="userPassword" name="userPassword"><br><br>
 
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
+<#--    <input type="hidden" name="_csrf" value="${_csrf.token}">-->
     <input type="submit" value="Зарегистрироваться"/>
 </form>
 <#if errorMessage??>
