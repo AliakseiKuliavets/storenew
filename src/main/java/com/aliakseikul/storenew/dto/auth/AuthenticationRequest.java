@@ -18,12 +18,4 @@ public class AuthenticationRequest {
     @NotNull(message = "Password shouldn't be null")
     @Size(min = 1, max = 44, message = "Password should be not null and from 1 to 44 symbols")
     private String userPassword;
-
-    @Override
-    public String toString() {
-        return "AuthenticationRequest{" +
-                "userNickname='" + userNickname + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                '}';
-    }
 }

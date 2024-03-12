@@ -29,6 +29,14 @@ public class AuthenticationController {
 
     @Operation(summary = "Authenticate User",
             description = "Authenticate User, and return token",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Authenticate User, and return token",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AuthenticationRequest.class)
+                    )
+            ),
             responses = {
                     @ApiResponse(responseCode = "200",
                             description = "Return token",
