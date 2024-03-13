@@ -58,7 +58,7 @@ public class SecurityConfig {
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(WHITE_LIST_URL).permitAll()
                                 .requestMatchers(SWAGGER_LIST).permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+                                .requestMatchers( "/api/product/**").permitAll()
                                 .anyRequest().authenticated())
                 .logout(logoutPage -> logoutPage.logoutSuccessUrl("/logout"))
                 .sessionManagement(sessionManagement ->

@@ -101,7 +101,31 @@ jacocoTestCoverageVerification {
     }
 }
 jacocoTestReport {
-    dependsOn test
+//    reports {
+//        xml {
+//            enabled true
+//        }
+//    }
+//
+//    afterEvaluate {
+//        classDirectories = files(classDirectories.files.collect {
+//            fileTree(dir: it,
+//                    exclude: [
+//                            '/com/aliakseikul/storenew/aspect/**',
+//                            '/com/aliakseikul/storenew/controller/view/**',
+//                            '/com/aliakseikul/storenew/controller/page/ResponseExceptionHandler.class',
+//                            '/com/aliakseikul/storenew/config/OpenApiConfig.class',
+//                            '/com/aliakseikul/storenew/dto/**',
+//                            '/com/aliakseikul/storenew/dto/auth/**',
+//                            '/com/aliakseikul/storenew/entity/**',
+//                            '/com/aliakseikul/storenew/exception/exeptions/**',
+//                            '/com/aliakseikul/storenew/exception/message/**',
+//                            '/com/aliakseikul/storenew/mapper/**',
+//                            '/com/aliakseikul/storenew/repository/**',
+//                            '/com/aliakseikul/storenew/StorenewApplication.class'
+//                    ])
+//        })
+//    }
 }
 check {
     dependsOn jacocoTestCoverageVerification

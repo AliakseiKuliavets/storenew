@@ -5,8 +5,6 @@ import com.aliakseikul.storenew.validation.interf.IdChecker;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.util.Optional;
-
 public class IdAnnotationChecker implements ConstraintValidator<IdChecker, String> {
 
     private static final String TEMPLATE =
@@ -19,9 +17,9 @@ public class IdAnnotationChecker implements ConstraintValidator<IdChecker, Strin
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return Optional.ofNullable(value)
-                .filter(el -> !(el.isBlank()))
-                .map(uuid -> uuid.matches(TEMPLATE))
-                .orElse(false);
+        if (value == null) {
+            return false;
+        }
+        return value.matches(TEMPLATE);
     }
 }
