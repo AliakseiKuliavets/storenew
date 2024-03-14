@@ -12,11 +12,12 @@ contributing to the reduction of environmental impact.
 - Gradle
 - MySql
 - Liquibase
-- Spring MVC
 - Spring Data JPA and Hibernate
 - Spring Security
+- Spring Validation
 - Freemarker
 - Swagger
+- Jacoco
 - Inegration Test
 
 ### How to run the app:
@@ -25,7 +26,7 @@ contributing to the reduction of environmental impact.
 2. Use your username and password to connect to the DB in Application.yml
 3. Access URL: http://localhost:8080/api/ for demo view
 4. Or test app in Postman
-5. Documentation on Swagger http://localhost:8080/swagger-ui/index.html#/
+5. Documentation on Swagger http://localhost:8080/store/v3/swagger-ui.html
 
 ## Entrance on app
 
